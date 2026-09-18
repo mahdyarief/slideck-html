@@ -1,0 +1,9 @@
+{
+  "title": "Contoh Deck — default / navy",
+  "footer": "Contoh Deck | 18 SEP 2026",
+  "output": "contoh-default-navy.html",
+  "slides": "../slides",
+  "design": "default",
+  "theme": "navy",
+  "motion": "corporate"
+}

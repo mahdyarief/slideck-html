@@ -1,0 +1,9 @@
+{
+  "title": "Contoh Deck — editorial / navy",
+  "footer": "Contoh Deck | 18 SEP 2026",
+  "output": "contoh-editorial-navy.html",
+  "slides": "../slides",
+  "design": "editorial",
+  "theme": "navy",
+  "motion": "corporate"
+}

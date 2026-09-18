@@ -1,0 +1,6 @@
+{
+  "name": "editorial",
+  "label": "Editorial",
+  "description": "Gaya majalah. Sudut tajam, garis rambut, judul serif, tanpa shadow. Cocok untuk narasi panjang, laporan, dan deck yang dibaca sendiri.",
+  "recommended": { "theme": "paper", "motion": "cinematic" }
+}

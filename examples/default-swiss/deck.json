@@ -1,0 +1,9 @@
+{
+  "title": "Contoh Deck — default / swiss",
+  "footer": "Contoh Deck | 18 SEP 2026",
+  "output": "contoh-default-swiss.html",
+  "slides": "../slides",
+  "design": "default",
+  "theme": "swiss",
+  "motion": "corporate"
+}

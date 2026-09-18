@@ -2,6 +2,7 @@
   "title": "Contoh Deck — slideck-html",
   "footer": "Contoh Deck | Cutoff —",
   "output": "contoh-deck.html",
+  "design": "default",
   "theme": "navy",
   "motion": "corporate"
 }

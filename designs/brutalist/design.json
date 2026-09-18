@@ -1,0 +1,6 @@
+{
+  "name": "brutalist",
+  "label": "Brutalist",
+  "description": "Gaya mentah. Border tebal, hard shadow, label mono uppercase, kontras tinggi. Cocok untuk deck yang harus terasa tegas dan teknis.",
+  "recommended": { "theme": "swiss", "motion": "corporate" }
+}

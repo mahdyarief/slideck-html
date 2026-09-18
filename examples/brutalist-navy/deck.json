@@ -1,0 +1,9 @@
+{
+  "title": "Contoh Deck — brutalist / navy",
+  "footer": "Contoh Deck | 18 SEP 2026",
+  "output": "contoh-brutalist-navy.html",
+  "slides": "../slides",
+  "design": "brutalist",
+  "theme": "navy",
+  "motion": "corporate"
+}

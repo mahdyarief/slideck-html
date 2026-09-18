@@ -1,0 +1,46 @@
+/* DESIGN editorial — majalah: sudut tajam, garis rambut, judul serif, tanpa shadow. */
+/* Warna HANYA lewat token theme (lihat kontrak di designs/default/components.css). Tidak ada hex mentah. */
+:root{--surface:#fff;--navy:#1C2833;--on-navy:#fff;--on-navy-mut:#AAB7B8;--teal:#5EA8A7;--teal-d:#2F7E7D;--grey:#F4F6F6;--mut:#5A6C7D;--ink:#2E4053;--mint:#EAF6F4;--accent-line:#BFDCD8;--tag-bg:#D9ECEA;--line:#E2E8EC;--font-d:'Plus Jakarta Sans',sans-serif;--font-s:'Source Serif 4',serif;--ease:cubic-bezier(.16,1,.3,1)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-d);-webkit-font-smoothing:antialiased}
+.kicker{font-size:21px;letter-spacing:5px;text-transform:uppercase;color:var(--teal-d);font-weight:800}
+h1.title{font-family:var(--font-s);font-size:82px;color:var(--ink);font-weight:700;line-height:1.06;margin-top:14px;letter-spacing:-.5px}
+h1.serif{font-family:var(--font-s)}
+.pad{padding:88px 108px 110px}
+.rule{width:100%;height:3px;background:var(--ink);border-radius:0;margin:28px 0 0}
+.card{background:transparent;border:0;border-top:3px solid var(--ink);border-radius:0;padding:26px 0 0}
+.card.accent{background:transparent;border:0;border-left:7px solid var(--teal);border-radius:0;padding:10px 0 10px 32px}
+.kpi-num{font-family:var(--font-s);font-size:88px;font-weight:700;color:var(--ink);line-height:1;letter-spacing:-1px}
+.kpi-lab{font-size:22px;color:var(--mut);margin-top:12px;text-transform:uppercase;letter-spacing:2px}
+.bul{font-size:29px;color:var(--ink);line-height:1.62}
+.small{font-size:24px;color:var(--mut);line-height:1.55}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:64px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:48px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:36px}
+.tag{display:inline-block;font-size:19px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--teal-d);background:transparent;border-radius:0;padding:0 0 7px;border-bottom:2px solid var(--teal);margin-bottom:16px}
+.map{display:flex;align-items:stretch;gap:0;margin-top:38px;border-top:3px solid var(--ink);border-bottom:3px solid var(--ink)}
+.mapcol{flex:1;border-radius:0;padding:32px 36px}
+.mapcol h3{font-family:var(--font-s);font-size:32px;margin-bottom:6px}
+.mapcol ul{list-style:none;margin-top:16px}
+.mapcol li{font-size:25px;line-height:1.66;color:var(--ink)}
+.mapcol li b{color:var(--ink)}
+.arrow{align-self:center;font-size:44px;color:var(--teal);font-weight:800;padding:0 20px}
+table.t{width:100%;border-collapse:collapse;margin-top:32px;font-size:25px}
+table.t th{text-align:left;font-size:19px;letter-spacing:2px;text-transform:uppercase;color:var(--teal-d);padding:12px 0;border-bottom:3px solid var(--ink)}
+table.t td{padding:15px 0;border-bottom:1px solid var(--line);color:var(--ink)}
+table.t td.n{text-align:right;font-weight:800;color:var(--ink);white-space:nowrap}
+.foot{position:absolute;bottom:32px;left:108px;right:108px;display:flex;justify-content:space-between;align-items:center;font-size:20px;color:var(--mut)}
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.visible .reveal{opacity:1;transform:none}
+.visible .reveal.d1{transition-delay:.08s}.visible .reveal.d2{transition-delay:.16s}.visible .reveal.d3{transition-delay:.24s}
+.quote{font-family:var(--font-s);font-size:54px;font-style:italic;color:var(--ink);line-height:1.3}
+.stat-big{font-family:var(--font-s);font-size:128px;font-weight:700;color:var(--on-navy);letter-spacing:-2px}
+.timeline{display:flex;gap:0;margin-top:38px}
+.timeline .step{flex:1;text-align:left;position:relative;padding-top:46px}
+.timeline .dot{position:absolute;top:14px;left:0;transform:none;width:22px;height:22px;border-radius:0;background:var(--ink)}
+.timeline .step::before{content:"";position:absolute;top:24px;left:0;right:0;height:2px;background:var(--line);z-index:-1}
+.timeline .step:first-child::before{left:0}
+.timeline .step:last-child::before{right:0}
+.checklist{list-style:none;margin-top:26px}
+.checklist li{font-size:29px;color:var(--ink);padding:17px 0;border-bottom:1px solid var(--line);position:relative;line-height:1.45}
+.checklist li::before{display:none}

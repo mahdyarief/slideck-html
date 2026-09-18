@@ -2,13 +2,19 @@
 
 Stable single-file HTML slide decks. Frozen template + per-slide files + `node build.js` (stdlib only, zero dependency).
 
-Stage fixed **1920×1080**, scaled to viewport. Three dimensions separated: **theme** (color+font) × **layout** (12 templates) × **content** (`slides/`).
+Stage fixed **1920×1080**, scaled to viewport. Four dimensions separated: **design** (shape + typography treatment) × **theme** (color + font) × **layout** (12 templates) × **content** (`slides/`).
 
 Output is one self-contained `.html` with fonts inlined base64 — works offline, opens by double-click, prints one slide per page.
 
 ## Preview
 
-The same demo deck, same slides, five themes:
+Same slides and theme, three designs:
+
+| default | editorial | brutalist |
+|---|---|---|
+| ![default](assets/preview/design-default.png) | ![editorial](assets/preview/design-editorial.png) | ![brutalist](assets/preview/design-brutalist.png) |
+
+Same design, five themes:
 
 | navy (default) | paper | botanical |
 |---|---|---|
@@ -22,8 +28,8 @@ The same demo deck, same slides, five themes:
 
 If you were given this repo URL and asked to make slides, do exactly this:
 
-1. **Read** `AGENTS.md` (rules), then `skill/SKILL.md` (workflow + themes + motions + templates).
-2. **Never edit** `template.html`, `components.css`, `build.js`, `themes/`, `motions/`, `templates/`, `assets/`. Edit only `slides/*.html` + `deck.json`.
+1. **Read** `AGENTS.md` (rules), then `skill/SKILL.md` (workflow + designs + themes + motions + templates).
+2. **Never edit** `template.html`, `build.js`, `designs/`, `themes/`, `motions/`, `templates/`, `assets/`. Edit only `slides/*.html` + `deck.json`.
 3. **New deck:** copy `templates/<n>-*.html` → `slides/NN-name.html`, replace `[...]` placeholders only, keep classes.
 4. **Build:** `node build.js` → `dist/<output>.html`. Open in browser to verify.
 5. **Tables max 7 rows** per slide — overflow goes to a continuation slide.
@@ -35,7 +41,7 @@ If you were given this repo URL and asked to make slides, do exactly this:
 git clone https://github.com/mahdyarief/slideck-html.git
 cd slideck-html
 node build.js            # builds dist/contoh-deck.html from slides/
-# new deck: edit deck.json (title/footer/output/theme/motion), put slides in slides/, run node build.js
+# new deck: edit deck.json (title/footer/output/design/theme/motion), put slides in slides/, run node build.js
 ```
 
 No `npm install`. Node stdlib only.
@@ -45,7 +51,7 @@ No `npm install`. Node stdlib only.
 ```bash
 mkdir -p ~/.openclaude/skills/slideck-html
 cd slideck-html
-cp -r skill/SKILL.md template.html components.css build.js themes motions templates assets ~/.openclaude/skills/slideck-html/
+cp -r skill/SKILL.md template.html build.js designs themes motions templates assets ~/.openclaude/skills/slideck-html/
 ```
 
 Then an agent asked to build slides can follow `SKILL.md` directly.
@@ -54,10 +60,10 @@ Then an agent asked to build slides can follow `SKILL.md` directly.
 
 ```
 template.html      FROZEN shell ({{TITLE}} {{FONTS}} {{COMPONENTS}} {{SLIDES}} + nav JS)
-components.css     FROZEN structure (cards, grids, tables, timeline, checklist…)
 build.js           FROZEN: slides/*.html → dist/<output>.html, validates placeholders, writes FROZEN.json
-deck.json          EDIT: title, footer, output, theme, motion
-themes/            navy (default) · paper · botanical · swiss · neon   (:root overrides only)
+designs/           FROZEN: default · editorial · brutalist   (components.css + design.json each)
+deck.json          EDIT: title, footer, output, design, theme, motion
+themes/            navy (default) · paper · botanical · swiss · neon   (:root color+font only)
 motions/           corporate (default) · cinematic · playful           (.reveal timing only)
 templates/         12 copy-paste layouts with [...] placeholders
 slides/            YOUR content (only dir you + AI edit)
@@ -68,7 +74,7 @@ skill/SKILL.md     agent skill file
 LICENSE            MIT
 ```
 
-## Themes and motions
+## Designs, themes, motions
 
 `deck.json`:
 
@@ -77,10 +83,17 @@ LICENSE            MIT
   "title": "Contoh Deck — slideck-html",
   "footer": "Contoh Deck | Cutoff —",
   "output": "contoh-deck.html",
+  "design": "default",
   "theme": "navy",
   "motion": "corporate"
 }
 ```
+
+| Design | Shape | Layout set |
+|---|---|---|
+| `default` | rounded cards, soft shadow, teal accent, roomy spacing | shared 12 |
+| `editorial` | sharp corners, hairline rules, serif headings, no shadow | shared 12 |
+| `brutalist` | thick ink borders, hard offset shadow, mono labels, uppercase | shared 12 |
 
 | Theme | Look | Font |
 |---|---|---|
@@ -96,9 +109,9 @@ LICENSE            MIT
 | `cinematic` | 1 s fade + scale |
 | `playful` | 550 ms spring |
 
-The build inlines `components.css + themes/<t>.css + motions/<m>.css`. A wrong name warns and falls back to defaults.
+The build inlines `designs/<d>/components.css + themes/<t>.css + motions/<m>.css`, in that order. A wrong design name stops the build; a wrong theme or motion name warns and falls back to the default.
 
-Adding a theme only means overriding the `:root` tokens (see the token contract comment at the top of `components.css`); the structure stays frozen.
+Adding a theme means overriding the `:root` tokens only (see the token contract comment at the top of `designs/default/components.css`). Adding a design means writing a `designs/<name>/components.css` that styles through those same token names, plus a matching `design.json`. Because every design speaks the same token vocabulary, any design works with any theme.
 
 ## Slides
 
@@ -113,13 +126,23 @@ cp templates/04-table-detail.html slides/03-progress.html
 - Prefix a filename with `_` (e.g. `_draft.html`) to keep it in `slides/` without rendering it.
 - Tables max 7 rows; split overflow into a continuation slide.
 
+## Examples
+
+`examples/` ships one demo deck (12 slides = all 12 layouts) rendered across several design × theme combinations, so you can see the range before committing to a look.
+
+```bash
+node examples/build-all.js      # builds every example into examples/html/
+```
+
+Browse `examples/html/*.html` directly — no server needed. Add a combination by creating `examples/<name>/deck.json` with `"slides": "../slides"`; see `examples/README.md`.
+
 ## Verify
 
 ```bash
 node build.js
 ```
 
-Prints version, theme, motion, slide count, font mode (inline/system), output size, and output path. It warns about:
+Prints version, design, theme, motion, slide count, font mode (inline/system), output size, and output path. It warns about:
 
 - leftover `{{...}}` placeholders,
 - unfilled `[...]` placeholders,
@@ -129,7 +152,7 @@ Then open `dist/<output>.html` and arrow through every slide — check for overf
 
 ## Frozen-file lock
 
-`FROZEN.json` stores a short sha256 of `template.html`, `components.css`, `build.js`. If one of them changes, the next build warns — so accidental edits to shared files are visible. If you *intentionally* changed a frozen file, regenerate the lock:
+`FROZEN.json` stores a short sha256 of `template.html`, `build.js`, and every file under `designs/`, `themes/`, and `motions/`. If one of them changes, the next build warns — so accidental edits to shared files are visible. If you *intentionally* changed a frozen file, regenerate the lock:
 
 ```bash
 node build.js --lock

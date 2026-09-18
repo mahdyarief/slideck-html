@@ -5,17 +5,33 @@ const path = require("path");
 const crypto = require("crypto");
 const DIR = __dirname;
 
-const VERSION = "1.1.0";
-const FROZEN = ["template.html", "components.css", "build.js"];
+const VERSION = "1.2.0";
 const LOCK_FILE = "FROZEN.json";
 const relock = process.argv.includes("--lock");
+
+/* --root <dir>: baca deck.json + slides/ dari folder lain (dipakai examples/).
+   Template, components, themes, motions, dan assets tetap diambil dari repo root. */
+const rootFlag = (() => {
+  const i = process.argv.indexOf("--root");
+  return i >= 0 && process.argv[i + 1] ? path.resolve(process.argv[i + 1]) : null;
+})();
+const SRC = rootFlag || DIR;
 
 const readIf = (p) => { try { return fs.readFileSync(p, "utf8"); } catch (e) { return null; } };
 const sha = (p) => crypto.createHash("sha256").update(fs.readFileSync(p)).digest("hex").slice(0, 16);
 const warn = (m) => console.warn("  ! " + m);
 
+/* File beku = shell + build + semua design/theme/motion (infrastruktur bersama). */
+const walk = (rel) => {
+  const abs = path.join(DIR, rel);
+  if (!fs.existsSync(abs)) return [];
+  if (fs.statSync(abs).isFile()) return [rel];
+  return fs.readdirSync(abs).flatMap((n) => walk(rel + "/" + n));
+};
+const FROZEN = ["template.html", "build.js", ...walk("designs"), ...walk("themes"), ...walk("motions")].sort();
+
 /* ---------- 1. deck.json ---------- */
-const deck = JSON.parse(fs.readFileSync(path.join(DIR, "deck.json"), "utf8"));
+const deck = JSON.parse(fs.readFileSync(path.join(SRC, "deck.json"), "utf8"));
 const themeName = deck.theme || "navy";
 const motionName = deck.motion || "corporate";
 
@@ -37,7 +53,9 @@ if (relock || !savedLock) {
 
 /* ---------- 3. CSS = components + theme + motion ---------- */
 const template = fs.readFileSync(path.join(DIR, "template.html"), "utf8");
-const base = fs.readFileSync(path.join(DIR, "components.css"), "utf8");
+const designName = deck.design || "default";
+const base = readIf(path.join(DIR, "designs", designName, "components.css"));
+if (base === null) { console.error("  x design tidak ketemu: designs/" + designName + "/components.css"); process.exit(1); }
 let extra = "";
 const themeCss = readIf(path.join(DIR, "themes", themeName + ".css"));
 if (themeCss === null) warn("theme tidak ketemu: " + themeName + " — pakai token default dari components.css");
@@ -64,7 +82,7 @@ if (Array.isArray(themeFonts) && themeFonts.length) {
 }
 
 /* ---------- 5. slides/*.html (skip file berawalan "_") ---------- */
-const slidesDir = path.join(DIR, "slides");
+const slidesDir = path.resolve(SRC, deck.slides || "slides");
 const files = fs.readdirSync(slidesDir)
   .filter((f) => f.endsWith(".html") && !f.startsWith("_"))
   .sort();
@@ -97,11 +115,11 @@ const out = template
 const remaining = out.match(/\{\{[A-Z_]+\}\}/g);
 if (remaining) warn("placeholder template tersisa di output: " + [...new Set(remaining)].join(", "));
 
-fs.mkdirSync(path.join(DIR, "dist"), { recursive: true });
-const outPath = path.join(DIR, "dist", deck.output);
+fs.mkdirSync(path.join(SRC, "dist"), { recursive: true });
+const outPath = path.join(SRC, "dist", deck.output);
 fs.writeFileSync(outPath, out);
 
-console.log("slideck-html v" + VERSION + " | theme=" + themeName + " motion=" + motionName +
+console.log("slideck-html v" + VERSION + " | design=" + designName + " theme=" + themeName + " motion=" + motionName +
   " | " + total + " slides | fonts=" + (fonts ? "inline" : "sistem") +
   " | " + Math.round(Buffer.byteLength(out) / 1024) + " KB");
-console.log("  -> dist/" + deck.output);
+console.log("  -> " + path.relative(DIR, outPath).replace(/\\/g, "/"));

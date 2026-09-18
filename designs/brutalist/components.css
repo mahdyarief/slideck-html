@@ -1,0 +1,44 @@
+/* DESIGN brutalist — mentah/mekanis: border tebal, hard shadow, mono, uppercase. */
+/* Warna HANYA lewat token theme (lihat kontrak di designs/default/components.css). Tidak ada hex mentah. */
+:root{--surface:#fff;--navy:#1C2833;--on-navy:#fff;--on-navy-mut:#AAB7B8;--teal:#5EA8A7;--teal-d:#2F7E7D;--grey:#F4F6F6;--mut:#5A6C7D;--ink:#2E4053;--mint:#EAF6F4;--accent-line:#BFDCD8;--tag-bg:#D9ECEA;--line:#E2E8EC;--font-d:'Plus Jakarta Sans',sans-serif;--font-s:'Source Serif 4',serif;--ease:cubic-bezier(.16,1,.3,1)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-d);-webkit-font-smoothing:antialiased}
+.kicker{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:22px;letter-spacing:2px;text-transform:uppercase;color:var(--teal-d);font-weight:800}
+h1.title{font-size:82px;color:var(--ink);font-weight:800;line-height:1;margin-top:16px;letter-spacing:-2px;text-transform:uppercase}
+h1.serif{font-family:var(--font-s);letter-spacing:-1px}
+.pad{padding:72px 84px 108px}
+.rule{width:170px;height:16px;background:var(--ink);border-radius:0;margin:26px 0 0}
+.card{background:var(--grey);border:3px solid var(--ink);border-radius:0;padding:30px 34px;box-shadow:10px 10px 0 var(--ink)}
+.card.accent{background:var(--mint);border-color:var(--ink)}
+.kpi-num{font-size:88px;font-weight:800;color:var(--ink);line-height:1;letter-spacing:-3px}
+.kpi-lab{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:21px;color:var(--mut);margin-top:10px;text-transform:uppercase;letter-spacing:1px}
+.bul{font-size:29px;color:var(--ink);line-height:1.5}
+.small{font-size:24px;color:var(--mut);line-height:1.5}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:34px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
+.tag{display:inline-block;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:19px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--ink);background:transparent;border:3px solid var(--ink);border-radius:0;padding:6px 14px;margin-bottom:16px}
+.map{display:flex;align-items:stretch;gap:0;margin-top:38px}
+.mapcol{flex:1;border-radius:0;padding:30px 32px;border:3px solid var(--ink)}
+.mapcol h3{font-size:31px;margin-bottom:8px;text-transform:uppercase}
+.mapcol ul{list-style:none;margin-top:14px}
+.mapcol li{font-size:25px;line-height:1.6;color:var(--ink)}
+.mapcol li b{color:var(--ink)}
+.arrow{align-self:center;font-size:46px;color:var(--ink);font-weight:800;padding:0 22px}
+table.t{width:100%;border-collapse:collapse;margin-top:30px;font-size:25px}
+table.t th{text-align:left;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:19px;letter-spacing:1px;text-transform:uppercase;color:var(--ink);padding:14px;border:3px solid var(--ink);background:var(--grey)}
+table.t td{padding:14px;border:3px solid var(--ink);color:var(--ink)}
+table.t td.n{text-align:right;font-weight:800;color:var(--ink);white-space:nowrap}
+.foot{position:absolute;bottom:30px;left:84px;right:84px;display:flex;justify-content:space-between;align-items:center;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:20px;color:var(--mut)}
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.visible .reveal{opacity:1;transform:none}
+.visible .reveal.d1{transition-delay:.08s}.visible .reveal.d2{transition-delay:.16s}.visible .reveal.d3{transition-delay:.24s}
+.quote{font-size:46px;font-style:normal;font-weight:800;color:var(--ink);line-height:1.25;text-transform:uppercase}
+.stat-big{font-size:130px;font-weight:800;color:var(--on-navy);letter-spacing:-4px}
+.timeline{display:flex;gap:26px;margin-top:38px}
+.timeline .step{flex:1;text-align:left;position:relative;padding-top:0}
+.timeline .dot{position:static;transform:none;width:100%;height:14px;border-radius:0;background:var(--ink);margin-bottom:20px}
+.timeline .step::before{display:none}
+.checklist{list-style:none;margin-top:26px}
+.checklist li{font-size:28px;color:var(--ink);padding:18px 22px;border:3px solid var(--ink);margin-bottom:16px;position:relative;line-height:1.4;background:var(--grey)}
+.checklist li::before{display:none}

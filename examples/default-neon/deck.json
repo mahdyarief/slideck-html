@@ -1,0 +1,9 @@
+{
+  "title": "Contoh Deck — default / neon",
+  "footer": "Contoh Deck | 18 SEP 2026",
+  "output": "contoh-default-neon.html",
+  "slides": "../slides",
+  "design": "default",
+  "theme": "neon",
+  "motion": "corporate"
+}
