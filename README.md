@@ -6,6 +6,18 @@ Stage fixed **1920×1080**, scaled to viewport. Three dimensions separated: **th
 
 Output is one self-contained `.html` with fonts inlined base64 — works offline, opens by double-click, prints one slide per page.
 
+## Preview
+
+The same demo deck, same slides, five themes:
+
+| navy (default) | paper | botanical |
+|---|---|---|
+| ![navy](assets/preview/deck-navy.png) | ![paper](assets/preview/deck-paper.png) | ![botanical](assets/preview/deck-botanical.png) |
+
+| swiss | neon |
+|---|---|
+| ![swiss](assets/preview/deck-swiss.png) | ![neon](assets/preview/deck-neon.png) |
+
 ## For AI agents: read this first
 
 If you were given this repo URL and asked to make slides, do exactly this:
