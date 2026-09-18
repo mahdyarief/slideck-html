@@ -1,65 +1,114 @@
 ---
 name: slideck-html
-description: Use when creating stable single-file HTML slide decks, weekly reporting slides, or reusing the frozen 1920x1080 slideck template system
+description: Use when creating or editing stable single-file HTML slide decks (weekly reporting, internal presentations) with the frozen 1920x1080 slideck template system — themes, motions, 12 layouts, node build
 ---
 
 # slideck-html
 
-Single-file HTML deck framework. Frozen template + components, per-slide files, node build. Tiga dimensi dipisah: theme (warna+font) × layout (templates/ 12 pola) × content (slides/).
+Single-file HTML deck framework. Frozen template + components, per-slide files, `node build.js` (stdlib only, zero dependency).
 
-## Rule
+## Overview
 
-- AI may only edit `slides/*.html` + `deck.json`. NEVER edit `template.html` or `components.css`.
-- Reference files live in this skill folder: `template.html`, `components.css`, `build.js`, `templates/01-12.html`, `themes/*.css`, `motions/*.css`.
+Frozen `template.html` + `components.css` + `build.js`; you edit only `slides/*.html` + `deck.json`. The build assembles one self-contained `dist/<output>.html` with fonts inlined.
 
-## Workflow (new deck)
+Three dimensions kept separate:
 
-1. Create work dir: `deck-<name>/` with `slides/`, copy `build.js` + `template.html` + `components.css` + `themes/` + `motions/` from this skill folder into it.
-2. Write `deck.json`: `{"title":"...","footer":"...","output":"<name>.html","theme":"navy","motion":"corporate"}`.
-3. Copy needed files from `templates/` to `slides/NN-name.html`, replace `[...]` placeholders only. Keep classes as-is.
-4. Placeholders: `{{N}}`/`{{TOTAL}}` = slide numbers, `[Footer kiri]` = replaced from deck.json footer.
-5. Run `node build.js` → `dist/<output>.html`. Open in browser. Revise only in `slides/`.
+- **theme** — color + font tokens (`themes/*.css`)
+- **layout** — 12 patterns (`templates/*.html`)
+- **content** — `slides/*.html`
 
-## Themes (5, dari frontend-slides STYLE_PRESETS)
+Stage is fixed **1920×1080**, scaled as a whole to the viewport (letterboxed, never reflowed).
 
-| theme | Sumber | Cocok untuk |
+## When to use
+
+- Weekly report / internal presentation decks as a single HTML file
+- Reusing an existing deck's structure for a new one
+- Output must work offline (fonts embedded) and open by double-click
+
+When NOT to use: markdown-driven developer decks (`slidev`), native `.pptx` binaries (`pptx`), one-off freeform HTML with style exploration (`frontend-slides`).
+
+## Quickstart
+
+```bash
+git clone https://github.com/mahdyarief/slideck-html.git
+cd slideck-html
+node build.js            # → dist/contoh-deck.html
+```
+
+New deck:
+
+1. edit `deck.json` — `title`, `footer`, `output`, `theme`, `motion`
+2. copy `templates/<n>-*.html` → `slides/NN-name.html`, replace `[...]` only, keep classes
+3. `node build.js` → `dist/<output>.html`, open in browser, arrow through every slide
+
+## Install as AI skill
+
+```bash
+mkdir -p ~/.openclaude/skills/slideck-html
+cp -r skill/SKILL.md template.html components.css build.js themes motions templates assets ~/.openclaude/skills/slideck-html/
+```
+
+## Files
+
+```
+template.html   FROZEN shell — {{TITLE}} {{FONTS}} {{COMPONENTS}} {{SLIDES}} + nav JS
+components.css  FROZEN structure (cards, grids, tables, timeline, checklist)
+build.js        FROZEN — assembles output, validates placeholders, writes FROZEN.json lock
+deck.json       EDIT — title, footer, output, theme, motion
+themes/         FROZEN — navy, paper, botanical, swiss, neon (only :root tokens)
+motions/        FROZEN — corporate, cinematic, playful (only .reveal timing)
+templates/      FROZEN — 12 copy-paste layouts with [...] placeholders
+slides/         EDIT — your content
+assets/fonts/   FROZEN — woff2 + fonts.json (navy fonts, base64-inlined at build)
+dist/           OUTPUT — never edit
+```
+
+## Themes (`deck.json` `"theme"`)
+
+| Theme | Look | Font |
 |---|---|---|
-| navy (default) | house-style 18 SEP | weekly report, formal |
-| paper | Paper & Ink #12 | laporan editorial terang |
-| botanical | Dark Botanical #4 | premium, keynote |
-| swiss | Swiss Modern #11 | presisi minimal |
-| neon | Neon Cyber #9 | techy, bukan formal |
+| navy (default) | deep navy + teal | Plus Jakarta Sans / Source Serif 4 — inlined base64, works offline |
+| paper | warm off-white, ink | system stack |
+| botanical | dark green-black | system stack |
+| swiss | high-contrast minimal | system stack |
+| neon | dark blue-black | system stack |
 
-Absorb: tiap theme hanya override `:root` token (8 warna + 2 font) — struktur `.card/.grid/.tag/table.t` tetap dari components.css sehingga stabil. JANGAN tambah theme tanpa test build.
+## Motions (`deck.json` `"motion"`)
 
-## Motions (3, dari frontend-slides animation-patterns)
+| Motion | Feel |
+|---|---|
+| corporate (default) | 300 ms, subtle rise |
+| cinematic | 1 s fade + scale |
+| playful | 550 ms spring |
 
-| motion | Rasa | Delay d1/d2/d3 |
-|---|---|---|
-| corporate (default) | subtle fast 300ms | 60/120/180ms |
-| cinematic | slow fade+scale 1s | 150/300/450ms |
-| playful | bouncy spring 550ms | 100/200/300ms |
+Wrong name → build warns and falls back to defaults.
 
-Absorb: hanya `.reveal/.visible` timing — nav (fit/go/keyboard/click-zone/swipe) tetap frozen di template.html. `prefers-reduced-motion` dihormati.
+## Templates (copy to `slides/`)
 
-## Templates (12 layouts)
+01 cover-split-kpi · 02 title-cards-3 · 03 compare-2col · 04 table-detail · 05 mapping-2col · 06 scope-4box · 07 stat-full-navy · 08 rows-list · 09 blocker-2col · 10 quote-closing · 11 timeline · 12 checklist
 
-01 cover-split-kpi · 02 title-cards-3 · 03 compare-2col · 04 table-detail (max 7 rows) · 05 mapping-2col · 06 scope-4box · 07 stat-full-navy · 08 rows-list · 09 blocker-2col · 10 quote-closing · 11 timeline · 12 checklist
+## Rules
 
-Tidak diabsorb dari frontend-slides: Phase 1-2 discovery (tanya purpose/length/density + 3 style preview) — slideck untuk stabilitas report berulang, bukan eksplorasi gaya baru. Kalau butuh gaya baru, pakai frontend-slides dulu, lalu bekukan hasilnya jadi theme baru di sini.
+- Edit only `slides/*.html` + `deck.json`. Never edit frozen files.
+- Keep every class on every element; replace only `[...]` placeholder text.
+- `{{N}}` / `{{TOTAL}}` are replaced with slide numbers. `[Footer kiri]` comes from `deck.footer`.
+- To keep a file in `slides/` without rendering it, prefix the name with `_` (build skips those).
+- Tables max 7 rows per slide — split overflow into a continuation slide.
+- No responsive breakpoints inside slides; the stage scales as a unit.
+- Text on `--navy` must use `var(--on-navy)` / `var(--on-navy-mut)`. Body text on light surfaces uses `var(--ink)`. Never hardcode a hex color.
+- `prefers-reduced-motion` and print (`@media print`, one slide per page) are handled by the frozen shell.
 
-## Constraints
+## Verification
 
-- Stage 1920x1080 fixed, scaled to viewport. No responsive breakpoints inside slides.
-- build.js: `components = components.css + themes/<theme>.css + motions/<motion>.css`, fallback ke navy/corporate bila nama salah.
-- Tables max 7 rows per slide; overflow → split slide.
-- Zero dependency: node stdlib only, no CDN/npm at runtime (fonts via Google Fonts link with system fallback).
+`node build.js` prints theme, motion, slide count, font mode (inline/system) and output path. It warns on leftover `{{...}}`, unfilled `[...]`, and any frozen file whose hash differs from `FROZEN.json`. Regenerate the lock deliberately with `node build.js --lock`.
 
-## Mistakes
+## Common mistakes
 
 | Mistake | Fix |
 |---|---|
-| Editing template.html/components.css per deck | Copy verbatim; style changes go in slides/ inline style only |
-| Editing dist/ output directly | Edit slides/ then rebuild |
-| Cramming >7 table rows | Split into continuation slide |
-| Theme baru tanpa test | Wajib `node build.js` + buka browser sebelum merge |
+| Editing `template.html` / `components.css` | Edit `slides/` only — frozen files are shared |
+| Hardcoding `#fff` on a navy slide | Use `var(--on-navy)` |
+| Using `var(--navy)` as text on a light card | Use `var(--ink)` |
+| Theme/motion name typo | Build warns and falls back — check `themes/` and `motions/` |
+| Shipping with `[Judul]` placeholders | Replace every `[...]` before building |
+| 8+ table rows on one slide | Split into continuation slides |

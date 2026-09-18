@@ -1,0 +1,12 @@
+# build output — regenerate with `node build.js`
+dist/
+
+# node (project is stdlib-only, but keep it clean if someone adds tooling)
+node_modules/
+package-lock.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

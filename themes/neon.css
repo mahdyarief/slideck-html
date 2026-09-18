@@ -1,2 +1,2 @@
-/* THEME neon — adaptasi Neon Cyber (frontend-slides #9). Futuristik techy, bukan untuk laporan formal. */
-:root{--navy:#ffffff;--teal:#00ffcc;--teal-d:#00ccaa;--grey:#111827;--mut:#9ca3af;--ink:#e5e7eb;--mint:#0f2733;--line:#1f3a4d;--font-d:'Satoshi',sans-serif;--font-s:'Clash Display',sans-serif;--ease:cubic-bezier(.16,1,.3,1)}
+/* THEME neon — adaptasi Neon Cyber (frontend-slides #9). Gelap techy, font sistem. Bukan untuk laporan formal. */
+:root{--surface:#0b1220;--navy:#0b1220;--on-navy:#e5e7eb;--on-navy-mut:#9ca3af;--teal:#00ffcc;--teal-d:#00ccaa;--grey:#111827;--mut:#9ca3af;--ink:#e5e7eb;--mint:#0f2733;--accent-line:#1f3a4d;--tag-bg:#0f2733;--line:#1f3a4d;--font-d:ui-sans-serif,system-ui,sans-serif;--font-s:ui-monospace,'Cascadia Mono',Consolas,monospace;--ease:cubic-bezier(.16,1,.3,1)}
