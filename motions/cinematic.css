@@ -1,0 +1,4 @@
+/* MOTION cinematic — slow fade 1s + scale, dari frontend-slides Dramatic/Cinematic. */
+.reveal{opacity:0;transform:scale(.92) translateY(20px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.visible .reveal{opacity:1;transform:none}
+.visible .reveal.d1{transition-delay:.15s}.visible .reveal.d2{transition-delay:.3s}.visible .reveal.d3{transition-delay:.45s}
