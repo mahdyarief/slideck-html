@@ -1,0 +1,6 @@
+{
+  "name": "architectural",
+  "label": "Architectural Frame",
+  "description": "Gaya konsultansi arsitektur dengan perimeter presisi, side rail, modul terindeks, dan garis ukur tipis. Formal, teknis, dan tetap ringan tanpa border brutalist.",
+  "recommended": { "theme": "navy", "motion": "corporate" }
+}

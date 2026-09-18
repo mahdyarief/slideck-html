@@ -54,7 +54,7 @@ cp -r skill/SKILL.md template.html build.js designs themes motions templates ass
 ```
 template.html   FROZEN shell — {{TITLE}} {{FONTS}} {{COMPONENTS}} {{SLIDES}} + nav JS
 build.js        FROZEN — assembles output, validates placeholders, writes FROZEN.json lock
-designs/        FROZEN — default, editorial, brutalist (components.css + design.json each)
+designs/        FROZEN — default, editorial, brutalist, geometric, architectural, ribbon
 deck.json       EDIT — title, footer, output, design, theme, motion
 themes/         FROZEN — navy, paper, botanical, swiss, neon (only :root color+font tokens)
 motions/        FROZEN — corporate, cinematic, playful (only .reveal timing)
@@ -71,6 +71,9 @@ dist/           OUTPUT — never edit
 | default (default) | rounded cards, soft shadow, teal accent | shared 12 |
 | editorial | sharp corners, hairline rules, serif headings, no shadow | shared 12 |
 | brutalist | thick ink borders, hard offset shadow, mono labels, uppercase | shared 12 |
+| geometric | orbital circles, asymmetric corners, layered modular planes | shared 12 |
+| architectural | perimeter frames, side rail, indexed drafting modules | shared 12 |
+| ribbon | diagonal bands, angled edges, cinematic directional hierarchy | shared 12 |
 
 A design owns shape, spacing, and typography treatment, and styles only through the shared token names — never a raw hex. That is what lets any design work with any theme. To add one, write `designs/<name>/components.css` + `design.json`, then re-freeze with `node build.js --lock`.
 

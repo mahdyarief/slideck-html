@@ -1,0 +1,9 @@
+{
+  "title": "Contoh Deck — architectural / navy",
+  "footer": "Contoh Deck | 18 SEP 2026",
+  "output": "contoh-architectural-navy.html",
+  "slides": "../slides",
+  "design": "architectural",
+  "theme": "navy",
+  "motion": "corporate"
+}

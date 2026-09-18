@@ -10,3 +10,7 @@ package-lock.json
 Thumbs.db
 .idea/
 .vscode/
+
+# local agent and design-tool runtime data
+.openclaude/
+.superpowers/

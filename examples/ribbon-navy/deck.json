@@ -1,0 +1,9 @@
+{
+  "title": "Contoh Deck — ribbon / navy",
+  "footer": "Contoh Deck | 18 SEP 2026",
+  "output": "contoh-ribbon-navy.html",
+  "slides": "../slides",
+  "design": "ribbon",
+  "theme": "navy",
+  "motion": "cinematic"
+}

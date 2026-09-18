@@ -1,0 +1,6 @@
+{
+  "name": "ribbon",
+  "label": "Dynamic Ribbon",
+  "description": "Gaya sinematik untuk pitch dan product story. Ribbon diagonal, panel berarah, tepi bersudut, dan hierarki besar membangun alur visual yang progresif tanpa mengorbankan keterbacaan.",
+  "recommended": { "theme": "navy", "motion": "cinematic" }
+}

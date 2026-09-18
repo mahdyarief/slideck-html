@@ -8,11 +8,15 @@ Output is one self-contained `.html` with fonts inlined base64 — works offline
 
 ## Preview
 
-Same slides and theme, three designs:
+Same slides and theme, six designs:
 
 | default | editorial | brutalist |
 |---|---|---|
 | ![default](assets/preview/design-default.png) | ![editorial](assets/preview/design-editorial.png) | ![brutalist](assets/preview/design-brutalist.png) |
+
+| geometric | architectural | ribbon |
+|---|---|---|
+| ![geometric](assets/preview/design-geometric.png) | ![architectural](assets/preview/design-architectural.png) | ![ribbon](assets/preview/design-ribbon.png) |
 
 Same design, five themes:
 
@@ -61,7 +65,8 @@ Then an agent asked to build slides can follow `SKILL.md` directly.
 ```
 template.html      FROZEN shell ({{TITLE}} {{FONTS}} {{COMPONENTS}} {{SLIDES}} + nav JS)
 build.js           FROZEN: slides/*.html → dist/<output>.html, validates placeholders, writes FROZEN.json
-designs/           FROZEN: default · editorial · brutalist   (components.css + design.json each)
+designs/           FROZEN: default · editorial · brutalist · geometric · architectural · ribbon
+                   (components.css + design.json each)
 deck.json          EDIT: title, footer, output, design, theme, motion
 themes/            navy (default) · paper · botanical · swiss · neon   (:root color+font only)
 motions/           corporate (default) · cinematic · playful           (.reveal timing only)
@@ -94,6 +99,9 @@ LICENSE            MIT
 | `default` | rounded cards, soft shadow, teal accent, roomy spacing | shared 12 |
 | `editorial` | sharp corners, hairline rules, serif headings, no shadow | shared 12 |
 | `brutalist` | thick ink borders, hard offset shadow, mono labels, uppercase | shared 12 |
+| `geometric` | orbital circles, asymmetric corners, layered modular planes | shared 12 |
+| `architectural` | perimeter frames, side rail, indexed drafting modules | shared 12 |
+| `ribbon` | diagonal bands, angled edges, cinematic directional hierarchy | shared 12 |
 
 | Theme | Look | Font |
 |---|---|---|

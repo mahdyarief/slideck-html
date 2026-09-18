@@ -1,0 +1,6 @@
+{
+  "name": "geometric",
+  "label": "Geometric Orbit",
+  "description": "Bidang modular dengan sudut asimetris, lingkaran bertumpuk, dan penanda orbit. Siluetnya ekspresif namun tetap tertib dan mudah dibaca.",
+  "recommended": { "theme": "navy", "motion": "corporate" }
+}
