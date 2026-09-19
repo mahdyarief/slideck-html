@@ -99,9 +99,9 @@ LICENSE            MIT
 | `default` | rounded cards, soft shadow, teal accent, roomy spacing | shared 12 |
 | `editorial` | sharp corners, hairline rules, serif headings, no shadow | shared 12 |
 | `brutalist` | thick ink borders, hard offset shadow, mono labels, uppercase | shared 12 |
-| `geometric` | orbital circles, asymmetric corners, layered modular planes | shared 12 |
-| `architectural` | perimeter frames, side rail, indexed drafting modules | shared 12 |
-| `ribbon` | diagonal bands, angled edges, cinematic directional hierarchy | shared 12 |
+| `geometric` | flat colour planes, full-height edge spine, no outlines or shadows, uppercase | shared 12 |
+| `architectural` | centred axis, hairline measure lines, micro labels, no fills, wide white space | shared 12 |
+| `ribbon` | dark navy canvas, light data panels, accent bands top and bottom | shared 12 |
 
 | Theme | Look | Font |
 |---|---|---|

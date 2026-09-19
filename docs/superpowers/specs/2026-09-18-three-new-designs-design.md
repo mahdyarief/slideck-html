@@ -46,50 +46,50 @@ The shared selectors remain:
 
 ## Visual Systems
 
-### Geometric Orbit (`geometric`)
+### Geometric Planes (`geometric`)
 
 **Role:** expressive keynote, launch, and creative-strategy decks.
 
-**Visual thesis:** overlapping circles, discs, clipped planes, and asymmetric modular blocks create a recognizable composition while preserving readable content zones.
+**Visual thesis:** flat colour planes with a full-height accent spine on the left edge and a grounding anchor bar below create a constructivist poster silhouette. No outlines, no shadows, no corner radius.
 
 **Component treatment:**
 
-- generous asymmetric spacing with a wider content-to-decoration relationship
-- cards with alternating corner geometry rather than uniformly rounded cards
-- circular or orbital markers for KPI, timeline, checklist, and map transitions
-- thick accent rules and layered token-colored pseudo-elements
-- display typography remains bold and compact; body copy stays neutral
-- decorative geometry must stay behind content and never reduce text contrast
+- a full-height accent spine and a bottom anchor bar, both drawn with pseudo-elements
+- cards rendered as flat fills with an accent cap, never outlined and never shadowed
+- reversed ink blocks for the kicker, tags, table header, and checklist badges
+- dense rhythm with tight grid gaps and an uppercase 800 display headline
+- content clears the spine through asymmetric padding; the footer aligns to the same inset
+- decorative planes must stay behind content and never reduce text contrast
 
-### Architectural Frame (`architectural`)
+### Architectural Axis (`architectural`)
 
 **Role:** consulting, architecture, planning, and executive-review decks.
 
-**Visual thesis:** perimeter frames, side rails, indexed modules, and measured grid lines produce a formal drawing-board character without copying the brutalist treatment.
+**Visual thesis:** a centred measuring sheet. All content sits on the mid-axis between two horizontal hairline rules, with wide uppercase micro-labels and no filled planes, producing a quiet monumental character.
 
 **Component treatment:**
 
-- inset perimeter framing and a narrow visual rail created with pseudo-elements
-- compact labels, indexed tags, and measured spacing
-- cards rendered as framed modules with restrained corner treatment and no hard shadow
-- tables, mappings, and timelines use drafting-line hierarchy
-- titles remain mixed case and precise, differentiating this design from brutalist uppercase
-- content must not overlap the rail or footer safe area
+- centred alignment across headline, grids, timeline, and checklist
+- hairline measure lines at the top and bottom of every slide, spanning the content width
+- cards rendered as transparent columns with a hairline top edge; accent cards use a thicker accent edge
+- letterspaced micro-labels with flanking hairline ticks instead of solid pills
+- wide grid gaps and generous padding create deliberate white space
+- tabular content stays readable through left alignment inside its centred block
 
-### Dynamic Ribbon (`ribbon`)
+### Night Ribbon (`ribbon`)
 
 **Role:** pitches, product stories, and transformation narratives.
 
-**Visual thesis:** diagonal ribbons, strong full-width bands, and oversized type create directional movement and a cinematic silhouette.
+**Visual thesis:** a dark canvas by default. Light data panels sit on deep navy, framed by accent bands along the top and bottom edges, giving high cinematic contrast.
 
 **Component treatment:**
 
-- diagonal accents made with pseudo-elements and token colors
-- cards and map columns use angled edge details while preserving rectangular text boxes
-- timelines read as directional bands rather than dots on a neutral line
-- tags and rules become compact ribbon labels
-- large type and high contrast establish hierarchy; body text remains within current density limits
-- decorative bands must use `overflow:hidden` containment and remain non-interactive
+- slide surfaces default to the dark navy token with light foreground text
+- cards, map columns, and the cover panel become light data panels carrying the standard text pair
+- full-width accent bands frame the top and bottom edges
+- tables use a light header band with hairline row rules
+- timelines read as accent ticks on hairline connectors
+- two targeted overrides recolour inline text that sits outside a light panel, so the dark canvas stays legible
 
 ## Compatibility Rules
 

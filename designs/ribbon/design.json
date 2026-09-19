@@ -1,6 +1,6 @@
 {
   "name": "ribbon",
-  "label": "Dynamic Ribbon",
-  "description": "Gaya sinematik untuk pitch dan product story. Ribbon diagonal, panel berarah, tepi bersudut, dan hierarki besar membangun alur visual yang progresif tanpa mengorbankan keterbacaan.",
+  "label": "Night Ribbon",
+  "description": "Kanvas gelap untuk pitch dan product story. Latar navy penuh dengan panel data terang sebagai kontras, dibingkai pita aksen di tepi atas dan bawah. Hierarki besar, kontras tinggi, dan alur sinematik.",
   "recommended": { "theme": "navy", "motion": "cinematic" }
 }

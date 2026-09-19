@@ -1,6 +1,6 @@
 {
   "name": "architectural",
-  "label": "Architectural Frame",
-  "description": "Gaya konsultansi arsitektur dengan perimeter presisi, side rail, modul terindeks, dan garis ukur tipis. Formal, teknis, dan tetap ringan tanpa border brutalist.",
+  "label": "Architectural Axis",
+  "description": "Lembar ukur yang tenang dan terpusat. Semua konten berada di sumbu tengah, dibingkai dua garis rambut mendatar, dengan label mikro uppercase ber-tracking lebar dan tanpa isian bidang. Ruang kosong besar, presisi, dan sedikit bicara.",
   "recommended": { "theme": "navy", "motion": "corporate" }
 }

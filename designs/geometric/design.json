@@ -1,6 +1,6 @@
 {
   "name": "geometric",
-  "label": "Geometric Orbit",
-  "description": "Bidang modular dengan sudut asimetris, lingkaran bertumpuk, dan penanda orbit. Siluetnya ekspresif namun tetap tertib dan mudah dibaca.",
+  "label": "Geometric Planes",
+  "description": "Poster konstruktivis: bidang warna rata tanpa outline, shadow, atau radius. Spine aksen setinggi slide di tepi kiri dan bilah bawah menjadi jangkar visual, dengan judul uppercase 800 dan ritme rapat yang padat.",
   "recommended": { "theme": "navy", "motion": "corporate" }
 }
