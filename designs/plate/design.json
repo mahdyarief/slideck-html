@@ -1,0 +1,6 @@
+{
+  "name": "plate",
+  "label": "Drawing Plate",
+  "description": "Lembar gambar teknik: bingkai tinta tertutup dengan tanda sudut aksen, kartu outline bernomor otomatis, label mikro uppercase, tanpa isian dan tanpa shadow. Untuk dokumen teknis, audit, dan review yang menuntut presisi.",
+  "recommended": { "theme": "navy", "motion": "corporate" }
+}

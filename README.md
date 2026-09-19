@@ -8,7 +8,7 @@ Output is one self-contained `.html` with fonts inlined base64 — works offline
 
 ## Preview
 
-Same slides and theme, six designs:
+Same slides and theme, seven designs:
 
 | default | editorial | brutalist |
 |---|---|---|
@@ -17,6 +17,10 @@ Same slides and theme, six designs:
 | geometric | architectural | ribbon |
 |---|---|---|
 | ![geometric](assets/preview/design-geometric.png) | ![architectural](assets/preview/design-architectural.png) | ![ribbon](assets/preview/design-ribbon.png) |
+
+| plate | | |
+|---|---|---|
+| ![plate](assets/preview/design-plate.png) | | |
 
 Same design, five themes:
 
@@ -65,7 +69,7 @@ Then an agent asked to build slides can follow `SKILL.md` directly.
 ```
 template.html      FROZEN shell ({{TITLE}} {{FONTS}} {{COMPONENTS}} {{SLIDES}} + nav JS)
 build.js           FROZEN: slides/*.html → dist/<output>.html, validates placeholders, writes FROZEN.json
-designs/           FROZEN: default · editorial · brutalist · geometric · architectural · ribbon
+designs/           FROZEN: default · editorial · brutalist · geometric · architectural · ribbon · plate
                    (components.css + design.json each)
 deck.json          EDIT: title, footer, output, design, theme, motion
 themes/            navy (default) · paper · botanical · swiss · neon   (:root color+font only)
@@ -102,6 +106,7 @@ LICENSE            MIT
 | `geometric` | flat colour planes, full-height edge spine, no outlines or shadows, uppercase | shared 12 |
 | `architectural` | centred axis, hairline measure lines, micro labels, no fills, wide white space | shared 12 |
 | `ribbon` | dark navy canvas, light data panels, accent bands top and bottom | shared 12 |
+| `plate` | closed ink frame, corner ticks, outlined cards with auto numerals, no fills | shared 12 |
 
 | Theme | Look | Font |
 |---|---|---|

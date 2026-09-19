@@ -1,0 +1,69 @@
+/* DESIGN plate — drawing plate: closed ink frame with corner ticks, outlined cards with automatic numerals, uppercase micro labels, no fills, no shadows. */
+/* Warna HANYA lewat token theme (lihat kontrak di designs/default/components.css). Tidak ada hex mentah. */
+:root{--surface:#fff;--navy:#1C2833;--on-navy:#fff;--on-navy-mut:#AAB7B8;--teal:#5EA8A7;--teal-d:#2F7E7D;--grey:#F4F6F6;--mut:#5A6C7D;--ink:#2E4053;--mint:#EAF6F4;--accent-line:#BFDCD8;--tag-bg:#D9ECEA;--line:#E2E8EC;--font-d:'Plus Jakarta Sans',sans-serif;--font-s:'Source Serif 4',serif;--ease:cubic-bezier(.16,1,.3,1)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-d);-webkit-font-smoothing:antialiased}
+
+.slide{overflow:hidden;isolation:isolate}
+.slide::before{content:"";position:absolute;inset:36px;border:2px solid var(--ink);pointer-events:none;z-index:0}
+.slide::after{content:"";position:absolute;inset:36px;pointer-events:none;z-index:0;background-image:linear-gradient(var(--teal),var(--teal)),linear-gradient(var(--teal),var(--teal)),linear-gradient(var(--teal),var(--teal)),linear-gradient(var(--teal),var(--teal));background-size:40px 6px,6px 40px,40px 6px,6px 40px;background-position:left top,left top,right bottom,right bottom;background-repeat:no-repeat}
+.slide[style*="var(--navy)"]::before{border-color:var(--on-navy-mut)}
+.slide>*{position:relative;z-index:1}
+.slide>div[style*="display:flex"][style*="height:100%"]>div:last-child{border-radius:0!important;margin:40px 40px 132px!important}
+
+.pad{counter-reset:plate;padding:96px 128px 152px}
+.kicker{display:inline-block;align-self:flex-start;font-size:20px;font-weight:800;letter-spacing:5px;text-transform:uppercase;color:var(--ink)}
+.kicker::before{content:"";display:inline-block;width:40px;height:2px;background:var(--teal);vertical-align:middle;margin-right:16px}
+.slide[style*="var(--navy)"] .kicker{color:var(--on-navy-mut)}
+h1.title{max-width:1400px;font-size:80px;color:var(--ink);font-weight:800;line-height:1;margin-top:20px;letter-spacing:-2.6px;text-wrap:balance}
+h1.serif{font-family:var(--font-s);letter-spacing:-1.2px}
+.rule{width:150px;height:3px;background:var(--teal);margin:28px 0 0}
+
+.card{position:relative;background:transparent;border:1px solid var(--ink);border-radius:0;padding:36px 32px 30px;box-shadow:none}
+.card,.mapcol{counter-increment:plate}
+.card::before,.mapcol::before{content:counter(plate,decimal-leading-zero);position:absolute;top:-1px;right:26px;background:var(--ink);color:var(--surface);font-size:19px;font-weight:800;letter-spacing:1.6px;padding:5px 12px 6px;line-height:1}
+.card.accent{background:transparent;border:2px solid var(--teal)!important;border-radius:0}
+.kpi-num{font-size:92px;font-weight:800;color:var(--ink);line-height:1;letter-spacing:-3px}
+.kpi-lab{font-size:18px;color:var(--mut);margin-bottom:10px;letter-spacing:2.6px;text-transform:uppercase}
+.bul{font-size:29px;color:var(--ink);line-height:1.55}
+.small{font-size:24px;color:var(--mut);line-height:1.55}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:30px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.tag{display:inline-block;font-size:17px;font-weight:800;letter-spacing:2.6px;text-transform:uppercase;color:var(--ink);background:transparent;border:1px solid var(--ink);border-radius:0;padding:5px 13px;margin-bottom:16px}
+
+.map{display:flex;align-items:stretch;gap:26px;margin-top:38px}
+.mapcol{position:relative;flex:1;background:transparent!important;border:1px solid var(--ink)!important;border-radius:0;padding:36px 32px 30px}
+.mapcol h3{font-size:31px;margin-bottom:7px;color:var(--ink)}
+.mapcol ul{list-style:none;margin-top:15px}
+.mapcol li{position:relative;font-size:25px;line-height:1.55;color:var(--ink);padding-left:20px}
+.mapcol li::before{content:"";position:absolute;left:0;top:.62em;width:9px;height:9px;background:var(--teal)}
+.mapcol li b{color:var(--ink)}
+.arrow{align-self:center;display:flex;align-items:center;justify-content:center;width:64px;height:64px;flex:0 0 64px;font-size:38px;line-height:1;color:var(--surface);background:var(--ink);font-weight:800}
+
+table.t{width:100%;border-collapse:collapse;margin-top:34px;font-size:25px}
+table.t th{text-align:left;font-size:18px;letter-spacing:2.6px;text-transform:uppercase;color:var(--ink);padding:12px 16px;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
+table.t td{padding:14px 16px;border-bottom:1px solid var(--line);color:var(--ink)}
+table.t tr:last-child td{border-bottom:2px solid var(--ink)}
+table.t td.n{text-align:right;font-weight:800;color:var(--ink);white-space:nowrap}
+
+.foot{position:absolute;z-index:3;bottom:60px;left:128px;right:128px;display:flex;justify-content:space-between;align-items:center;font-size:17px;color:var(--mut);letter-spacing:2.4px;text-transform:uppercase;padding-top:14px;border-top:1px solid var(--line)}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.visible .reveal{opacity:1;transform:none}
+.visible .reveal.d1{transition-delay:.08s}.visible .reveal.d2{transition-delay:.16s}.visible .reveal.d3{transition-delay:.24s}
+
+.quote{max-width:1360px;font-family:var(--font-s);font-size:58px;font-weight:700;color:var(--ink);line-height:1.24;letter-spacing:-1px}
+.stat-big{font-size:132px;font-weight:800;color:var(--on-navy);letter-spacing:-4px;line-height:.95}
+
+.timeline{display:flex;gap:0;margin-top:44px}
+.timeline .step{flex:1;position:relative;text-align:left;padding:58px 26px 0 0;min-width:0;counter-increment:plate}
+.timeline .dot{position:absolute;top:0;left:0;width:42px;height:42px;border-radius:0;background:var(--ink);color:var(--surface);display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800}
+.timeline .dot::before{content:counter(plate,decimal-leading-zero)}
+.timeline .step::before{content:"";position:absolute;top:20px;left:56px;right:26px;height:1px;background:var(--line)}
+.timeline .step:last-child::before{content:none}
+.timeline .step h3{font-size:30px;color:var(--ink);margin-bottom:7px}
+
+.checklist{list-style:none;margin-top:32px;max-width:1560px;counter-reset:platenum}
+.checklist li{position:relative;font-size:29px;color:var(--ink);line-height:1.4;padding:20px 24px 20px 88px;border-bottom:1px solid var(--line);counter-increment:platenum}
+.checklist li:last-child{border-bottom:0}
+.checklist li::before{content:counter(platenum,decimal-leading-zero);position:absolute;left:0;top:18px;width:56px;height:56px;background:var(--ink);color:var(--surface);font-weight:800;font-size:22px;display:flex;align-items:center;justify-content:center}

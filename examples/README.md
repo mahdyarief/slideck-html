@@ -24,8 +24,9 @@ Hasilnya masuk ke `examples/html/<nama>.html` — tinggal buka di browser, tanpa
 | `geometric-navy` | geometric | navy |
 | `architectural-navy` | architectural | navy |
 | `ribbon-navy` | ribbon | navy |
+| `plate-navy` | plate | navy |
 
-Lima baris pertama menunjukkan **perbedaan theme** (design sama). Lima baris terakhir menunjukkan **perbedaan design** (theme sama).
+Lima baris pertama menunjukkan **perbedaan theme** (design sama). Tujuh baris terakhir menunjukkan **perbedaan design** (theme sama).
 
 ## Cara menambah contoh baru
 
