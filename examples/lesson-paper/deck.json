@@ -1,0 +1,9 @@
+{
+  "title": "Contoh Deck — lesson / paper",
+  "footer": "Contoh Deck | 20 SEP 2026",
+  "output": "contoh-lesson-paper.html",
+  "slides": "../slides",
+  "design": "lesson",
+  "theme": "paper",
+  "motion": "corporate"
+}

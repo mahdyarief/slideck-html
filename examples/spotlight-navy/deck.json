@@ -1,0 +1,9 @@
+{
+  "title": "Contoh Deck — spotlight / navy",
+  "footer": "Contoh Deck | 20 SEP 2026",
+  "output": "contoh-spotlight-navy.html",
+  "slides": "../slides",
+  "design": "spotlight",
+  "theme": "navy",
+  "motion": "cinematic"
+}

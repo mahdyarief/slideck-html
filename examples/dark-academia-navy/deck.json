@@ -1,0 +1,9 @@
+{
+  "title": "Contoh Deck — dark-academia / navy",
+  "footer": "Contoh Deck | 20 SEP 2026",
+  "output": "contoh-dark-academia-navy.html",
+  "slides": "../slides",
+  "design": "dark-academia",
+  "theme": "navy",
+  "motion": "corporate"
+}

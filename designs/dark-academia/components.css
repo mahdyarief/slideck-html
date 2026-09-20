@@ -1,0 +1,149 @@
+/* Warna HANYA lewat token theme (lihat kontrak di designs/default/components.css). Tidak ada hex mentah. */
+/* dark-academia: nuansa kampus klasik. Untuk kuliah humaniora, seminar sastra/filsafat, presentasi yang butuh kesan "berkelas dan berpikir mendalam". */
+
+:root{
+  --surface:#fff;
+  --navy:#0a1628;
+  --on-navy:#e8edf5;
+  --on-navy-mut:#8899b0;
+  --teal:#0a8c6e;
+  --teal-d:#085945;
+  --grey:#eef3f8;
+  --mut:#8899b0;
+  --ink:#0a1628;
+  --mint:#e2f5ec;
+  --accent-line:#c9a84c;
+  --tag-bg:rgba(201,168,76,.15);
+  --line:#2a3a54;
+  --font-d:"Inter",system-ui,sans-serif;
+  --font-s:"Playfair Display",Georgia,serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+
+.slide{background:var(--navy);color:var(--on-navy);position:relative;overflow:hidden}
+.slide::before{content:"";position:absolute;inset:0;background-image:radial-gradient(ellipse at 30% 20%,var(--accent-line) 0%,transparent 55%),radial-gradient(ellipse at 70% 80%,var(--accent-line) 0%,transparent 50%);opacity:.5;pointer-events:none;z-index:0}
+.slide::after{content:"";position:absolute;inset:36px;border:1px solid var(--accent-line);pointer-events:none;z-index:1}
+.pad{position:relative;z-index:2;padding:80px 120px 134px 120px}
+
+/* Kicker: pill amber/oxblood klasik */
+.kicker{display:inline-block;font-size:21px;font-weight:800;letter-spacing:5px;color:var(--on-navy-mut);text-transform:uppercase;border-bottom:2px solid var(--accent-line);padding-bottom:4px;margin-bottom:20px}
+.kicker.accent{border-bottom-color:var(--teal)}
+
+/* Title serif besar, classical */
+h1.title{font-size:88px;color:var(--on-navy);font-weight:800;line-height:1.02;margin-top:8px;letter-spacing:-2px;font-family:var(--font-s)}
+h1.title::after{content:"";display:block;width:120px;height:3px;background:var(--accent-line);margin-top:24px}
+h1.serif{font-family:var(--font-s)}
+
+/* Card: kotak terbuka dengan double border klasik */
+.card{position:relative;background:var(--navy);border:2px solid var(--accent-line);border-radius:4px;padding:30px 36px;margin-top:20px}
+.card::before{content:"";position:absolute;inset:6px;border:1px solid var(--accent-line);pointer-events:none}
+.card.accent{border-color:var(--teal)}
+.card.accent::before{border-color:var(--teal)}
+.card h3[style*="var(--ink)"],.card p[style*="var(--ink)"]{color:var(--on-navy)!important}
+.card h3[style*="var(--mut)"],.card p[style*="var(--mut)"]{color:var(--on-navy-mut)!important}
+
+/* Tag: pill earthy */
+.tag{display:inline-block;font-size:21px;font-weight:800;letter-spacing:3px;color:var(--on-navy-mut);background:transparent;border:2px solid var(--accent-line);border-radius:99px;padding:7px 18px;margin-bottom:12px}
+.tag.accent{color:var(--accent-line);border-color:var(--accent-line)}
+
+/* Mapcol: list dengan penanda klasik */
+.mapcol li{font-size:24px;line-height:1.6;color:var(--on-navy);padding-left:32px;position:relative}
+.mapcol li::before{content:"§";position:absolute;left:0;top:0;color:var(--accent-line);font-weight:800}
+.mapcol li b{color:var(--accent-line)}
+
+/* Arrow connector */
+.arrow{align-self:center;font-size:52px;color:var(--accent-line);font-weight:800}
+
+/* Tabel: double-rule klasik */
+table.t th{text-align:left;font-size:21px;letter-spacing:2px;color:var(--accent-line);padding:10px 14px;border-bottom:2px solid var(--accent-line);font-family:var(--font-s)}
+table.t td{padding:12px 14px;border-bottom:1px solid var(--accent-line);color:var(--on-navy);font-family:var(--font-s)}
+table.t td.n{text-align:right;font-weight:800;color:var(--on-navy);white-space:nowrap}
+table.t tr:last-child td{border-bottom:2px solid var(--accent-line)}
+
+/* Foot: informasi klasik, centered */
+.foot{position:absolute;bottom:36px;left:0;right:0;display:flex;justify-content:center;align-items:center;font-size:20px;color:var(--on-navy-mut);font-family:var(--font-s)}
+
+/* Reveal */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+
+/* Quote: blok serif dengan aksen perak */
+.quote{font-size:40px;font-style:italic;color:var(--on-navy);line-height:1.5;font-family:var(--font-s);padding:20px 0 20px 52px;border-left:4px solid var(--accent-line)}
+.quote::before{content:"\201C";position:absolute;left:12px;top:-16px;font-size:64px;color:var(--accent-line);font-family:var(--font-s)}
+
+/* Stat-big: angka besar serif */
+.stat-big{font-size:130px;font-weight:800;color:var(--on-navy);letter-spacing:-3px;font-family:var(--font-s)}
+
+/* Timeline: dot klasik dengan connector horizontal */
+.timeline .dot{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:14px;height:14px;border-radius:50%;background:var(--accent-line);border:2px solid var(--navy)}
+.timeline .step{position:relative;padding:24px 0;padding-left:0}
+.timeline .step::before{content:"";position:absolute;top:25px;left:0;right:0;height:1px;background:var(--accent-line);z-index:-1}
+
+/* Checklist: penanda klasik garis bawah */
+.checklist li{font-size:28px;color:var(--on-navy);padding:10px 0 10px 40px;position:relative;line-height:1.4;font-family:var(--font-s)}
+.checklist li::before{content:"—";position:absolute;left:8px;top:14px;color:var(--accent-line);font-size:24px;font-weight:800}
+
+/* Bul: serif dengan nomor romawi halus */
+.bul{font-size:29px;color:var(--on-navy);line-height:1.55;padding-left:36px;position:relative;font-family:var(--font-s)}
+.bul::before{content:counter(academia,lower-roman);position:absolute;left:0;top:0;color:var(--accent-line);font-weight:800;font-size:20px}
+
+/* Grid2: double-panel klasik */
+.grid2{display:flex;gap:32px;align-items:flex-start}
+.grid2 .card{flex:1}
+
+/* Kecil */
+.small{font-size:24px;color:var(--on-navy-mut);line-height:1.5;font-family:var(--font-s)}
+
+/* Navy slide already default; paper override */
+.slide[style*="var(--surface)"]{background:var(--surface);color:var(--ink);border-color:var(--line)}
+.slide[style*="var(--surface)"]::after{border-color:var(--line)}
+.slide[style*="var(--surface)"] h1.title,.slide[style*="var(--surface)"] .bul,.slide[style*="var(--surface)"] .card,.slide[style*="var(--surface)"] .checklist li{color:var(--ink)}
+.slide[style*="var(--surface)"] .kicker{color:var(--ink);border-bottom-color:var(--teal)}
+.slide[style*="var(--surface)"] .card{border-color:var(--line)}
+.slide[style*="var(--surface)"] .card.accent{border-color:var(--teal)}
+.slide[style*="var(--surface)"] .card::before{border-color:var(--line)}
+.slide[style*="var(--surface)"] .card.accent::before{border-color:var(--teal)}
+.slide[style*="var(--surface)"] .card h3[style*="var(--ink)"],.slide[style*="var(--surface)"] .card p[style*="var(--ink)"]{color:var(--ink)!important}
+.slide[style*="var(--surface)"] .card h3[style*="var(--mut)"],.slide[style*="var(--surface)"] .card p[style*="var(--mut)"]{color:var(--mut)!important}
+.slide[style*="var(--surface)"] .tag{color:var(--teal-d);border-color:var(--line)}
+.slide[style*="var(--surface)"] .tag.accent{color:var(--teal-d)}
+.slide[style*="var(--surface)"] .mapcol li{color:var(--ink)}
+.slide[style*="var(--surface)"] .mapcol li::before{color:var(--teal)}
+.slide[style*="var(--surface)"] .arrow{color:var(--teal)}
+.slide[style*="var(--surface)"] table.t th{color:var(--teal-d);border-bottom-color:var(--teal)}
+.slide[style*="var(--surface)"] table.t td{border-bottom-color:var(--line);color:var(--ink)}
+.slide[style*="var(--surface)"] table.t td.n{color:var(--ink)}
+.slide[style*="var(--surface)"] table.t tr:last-child td{border-bottom-color:var(--teal)}
+.slide[style*="var(--surface)"] .foot{color:var(--mut)}
+.slide[style*="var(--surface)"] .quote{color:var(--ink);border-left-color:var(--teal)}
+.slide[style*="var(--surface)"] .quote::before{color:var(--teal)}
+.slide[style*="var(--surface)"] .stat-big{color:var(--ink)}
+.slide[style*="var(--surface)"] .timeline .dot{background:var(--teal);border-color:var(--surface)}
+.slide[style*="var(--surface)"] .timeline .step::before{background:var(--line)}
+.slide[style*="var(--surface)"] .checklist li{color:var(--ink)}
+.slide[style*="var(--surface)"] .checklist li::before{color:var(--teal)}
+.slide[style*="var(--surface)"] .bul{color:var(--ink)}
+.slide[style*="var(--surface)"] .bul::before{color:var(--teal)}
+.slide[style*="var(--surface)"] .small{color:var(--mut)}
+.slide[style*="var(--surface)"]::before{opacity:.3}
+.slide[style*="var(--surface)"] .kicker.accent{border-bottom-color:var(--teal)}
+.slide[style*="var(--surface)"] .tag.accent{border-color:var(--teal);color:var(--teal-d)}
+
+/* Rule: garis pemisah klasik */
+.rule{height:0;border-bottom:2px solid var(--accent-line);margin:24px 0}
+
+/* Map container */
+.map{display:flex;gap:24px;align-items:stretch;margin-top:32px}
+.mapcol{flex:1;background:var(--navy);border:1px solid var(--accent-line);padding:28px 24px;border-radius:4px}
+.mapcol h3{font-size:28px;color:var(--on-navy);margin-bottom:6px;font-family:var(--font-s)}
+.mapcol ul{list-style:none;margin-top:14px}
+.mapcol li{position:relative;font-size:22px;color:var(--on-navy);padding-left:20px;line-height:1.5;font-family:var(--font-s)}
+.mapcol li::before{content:"§";position:absolute;left:0;top:.62em;color:var(--accent-line);font-weight:800;font-size:18px}
+.mapcol li b{color:var(--accent-line)}
+
+/* Grid3: 3 kolom klasik */
+.grid3{display:flex;gap:20px;align-items:flex-start}
+.grid3 .card{flex:1}
+
+/* KPI: angka besar serif */
+.kpi-num{font-size:100px;font-weight:800;color:var(--on-navy);letter-spacing:-3px;line-height:1;font-family:var(--font-s)}
+.kpi-lab{font-size:22px;color:var(--accent-line);margin-bottom:6px;font-weight:800;letter-spacing:2px;text-transform:uppercase;font-family:var(--font-s)}

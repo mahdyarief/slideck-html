@@ -8,7 +8,7 @@ Output is one self-contained `.html` with fonts inlined base64 — works offline
 
 ## Preview
 
-Same slides and theme, ten designs:
+Same slides and theme, thirteen designs:
 
 | default | editorial | brutalist |
 |---|---|---|
@@ -22,9 +22,13 @@ Same slides and theme, ten designs:
 |---|---|---|
 | ![plate](assets/preview/design-plate.png) | ![campus](assets/preview/design-campus.png) | ![keynote](assets/preview/design-keynote.png) |
 
-| colloquium | | |
+| colloquium | lesson | spotlight |
 |---|---|---|
-| ![colloquium](assets/preview/design-colloquium.png) | | |
+| ![colloquium](assets/preview/design-colloquium.png) | ![lesson](assets/preview/design-lesson.png) | ![spotlight](assets/preview/design-spotlight.png) |
+
+| dark-academia | | |
+|---|---|---|
+| ![dark-academia](assets/preview/design-dark-academia.png) | | |
 
 Same design, five themes:
 
@@ -86,7 +90,7 @@ template.html      FROZEN shell ({{TITLE}} {{FONTS}} {{COMPONENTS}} {{SLIDES}} +
 build.js           FROZEN: slides/*.html → dist/<output>.html, validates placeholders, writes FROZEN.json
 pdf.js             TOOL: dist/<output>.html → dist/<output>.pdf, one slide per page
 designs/           FROZEN: default · editorial · brutalist · geometric · architectural · ribbon · plate ·
-                   campus · keynote · colloquium   (components.css + design.json each)
+                   campus · keynote · colloquium · lesson · spotlight · dark-academia   (components.css + design.json each)
 deck.json          EDIT: title, footer, output, design, theme, motion
 themes/            navy (default) · paper · botanical · swiss · neon   (:root color+font only)
 motions/           corporate (default) · cinematic · playful           (.reveal timing only)
@@ -126,6 +130,9 @@ LICENSE            MIT
 | `campus` | ruled-paper lines, left margin rule, dashed dividers, square checkboxes, module chips | shared 12 |
 | `keynote` | dark canvas, oversized display type, inverted lower-third band, single accent, no panels | shared 12 |
 | `colloquium` | left folio gutter, running-head rule, serif body text, booktabs tables, folio | shared 12 |
+| `lesson` | dot-grid background, vertical connector, numbered steps, multi-accent pills, timeline connector | shared 12 |
+| `spotlight` | centered focus area with dimmed surroundings, radial glow, spotlight cards, centered layout | shared 12 |
+| `dark-academia` | navy canvas, serif display, ornamental border, earthy accents, double-rule tables | shared 12 |
 
 | Theme | Look | Font |
 |---|---|---|

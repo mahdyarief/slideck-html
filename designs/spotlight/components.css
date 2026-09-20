@@ -1,0 +1,149 @@
+/* Warna HANYA lewat token theme (lihat kontrak di designs/default/components.css). Tidak ada hex mentah. */
+/* spotlight: satu area fokus cerah, sisa slide dimmed. Untuk penjelasan bertahap, diagram terfokus, materi yang perlu perhatian selektif. */
+
+:root{
+  --surface:#fff;
+  --navy:#0a1628;
+  --on-navy:#e8edf5;
+  --on-navy-mut:#8899b0;
+  --teal:#0a8c6e;
+  --teal-d:#085945;
+  --grey:#eef3f8;
+  --mut:#6c7a8c;
+  --ink:#0a1628;
+  --mint:#e2f5ec;
+  --accent-line:#0a8c6e;
+  --tag-bg:rgba(10,140,110,.1);
+  --line:#dce5ed;
+  --font-d:"Inter",system-ui,sans-serif;
+  --font-s:"Playfair Display",Georgia,serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+
+.slide{background:var(--surface);color:var(--ink);position:relative;overflow:hidden}
+.slide::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 0,var(--line) 100%);pointer-events:none;z-index:0}
+.slide::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 0%,var(--line) 70%,var(--line) 72%,transparent 76%);pointer-events:none;z-index:1;opacity:.4}
+.pad{position:relative;z-index:2;padding:80px 120px 136px 120px;text-align:center}
+
+/* Kicker: pill transparan dengan aksen center */
+.kicker{display:inline-block;font-size:22px;font-weight:800;letter-spacing:5px;color:var(--teal-d);background:var(--mint);border:2px solid var(--accent-line);border-radius:99px;padding:8px 22px;margin-bottom:20px}
+.kicker.accent{background:var(--surface);color:var(--teal);border-color:var(--teal)}
+
+/* Title: besar, di-centered, dengan glow halus */
+h1.title{font-size:80px;color:var(--ink);font-weight:800;line-height:1.04;margin:6px auto 0;max-width:1500px;letter-spacing:-2px;text-align:center}
+h1.title::after{content:"";display:block;width:80px;height:6px;background:var(--teal);margin:22px auto 0;border-radius:99px}
+h1.serif{font-family:var(--font-s)}
+
+/* Card: spotlight box dengan glow */
+.card{position:relative;background:var(--surface);border:2px solid var(--accent-line);border-radius:24px;padding:34px 40px;margin:20px auto;max-width:1100px;text-align:left;box-shadow:0 0 0 1px var(--line),0 4px 20px var(--line);transition:box-shadow .3s var(--ease),border-color .3s var(--ease)}
+.card.accent{border-color:var(--teal);box-shadow:0 0 0 1px var(--teal),0 0 24px var(--teal)}
+.card.focus{border-color:var(--teal);box-shadow:0 0 0 2px var(--teal),0 0 40px var(--accent-line)}
+.card h3[style*="var(--ink)"],.card p[style*="var(--ink)"]{color:var(--ink)!important}
+.card h3[style*="var(--mut)"],.card p[style*="var(--mut)"]{color:var(--mut)!important}
+.card .card-glow{position:absolute;inset:-6px;border-radius:28px;background:radial-gradient(ellipse at 50% 0%,var(--accent-line),transparent 70%);opacity:.5;pointer-events:none}
+
+/* Tag: pill lingkaran lembut */
+.tag{display:inline-block;font-size:21px;font-weight:800;letter-spacing:3px;color:var(--teal-d);background:var(--mint);border-radius:99px;padding:7px 18px;margin-bottom:12px}
+.tag.accent{background:var(--surface);color:var(--teal);border:2px solid var(--accent-line)}
+
+/* Mapcol: centered list */
+.mapcol li{font-size:26px;line-height:1.7;color:var(--ink);padding:8px 0;text-align:center}
+.mapcol li b{color:var(--teal-d)}
+
+/* Arrow: center connector */
+.arrow{align-self:center;font-size:56px;color:var(--teal);font-weight:800;padding:8px 0}
+
+/* Tabel: tengah, bersih */
+table.t{margin:0 auto;text-align:left}
+table.t th{text-align:left;font-size:21px;letter-spacing:2px;color:var(--teal-d);padding:10px 14px;border-bottom:3px solid var(--teal)}
+table.t td{padding:12px 14px;border-bottom:1px solid var(--line);color:var(--ink)}
+table.t td.n{text-align:right;font-weight:800;color:var(--ink);white-space:nowrap}
+
+/* Foot: centered, subtle */
+.foot{position:absolute;bottom:36px;left:0;right:0;display:flex;justify-content:center;align-items:center;font-size:20px;color:var(--mut)}
+
+/* Reveal */
+.reveal{opacity:0;transform:scale(.97) translateY(18px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+
+/* Quote: centered, dengan glow terfokus */
+.quote{font-size:42px;font-style:italic;color:var(--ink);line-height:1.5;text-align:center;padding:16px 0;position:relative}
+.quote::before{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:120%;height:120%;background:radial-gradient(ellipse,var(--mint),transparent 70%);opacity:.5;pointer-events:none}
+.quote::after{content:"\201C";position:absolute;left:0;top:-6px;font-size:64px;color:var(--accent-line);font-family:var(--font-s)}
+
+/* Stat-big: angka raksasa center */
+.stat-big{font-size:140px;font-weight:800;color:var(--ink);letter-spacing:-4px;line-height:1;text-align:center}
+
+/* Timeline: centered, dot terang */
+.timeline .step{position:relative;padding:18px 0;text-align:center}
+.timeline .step::before{content:"";position:absolute;top:25px;left:10%;right:10%;height:2px;background:var(--line);z-index:-1}
+.timeline .dot{position:absolute;top:18px;left:50%;transform:translateX(-50%);width:18px;height:18px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 6px var(--mint)}
+.timeline .step:last-child .dot{box-shadow:0 0 0 6px var(--accent-line)}
+
+/* Checklist: centered, bullet berbentuk lingkaran terang */
+.checklist li{font-size:28px;color:var(--ink);padding:12px 0;text-align:center;line-height:1.4}
+.checklist li::before{content:"";position:absolute;left:50%;top:8px;transform:translateX(-50%);width:14px;height:14px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 6px var(--mint)}
+.checklist{padding-left:0}
+.checklist li{padding-left:0;padding:12px 40px}
+
+/* Bul: centered */
+.bul{font-size:29px;color:var(--ink);line-height:1.55;text-align:center;padding:6px 0}
+
+/* Grid2: 2 kolom center */
+.grid2{display:flex;gap:32px;justify-content:center;align-items:flex-start;text-align:left}
+.grid2 .card{flex:1;max-width:520px}
+
+/* Grid3 */
+.grid3{display:flex;gap:24px;justify-content:center;align-items:flex-start;text-align:left}
+.grid3 .card{flex:1;max-width:380px}
+
+/* Kecil: centered */
+.small{font-size:24px;color:var(--mut);line-height:1.5;text-align:center}
+
+/* Navy slide override */
+.slide[style*="var(--navy)"]{background:var(--navy);color:var(--on-navy)}
+.slide[style*="var(--navy)"]::after{opacity:.5}
+.slide[style*="var(--navy)"] h1.title,.slide[style*="var(--navy)"] .bul,.slide[style*="var(--navy)"] .card,.slide[style*="var(--navy)"] .checklist li,.slide[style*="var(--navy)"] .stat-big{color:var(--on-navy)}
+.slide[style*="var(--navy)"] .kicker{color:var(--on-navy);background:var(--navy);border-color:var(--on-navy-mut)}
+.slide[style*="var(--navy)"] .card{border-color:var(--on-navy-mut);background:var(--navy)}
+.slide[style*="var(--navy)"] .card.accent{border-color:var(--teal);box-shadow:0 0 0 1px var(--teal),0 0 24px var(--teal)}
+.slide[style*="var(--navy)"] .card.focus{border-color:var(--teal);box-shadow:0 0 0 2px var(--teal),0 0 40px var(--accent-line)}
+.slide[style*="var(--navy)"] .card::before{opacity:.6}
+.slide[style*="var(--navy)"] .card h3[style*="var(--ink)"],.slide[style*="var(--navy)"] .card p[style*="var(--ink)"]{color:var(--on-navy)!important}
+.slide[style*="var(--navy)"] .card h3[style*="var(--mut)"],.slide[style*="var(--navy)"] .card p[style*="var(--mut)"]{color:var(--on-navy-mut)!important}
+.slide[style*="var(--navy)"] .tag{color:var(--on-navy-mut);background:var(--navy);border-color:var(--on-navy-mut)}
+.slide[style*="var(--navy)"] .tag.accent{background:var(--navy);color:var(--accent-line);border-color:var(--accent-line)}
+.slide[style*="var(--navy)"] .mapcol li{color:var(--on-navy)}
+.slide[style*="var(--navy)"] .mapcol li b{color:var(--accent-line)}
+.slide[style*="var(--navy)"] .arrow{color:var(--accent-line)}
+.slide[style*="var(--navy)"] table.t th{color:var(--accent-line);border-bottom-color:var(--accent-line)}
+.slide[style*="var(--navy)"] table.t td{border-bottom-color:var(--on-navy-mut);color:var(--on-navy)}
+.slide[style*="var(--navy)"] table.t td.n{color:var(--on-navy)}
+.slide[style*="var(--navy)"] .foot{color:var(--on-navy-mut)}
+.slide[style*="var(--navy)"] .quote{color:var(--on-navy)}
+.slide[style*="var(--navy)"] .quote::after{color:var(--accent-line)}
+.slide[style*="var(--navy)"] .stat-big{color:var(--on-navy)}
+.slide[style*="var(--navy)"] .timeline .dot{background:var(--accent-line);box-shadow:0 0 0 6px var(--navy)}
+.slide[style*="var(--navy)"] .timeline .step:last-child .dot{box-shadow:0 0 0 6px var(--accent-line)}
+.slide[style*="var(--navy)"] .timeline .step::before{background:var(--on-navy-mut)}
+.slide[style*="var(--navy)"] .checklist li{color:var(--on-navy)}
+.slide[style*="var(--navy)"] .checklist li::before{background:var(--accent-line);box-shadow:0 0 0 6px var(--navy)}
+.slide[style*="var(--navy)"] .bul{color:var(--on-navy)}
+.slide[style*="var(--navy)"] .small{color:var(--on-navy-mut)}
+.slide[style*="var(--navy)"] .card-glow{background:radial-gradient(ellipse at 50% 0%,var(--on-navy-mut),transparent 70%);opacity:.4}
+.slide[style*="var(--navy)"]::before{background:linear-gradient(180deg,transparent 0,var(--on-navy-mut) 100%)}
+
+/* Rule: pemisah centered */
+.rule{width:120px;height:3px;background:var(--teal);margin:24px auto}
+
+/* Map container centered */
+.map{display:flex;gap:20px;justify-content:center;align-items:stretch;margin-top:28px}
+.mapcol{flex:1;max-width:380px;background:var(--grey);border:1px solid var(--line);padding:26px 22px;border-radius:12px;text-align:left}
+.mapcol h3{font-size:26px;color:var(--ink);margin-bottom:6px;text-align:center}
+.mapcol ul{list-style:none;margin-top:12px}
+.mapcol li{position:relative;font-size:21px;color:var(--ink);padding-left:18px;line-height:1.5;text-align:left}
+.mapcol li::before{content:"";position:absolute;left:0;top:.62em;width:8px;height:8px;background:var(--teal);border-radius:50%}
+.mapcol li b{color:var(--teal-d)}
+
+/* KPI: big number centered */
+.kpi-num{font-size:80px;font-weight:800;color:var(--ink);line-height:1;letter-spacing:-2px;text-align:center}
+.kpi-lab{font-size:22px;color:var(--teal-d);margin-bottom:6px;font-weight:800;letter-spacing:2px;text-transform:uppercase;text-align:center}

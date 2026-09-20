@@ -1,0 +1,6 @@
+{
+  "name": "spotlight",
+  "label": "Spotlight",
+  "description": "Satu area fokus cerah di tengah, sisa slide dimmed sebagai konteks. Untuk penjelasan bertahap, diagram terfokus, dan materi yang perlu perhatian selektif. Untuk tutorial interaktif, penjelasan konsep per bagian, dan presentasi yang mengendalikan alur perhatian.",
+  "recommended": { "theme": "navy", "motion": "cinematic" }
+}

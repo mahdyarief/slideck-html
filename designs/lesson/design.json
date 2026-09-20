@@ -1,0 +1,6 @@
+{
+  "name": "lesson",
+  "label": "Lesson Steps",
+  "description": "Langkah berurut: dot-grid halus, connector vertikal kiri, nomor langkah berjenjang, 3 aksen secondary pill, timeline connector horizontal. Untuk tutorial, pelatihan, panduan langkah, dan materi yang punya urutan/proses.",
+  "recommended": { "theme": "paper", "motion": "corporate" }
+}

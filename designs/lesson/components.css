@@ -1,0 +1,138 @@
+/* Warna HANYA lewat token theme (lihat kontrak di designs/default/components.css). Tidak ada hex mentah. */
+/* lesson: langkah berurut + dot-grid + connector. Untuk tutorial, pelatihan, panduan langkah. */
+
+:root{
+  --surface:#fff;
+  --navy:#0a1628;
+  --on-navy:#e8edf5;
+  --on-navy-mut:#8899b0;
+  --teal:#0a8c6e;
+  --teal-d:#085945;
+  --grey:#eef3f8;
+  --mut:#6c7a8c;
+  --ink:#0a1628;
+  --mint:#e2f5ec;
+  --accent-line:#0a8c6e;
+  --tag-bg:rgba(10,140,110,.1);
+  --line:#dce5ed;
+  --font-d:"Inter",system-ui,sans-serif;
+  --font-s:"Playfair Display",Georgia,serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+
+.slide{background:var(--surface);color:var(--ink);position:relative;overflow:hidden}
+.slide::before{content:"";position:absolute;inset:0;background-image:radial-gradient(var(--line) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;z-index:0}
+.slide::after{content:"";position:absolute;left:96px;top:84px;bottom:84px;width:3px;background:repeating-linear-gradient(to bottom,var(--teal) 0 10px,transparent 10px 14px);pointer-events:none;z-index:0}
+.pad{position:relative;z-index:1;padding:80px 120px 140px 240px}
+
+/* Kicker: pill bertingkat dengan nomor langkah */
+.kicker{display:inline-flex;align-items:center;gap:12px;font-size:23px;letter-spacing:4px;font-weight:800;color:var(--teal-d);background:var(--mint);border:2px solid var(--accent-line);border-radius:99px;padding:8px 20px;margin-bottom:22px}
+.kicker::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 3px var(--mint)}
+.kicker.accent::before{background:var(--navy);box-shadow:0 0 0 3px var(--navy)}
+
+/* Title besar dengan connector ke content */
+h1.title{font-size:68px;color:var(--ink);font-weight:800;line-height:1.06;margin-top:6px;letter-spacing:-1px}
+h1.title::after{content:"";display:block;width:96px;height:6px;background:var(--teal);margin-top:18px;border-radius:99px}
+
+/* Card: putih dengan dot-grid miniature dan connector panah */
+.card{position:relative;background:var(--surface);border:2px solid var(--accent-line);border-radius:20px;padding:32px 36px;margin-top:20px;box-shadow:0 2px 0 var(--line)}
+.card::before{content:"";position:absolute;left:18px;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:var(--mint);border:2px solid var(--accent-line)}
+.card::after{content:"";position:absolute;left:42px;top:50%;transform:translateY(-50%);width:60px;height:3px;background:var(--teal);border-radius:99px}
+.card.accent{border-color:var(--teal);background:var(--mint)}
+.card.accent::before{background:var(--teal);border-color:var(--teal)}
+
+/* Konsep multi-accent: 3 secondary accent pill */
+.tag{display:inline-block;font-size:20px;font-weight:800;letter-spacing:2px;padding:6px 16px;margin-right:8px;margin-bottom:10px;border-radius:99px}
+.tag.t1{background:var(--mint);color:var(--teal-d)}
+.tag.t2{background:var(--surface);color:var(--ink);border:2px solid var(--accent-line)}
+.tag.t3{background:var(--accent-line);color:var(--navy)}
+
+/* Grid: nomor langkah kiri, content kanan */
+.grid2{display:flex;gap:28px;align-items:flex-start}
+.grid2 .step-num{flex:0 0 72px;height:72px;border-radius:16px;background:var(--mint);border:2px solid var(--accent-line);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;color:var(--teal-d)}
+.grid2 .step-body{flex:1;padding-left:8px;border-left:3px solid var(--teal);padding-top:6px}
+
+/* Timeline: connector horizontal dengan dot bertingkat */
+.timeline .step{position:relative;padding-left:80px;padding-bottom:36px;display:flex;align-items:flex-start;gap:20px}
+.timeline .step::before{content:"";position:absolute;left:34px;top:34px;width:20px;height:20px;border-radius:50%;background:var(--surface);border:3px solid var(--teal);z-index:1}
+.timeline .step::after{content:"";position:absolute;left:44px;top:44px;z-index:0;width:2px;height:100%;background:var(--line)}
+.timeline .step:last-child::after{display:none}
+.timeline .dot{position:absolute;top:28px;left:0;width:28px;height:28px;border-radius:50%;background:var(--teal);border:3px solid var(--surface);box-shadow:0 0 0 2px var(--teal)}
+
+/* Checklist: angka langkah di samping */
+.checklist li{font-size:28px;color:var(--ink);padding:12px 0 12px 88px;position:relative;line-height:1.4}
+.checklist li::before{content:counter(lesson,decimal-leading-zero);position:absolute;left:0;top:10px;width:68px;height:68px;border-radius:16px;background:var(--mint);border:2px solid var(--accent-line);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:var(--teal-d);font-family:var(--font-d)}
+
+/* Bul: dengan nomor inline */
+.bul{font-size:29px;color:var(--ink);line-height:1.55;padding-left:48px;position:relative}
+.bul::before{content:counter(lesson,decimal-leading-zero);position:absolute;left:0;top:0;width:36px;height:36px;border-radius:50%;background:var(--teal);color:var(--surface);font-weight:800;text-align:center;line-height:36px;font-size:16px;font-family:var(--font-d)}
+
+/* Quote: dengan aksen connector di kiri */
+.quote{position:relative;font-size:40px;font-style:italic;color:var(--ink);line-height:1.45;padding-left:40px;border-left:5px solid var(--teal)}
+.quote::before{content:"\201C";position:absolute;left:-6px;top:-18px;font-size:72px;color:var(--accent-line);font-family:var(--font-s)}
+
+/* KPI: big number dengan langkah badge */
+.kpi-num{font-size:80px;font-weight:800;color:var(--ink);line-height:1;letter-spacing:-2px}
+.kpi-lab{font-size:24px;color:var(--mut);margin-top:8px;display:flex;align-items:center;gap:10px}
+.kpi-lab::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--teal)}
+
+/* Foot: dengan step indicator */
+.foot{position:absolute;bottom:40px;left:100px;right:100px;display:flex;justify-content:space-between;align-items:center;font-size:20px;color:var(--mut);border-top:2px dashed var(--line);padding-top:14px}
+.foot .step-ind{display:inline-flex;align-items:center;gap:8px}
+.foot .step-ind::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--teal)}
+
+/* Serif override */
+h1.serif,.bul.serif,.quote{font-family:var(--font-s)}
+
+/* Navy slide override */
+.slide[style*="var(--navy)"]{color:var(--on-navy)}
+.slide[style*="var(--navy)"] h1.title,.slide[style*="var(--navy)"] .bul,.slide[style*="var(--navy)"] .card,.slide[style*="var(--navy)"] .checklist li{color:var(--on-navy)}
+.slide[style*="var(--navy)"] .kicker{color:var(--on-navy);border-color:var(--on-navy-mut);background:var(--navy)}
+.slide[style*="var(--navy)"] .kicker::before{box-shadow:0 0 0 3px var(--navy)}
+.slide[style*="var(--navy)"] .card{border-color:var(--on-navy-mut);background:var(--navy)}
+.slide[style*="var(--navy)"] .card.accent{border-color:var(--teal);background:var(--navy)}
+.slide[style*="var(--navy)"] .card::before,.slide[style*="var(--navy)"] .card::after{background:var(--on-navy-mut);border-color:var(--teal)}
+.slide[style*="var(--navy)"] .tag.t2{border-color:var(--on-navy-mut);color:var(--on-navy)}
+.slide[style*="var(--navy)"] .tag.t3{background:var(--on-navy-mut);color:var(--surface)}
+.slide[style*="var(--navy)"] .grid2 .step-num{background:var(--navy);border-color:var(--teal);color:var(--on-navy)}
+.slide[style*="var(--navy)"] .grid2 .step-body{border-left-color:var(--teal)}
+.slide[style*="var(--navy)"] .timeline .step::before{background:var(--navy);border-color:var(--teal)}
+.slide[style*="var(--navy)"] .timeline .dot{background:var(--teal);border-color:var(--navy)}
+.slide[style*="var(--navy)"] .checklist li::before{background:var(--navy);border-color:var(--teal);color:var(--on-navy)}
+.slide[style*="var(--navy)"] .bul::before{background:var(--teal);color:var(--surface)}
+.slide[style*="var(--navy)"] .quote{border-left-color:var(--teal)}
+.slide[style*="var(--navy)"] .quote::before{color:var(--on-navy-mut)}
+.slide[style*="var(--navy)"] .kpi-num{color:var(--on-navy)}
+.slide[style*="var(--navy)"] .kpi-lab{color:var(--on-navy-mut)}
+.slide[style*="var(--navy)"] .foot{border-top-color:var(--on-navy-mut);color:var(--on-navy-mut)}
+.slide[style*="var(--navy)"] .foot .step-ind::before{background:var(--teal)}
+.slide[style*="var(--navy)"]::before{background-image:radial-gradient(var(--on-navy-mut) 1px,transparent 1px)}
+
+/* Rule: pemisah halus */
+.rule{height:0;border-bottom:2px solid var(--accent-line);margin:24px 0}
+
+/* Small: teks kecil */
+.small{font-size:24px;color:var(--mut);line-height:1.5}
+
+/* Arrow connector */
+.arrow{align-self:center;font-size:48px;color:var(--teal);font-weight:800;padding:8px 0}
+
+/* Map container */
+.map{display:flex;gap:24px;align-items:stretch;margin-top:32px}
+.mapcol{flex:1;background:var(--grey);border:1px solid var(--line);padding:28px 24px;border-radius:12px}
+.mapcol h3{font-size:28px;color:var(--ink);margin-bottom:6px}
+.mapcol ul{list-style:none;margin-top:14px}
+.mapcol li{position:relative;font-size:22px;color:var(--ink);padding-left:20px;line-height:1.5}
+.mapcol li::before{content:"";position:absolute;left:0;top:.62em;width:8px;height:8px;background:var(--teal);border-radius:50%}
+.mapcol li b{color:var(--teal-d)}
+
+/* Grid3: 3 kolom */
+.grid3{display:flex;gap:20px;align-items:flex-start}
+.grid3 .card{flex:1}
+
+/* Tabel */
+table.t{width:100%;border-collapse:collapse;margin-top:28px;font-size:24px}
+table.t th{text-align:left;font-size:19px;letter-spacing:2px;color:var(--teal-d);padding:10px 14px;border-bottom:2px solid var(--teal);font-family:var(--font-d);text-transform:uppercase}
+table.t td{padding:11px 14px;border-bottom:1px solid var(--line);color:var(--ink)}
+table.t td.n{text-align:right;font-weight:800;color:var(--ink);white-space:nowrap}
+table.t tr:last-child td{border-bottom:2px solid var(--accent-line)}
