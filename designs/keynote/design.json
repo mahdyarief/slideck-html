@@ -1,0 +1,6 @@
+{
+  "name": "keynote",
+  "label": "Keynote Stage",
+  "description": "Panggung konferensi: kanvas gelap, display type sangat besar terbaca dari baris belakang, band bawah inverted, aksen tunggal. Untuk keynote, seminar pembuka, dan peluncuran produk.",
+  "recommended": { "theme": "navy", "motion": "cinematic" }
+}

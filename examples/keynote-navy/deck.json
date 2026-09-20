@@ -1,0 +1,9 @@
+{
+  "title": "Contoh Deck — keynote / navy",
+  "footer": "Contoh Deck | 20 SEP 2026",
+  "output": "contoh-keynote-navy.html",
+  "slides": "../slides",
+  "design": "keynote",
+  "theme": "navy",
+  "motion": "cinematic"
+}

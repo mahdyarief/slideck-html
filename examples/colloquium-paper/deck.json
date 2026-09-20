@@ -1,0 +1,9 @@
+{
+  "title": "Contoh Deck — colloquium / paper",
+  "footer": "Contoh Deck | 20 SEP 2026",
+  "output": "contoh-colloquium-paper.html",
+  "slides": "../slides",
+  "design": "colloquium",
+  "theme": "paper",
+  "motion": "corporate"
+}

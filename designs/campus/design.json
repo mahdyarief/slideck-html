@@ -1,0 +1,6 @@
+{
+  "name": "campus",
+  "label": "Campus Notebook",
+  "description": "Buku catatan kelas: kertas bergaris, garis margin kiri, pemisah putus-putus, checkbox kotak, chip modul. Untuk materi kuliah, modul pelatihan, dan pembelajaran bertahap.",
+  "recommended": { "theme": "paper", "motion": "corporate" }
+}

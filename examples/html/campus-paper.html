@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contoh Deck — campus / paper</title>
+<style>
+/* ==== slideck-html template.html — FROZEN. Jangan edit per deck. ==== */
+/* Font theme default di-inline base64 oleh build.js dari assets/fonts/. Theme lain pakai font sistem. */
+
+/* Viewport-base: fixed 1920x1080 stage, scaled. */
+html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#0b1116}
+.deck-viewport{position:fixed;inset:0;overflow:hidden;background:#0b1116}
+.deck-stage{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:hidden;transform-origin:0 0;background:var(--surface,#fff)}
+.slide{position:absolute;inset:0;width:1920px;height:1080px;overflow:hidden;display:block;visibility:hidden;opacity:0;pointer-events:none;background:var(--surface,#fff);transition:opacity .45s ease}
+.slide.active,.slide.visible{visibility:visible;opacity:1;pointer-events:auto;z-index:1}
+/* ==== TOKENS + KOMPONEN (frozen) ==== */
+/* DESIGN campus — classroom notebook: ruled paper, left margin rule, dashed dividers, square checkboxes, module chips. */
+/* Warna HANYA lewat token theme (lihat kontrak di designs/default/components.css). Tidak ada hex mentah. */
+:root{--surface:#fff;--navy:#1C2833;--on-navy:#fff;--on-navy-mut:#AAB7B8;--teal:#5EA8A7;--teal-d:#2F7E7D;--grey:#F4F6F6;--mut:#5A6C7D;--ink:#2E4053;--mint:#EAF6F4;--accent-line:#BFDCD8;--tag-bg:#D9ECEA;--line:#E2E8EC;--font-d:'Plus Jakarta Sans',sans-serif;--font-s:'Source Serif 4',serif;--ease:cubic-bezier(.16,1,.3,1)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-d);-webkit-font-smoothing:antialiased}
+
+.slide{overflow:hidden;isolation:isolate}
+.slide::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;background-image:repeating-linear-gradient(var(--line) 0 1px,transparent 1px 64px)}
+.slide::after{content:"";position:absolute;left:188px;top:0;bottom:0;width:2px;background:var(--teal);pointer-events:none;z-index:0}
+.slide[style*="var(--navy)"]::before{background-image:none}
+.slide>*{position:relative;z-index:1}
+.slide>div[style*="display:flex"][style*="height:100%"]>div:last-child{border-radius:16px!important;margin:44px 44px 132px!important}
+
+.pad{counter-reset:campus;padding:92px 132px 150px 250px}
+.kicker{display:inline-block;align-self:flex-start;font-size:20px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--teal-d);background:var(--mint);border-radius:99px;padding:9px 20px;border-bottom:3px solid var(--teal)}
+h1.title{max-width:1400px;font-size:82px;color:var(--ink);font-weight:800;line-height:1.02;margin-top:22px;letter-spacing:-2.4px;text-wrap:balance}
+h1.serif{font-family:var(--font-s);letter-spacing:-1.2px}
+.rule{width:170px;height:4px;background:var(--teal);border-radius:99px;margin:26px 0 0}
+
+.card{position:relative;background:var(--grey);border:2px dashed var(--line);border-radius:16px;padding:32px 34px 28px;box-shadow:none}
+.card.accent{background:var(--mint);border:2px solid var(--accent-line)!important;border-radius:16px}
+.kpi-num{font-size:88px;font-weight:800;color:var(--ink);line-height:1;letter-spacing:-2.6px}
+.kpi-lab{font-size:18px;color:var(--mut);margin-bottom:10px;letter-spacing:2px;text-transform:uppercase}
+.bul{font-size:29px;color:var(--ink);line-height:1.6}
+.small{font-size:24px;color:var(--mut);line-height:1.55}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:34px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.tag{display:inline-block;font-size:17px;font-weight:800;letter-spacing:2.4px;text-transform:uppercase;color:var(--teal-d);background:var(--mint);border-radius:99px;padding:6px 15px;margin-bottom:16px}
+
+.map{display:flex;align-items:stretch;gap:24px;margin-top:38px}
+.mapcol{position:relative;flex:1;background:var(--grey)!important;border:2px dashed var(--line)!important;border-radius:16px;padding:32px 34px 28px}
+.mapcol h3{font-size:31px;margin-bottom:7px;color:var(--ink)}
+.mapcol ul{list-style:none;margin-top:15px}
+.mapcol li{position:relative;font-size:25px;line-height:1.55;color:var(--ink);padding-left:22px}
+.mapcol li::before{content:"";position:absolute;left:0;top:.6em;width:10px;height:10px;background:var(--teal);border-radius:2px}
+.mapcol li b{color:var(--ink)}
+.arrow{align-self:center;display:flex;align-items:center;justify-content:center;width:60px;height:60px;flex:0 0 60px;font-size:34px;line-height:1;color:var(--teal-d);font-weight:800;background:var(--mint);border-radius:50%}
+
+table.t{width:100%;border-collapse:collapse;margin-top:34px;font-size:25px}
+table.t th{text-align:left;font-size:18px;letter-spacing:2.4px;text-transform:uppercase;color:var(--teal-d);padding:13px 16px;background:var(--mint)}
+table.t td{padding:14px 16px;border-bottom:1px dashed var(--line);color:var(--ink)}
+table.t tr:last-child td{border-bottom:0}
+table.t td.n{text-align:right;font-weight:800;color:var(--ink);white-space:nowrap}
+
+.foot{position:absolute;z-index:3;bottom:60px;left:250px;right:132px;display:flex;justify-content:space-between;align-items:center;font-size:17px;color:var(--mut);letter-spacing:2px;text-transform:uppercase;padding-top:14px;border-top:2px dashed var(--line)}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.visible .reveal{opacity:1;transform:none}
+.visible .reveal.d1{transition-delay:.08s}.visible .reveal.d2{transition-delay:.16s}.visible .reveal.d3{transition-delay:.24s}
+
+.quote{max-width:1340px;font-family:var(--font-s);font-size:58px;font-weight:700;color:var(--ink);line-height:1.26;letter-spacing:-1px}
+.stat-big{font-size:132px;font-weight:800;color:var(--on-navy);letter-spacing:-4px;line-height:.95}
+
+.timeline{display:flex;gap:0;margin-top:44px}
+.timeline .step{flex:1;position:relative;text-align:left;padding:58px 26px 0 0;min-width:0;counter-increment:campus}
+.timeline .dot{position:absolute;top:0;left:0;width:40px;height:40px;border-radius:10px;background:var(--mint);border:2px solid var(--teal);color:var(--teal-d);display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800}
+.timeline .dot::before{content:counter(campus,decimal-leading-zero)}
+.timeline .step::before{content:"";position:absolute;top:19px;left:54px;right:26px;height:0;border-top:2px dashed var(--line)}
+.timeline .step:last-child::before{content:none}
+.timeline .step h3{font-size:30px;color:var(--ink);margin-bottom:7px}
+
+.checklist{list-style:none;margin-top:32px;max-width:1500px}
+.checklist li{position:relative;font-size:29px;color:var(--ink);line-height:1.45;padding:20px 24px 20px 86px;border-bottom:1px dashed var(--line)}
+.checklist li:last-child{border-bottom:0}
+.checklist li::before{content:"";position:absolute;left:0;top:20px;width:50px;height:50px;border:3px solid var(--teal);border-radius:10px;background:var(--surface)}
+
+/* THEME paper — adaptasi Paper & Ink (frontend-slides #12). Terang editorial, aksen crimson, font sistem. */
+:root{--surface:#faf9f7;--navy:#1a1a1a;--on-navy:#f7f3ee;--on-navy-mut:#c9bfb5;--teal:#c41e3a;--teal-d:#8f1530;--grey:#f2ede6;--mut:#555555;--ink:#1a1a1a;--mint:#f7ecec;--accent-line:#e0c9cc;--tag-bg:#f4dcdf;--line:#e5ddd5;--font-d:ui-sans-serif,system-ui,'Segoe UI',Arial,sans-serif;--font-s:Georgia,'Times New Roman',serif;--ease:cubic-bezier(.16,1,.3,1)}
+/* MOTION corporate — default. Subtle fast 200-300ms, dari frontend-slides Professional/Corporate. */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .3s var(--ease),transform .3s var(--ease)}
+.visible .reveal{opacity:1;transform:none}
+.visible .reveal.d1{transition-delay:.06s}.visible .reveal.d2{transition-delay:.12s}.visible .reveal.d3{transition-delay:.18s}
+
+/* ==== CHROME (di luar stage) ==== */
+.deck-controls{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:1000;color:#fff;font-size:17px;background:rgba(0,0,0,.5);padding:10px 22px;border-radius:99px}
+.deck-controls #editflag{display:none;color:#5EA8A7;font-weight:800}
+body.editing .slide{outline:3px dashed var(--teal);outline-offset:-10px}
+.progress{position:fixed;left:0;bottom:0;height:5px;width:100%;background:rgba(255,255,255,.15);z-index:1001}
+.progress i{display:block;height:100%;width:0;background:var(--teal);transition:width .4s var(--ease)}
+/* ==== REDUCED MOTION: matikan transform + transisi reveal ==== */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .reveal{opacity:1!important;transform:none!important}
+}
+/* ==== PRINT: satu slide per halaman, semua terlihat ==== */
+@media print{
+  @page{size:1920px 1080px;margin:0}
+  html,body{overflow:visible;background:#fff}
+  .deck-viewport{position:static;overflow:visible;background:#fff}
+  .deck-stage{position:static;transform:none!important;width:1920px;height:auto;background:#fff}
+  .slide{position:relative;visibility:visible!important;opacity:1!important;pointer-events:auto;page-break-after:always;break-after:page;width:1920px;height:1080px}
+  .reveal{opacity:1!important;transform:none!important}
+  .deck-controls,.progress{display:none!important}
+}
+</style>
+</head>
+<body>
+<div class="deck-viewport"><div class="deck-stage" id="stage">
+<!-- 01-cover.html -->
+<!-- layout: templates/01-cover-split-kpi.html -->
+<section class="slide" style="background:var(--navy);color:var(--on-navy)">
+<div style="display:flex;height:100%">
+<div class="pad" style="flex:1.35;display:flex;flex-direction:column;justify-content:center">
+<p class="kicker reveal">EXAMPLE DECK — 2026</p>
+<h1 class="title serif reveal d1" style="color:var(--on-navy);font-size:112px">Judul Utama<br>Baris Kedua</h1>
+<div class="rule reveal d2"></div>
+<p class="bul reveal d3" style="color:var(--on-navy-mut);margin-top:24px">Satu baris konteks untuk deck ini<br>Satu baris penjelasan tambahan</p>
+</div>
+<div style="flex:.95;background:var(--grey);margin:40px;border-radius:30px;padding:60px 56px;display:flex;flex-direction:column;justify-content:center;gap:52px">
+<div class="reveal"><div class="kpi-num">97,3%</div><div class="kpi-lab">contoh angka utama</div></div>
+<div class="reveal d1"><div class="kpi-num">+1.204</div><div class="kpi-lab">contoh angka kedua</div></div>
+<div class="reveal d2"><div class="kpi-num">12</div><div class="kpi-lab">contoh angka ketiga</div></div>
+</div>
+</div>
+<div class="foot" style="color:var(--on-navy-mut)"><span>Contoh Deck | 20 SEP 2026</span><span>1 / 12</span></div>
+</section>
+
+<!-- 02-summary.html -->
+<!-- layout: templates/02-title-cards-3.html -->
+<section class="slide"><div class="pad">
+<p class="kicker reveal">RINGKASAN</p><h1 class="title reveal d1">Tiga angka yang paling penting</h1>
+<div class="grid3 reveal d2" style="margin-top:44px">
+<div class="card"><div class="kpi-lab">Metrik pertama</div><div class="kpi-num" style="font-size:62px">1.204</div></div>
+<div class="card"><div class="kpi-lab">Metrik kedua</div><div class="kpi-num" style="font-size:62px">86%</div></div>
+<div class="card"><div class="kpi-lab">Metrik ketiga</div><div class="kpi-num" style="font-size:62px">3 / 5</div></div>
+</div>
+<ul class="bul reveal d3" style="margin-top:40px;padding-left:42px">
+<li>Poin pertama menjelaskan angka di atas secara singkat</li>
+<li>Poin kedua menyorot hal yang perlu diperhatikan</li>
+<li>Poin ketiga menutup dengan kesimpulan utama</li>
+</ul>
+</div><div class="foot"><span>Contoh Deck | 20 SEP 2026</span><span>2 / 12</span></div></section>
+
+<!-- 03-compare.html -->
+<!-- layout: templates/03-compare-2col.html -->
+<section class="slide"><div class="pad">
+<p class="kicker reveal">PERBANDINGAN</p><h1 class="title reveal d1">Opsi lama vs opsi baru</h1>
+<div class="grid2 reveal d2" style="margin-top:44px">
+<div class="card accent"><span class="tag">SEBELUM</span>
+<h3 style="font-size:36px;color:var(--ink)">Cara yang berjalan sekarang</h3>
+<p class="bul" style="font-size:27px;margin-top:12px">Jelaskan kondisi saat ini, termasuk batasannya, supaya kontras dengan kolom sebelah terasa jelas.</p></div>
+<div class="card"><span class="tag">SESUDAH</span>
+<h3 style="font-size:36px;color:var(--ink)">Cara yang diusulkan</h3>
+<p class="bul" style="font-size:27px;margin-top:12px">Jelaskan perubahannya. Fokus ke satu perbedaan yang paling menentukan, bukan daftar panjang.</p></div>
+</div>
+<p class="small reveal d3" style="margin-top:24px">Satu baris penutup yang merangkum kenapa perubahan ini penting</p>
+</div><div class="foot"><span>Contoh Deck | 20 SEP 2026</span><span>3 / 12</span></div></section>
+
+<!-- 04-table.html -->
+<!-- layout: templates/04-table-detail.html -->
+<section class="slide"><div class="pad">
+<p class="kicker reveal">DATA</p><h1 class="title reveal d1">Rincian per item</h1>
+<table class="t reveal d2">
+<tr><th>Item</th><th>Status</th><th style="text-align:right">Angka</th></tr>
+<tr><td>Item pertama</td><td>Selesai</td><td class="n">1.204</td></tr>
+<tr><td>Item kedua</td><td>Selesai</td><td class="n">860</td></tr>
+<tr><td>Item ketiga</td><td>Berjalan</td><td class="n">42%</td></tr>
+<tr><td>Item keempat</td><td>Menunggu</td><td class="n">—</td></tr>
+</table>
+<p class="small reveal d3" style="margin-top:18px">Catatan sumber angka dan tanggal pengambilan data</p>
+</div><div class="foot"><span>Contoh Deck | 20 SEP 2026</span><span>4 / 12</span></div></section>
+
+<!-- 05-mapping.html -->
+<!-- layout: templates/05-mapping-2col.html -->
+<section class="slide"><div class="pad">
+<p class="kicker reveal">ALUR</p><h1 class="title reveal d1">Dari kondisi awal ke kondisi akhir</h1>
+<div class="map reveal d2">
+<div class="mapcol" style="background:var(--grey);border:1px solid var(--line)">
+<h3 style="color:var(--ink)">Sumber</h3><p class="small">Kondisi awal</p>
+<ul><li><b>Elemen satu</b> penjelasan singkat</li><li><b>Elemen dua</b> penjelasan singkat</li><li><b>Elemen tiga</b> penjelasan singkat</li></ul>
+</div>
+<div class="arrow">→</div>
+<div class="mapcol" style="background:var(--mint);border:1px solid var(--accent-line)">
+<h3 style="color:var(--ink)">Tujuan</h3><p class="small">Kondisi akhir</p>
+<ul><li><b>Elemen satu</b> bentuk akhirnya</li><li><b>Elemen dua</b> bentuk akhirnya</li><li><b>Elemen tiga</b> bentuk akhirnya</li></ul>
+</div>
+</div>
+<p class="small reveal d3" style="margin-top:24px">Catatan singkat tentang ruang lingkup pemetaan ini</p>
+</div><div class="foot"><span>Contoh Deck | 20 SEP 2026</span><span>5 / 12</span></div></section>
+
+<!-- 06-scope.html -->
+<!-- layout: templates/06-scope-4box.html -->
+<section class="slide"><div class="pad">
+<p class="kicker reveal">CAKUPAN</p><h1 class="title reveal d1">Yang termasuk dan yang tidak</h1>
+<div class="grid2 reveal d2" style="margin-top:44px">
+<div class="card"><span class="tag">MASUK</span><h3 style="font-size:38px;color:var(--ink)">Poin pertama</h3><p class="bul" style="font-size:27px;color:var(--mut)">Penjelasan singkat satu baris</p></div>
+<div class="card"><span class="tag">MASUK</span><h3 style="font-size:38px;color:var(--ink)">Poin kedua</h3><p class="bul" style="font-size:27px;color:var(--mut)">Penjelasan singkat satu baris</p></div>
+<div class="card"><span class="tag">DI LUAR</span><h3 style="font-size:38px;color:var(--ink)">Poin ketiga</h3><p class="bul" style="font-size:27px;color:var(--mut)">Penjelasan singkat satu baris</p></div>
+<div class="card"><span class="tag">DI LUAR</span><h3 style="font-size:38px;color:var(--ink)">Poin keempat</h3><p class="bul" style="font-size:27px;color:var(--mut)">Penjelasan singkat satu baris</p></div>
+</div>
+</div><div class="foot"><span>Contoh Deck | 20 SEP 2026</span><span>6 / 12</span></div></section>
+
+<!-- 07-highlight.html -->
+<!-- layout: templates/07-stat-full-navy.html -->
+<section class="slide" style="background:var(--navy);color:var(--on-navy)"><div class="pad reveal" style="display:flex;flex-direction:column;justify-content:center;height:100%">
+<p class="kicker">ANGKA KUNCI</p>
+<h1 class="title serif d1" style="color:var(--on-navy)">Satu angka yang paling menentukan</h1><div class="rule d2"></div>
+<div class="kpi-num d2" style="color:var(--on-navy);font-size:104px;margin-top:26px">86% selesai</div>
+<p class="bul d3" style="color:var(--on-navy-mut);margin-top:18px">Satu sampai dua kalimat yang menjelaskan kenapa angka ini penting.</p>
+</div><div class="foot" style="color:var(--on-navy-mut)"><span>Contoh Deck | 20 SEP 2026</span><span>7 / 12</span></div></section>
+
+<!-- 08-rows.html -->
+<!-- layout: templates/08-rows-list.html -->
+<section class="slide"><div class="pad">
+<p class="kicker reveal">RINCIAN</p><h1 class="title reveal d1">Tiga poin yang perlu dibaca</h1>
+<div class="reveal d2" style="display:flex;flex-direction:column;gap:24px;margin-top:40px">
+<div class="card"><h3 style="font-size:37px;color:var(--ink)">1 — Poin pertama</h3><p class="bul" style="font-size:27px;color:var(--mut)">Penjelasan dua baris yang cukup untuk memberi konteks tanpa bertele-tele.</p></div>
+<div class="card"><h3 style="font-size:37px;color:var(--ink)">2 — Poin kedua</h3><p class="bul" style="font-size:27px;color:var(--mut)">Penjelasan dua baris yang cukup untuk memberi konteks tanpa bertele-tele.</p></div>
+<div class="card"><h3 style="font-size:37px;color:var(--ink)">3 — Poin ketiga</h3><p class="bul" style="font-size:27px;color:var(--mut)">Penjelasan dua baris yang cukup untuk memberi konteks tanpa bertele-tele.</p></div>
+</div>
+</div><div class="foot"><span>Contoh Deck | 20 SEP 2026</span><span>8 / 12</span></div></section>
+
+<!-- 09-blockers.html -->
+<!-- layout: templates/09-blocker-2col.html -->
+<section class="slide"><div class="pad">
+<p class="kicker reveal">KENDALA</p><h1 class="title reveal d1">Dua hal yang perlu diputuskan</h1>
+<div class="grid2 reveal d2" style="margin-top:36px">
+<div class="card accent" style="border:3px solid var(--teal)"><span class="tag">MENUNGGU DATA</span><h3 style="font-size:35px;color:var(--ink)">Kendala pertama</h3><p class="bul" style="font-size:26px;color:var(--mut);margin-top:10px">Jelaskan apa yang menahan, dan apa yang dibutuhkan untuk membuka jalannya.</p></div>
+<div class="card accent" style="border:3px solid var(--teal)"><span class="tag">PERLU KEPUTUSAN</span><h3 style="font-size:35px;color:var(--ink)">Kendala kedua</h3><p class="bul" style="font-size:26px;color:var(--mut);margin-top:10px">Jelaskan pilihan yang tersedia dan siapa yang perlu memutuskan.</p></div>
+</div>
+<p class="reveal d3" style="font-size:28px;color:var(--ink);margin-top:28px"><b>Keputusan:</b> satu sampai dua kalimat tentang langkah yang diambil minggu ini.</p>
+</div><div class="foot"><span>Contoh Deck | 20 SEP 2026</span><span>9 / 12</span></div></section>
+
+<!-- 10-quote.html -->
+<!-- layout: templates/10-quote-closing.html -->
+<section class="slide"><div class="pad reveal" style="display:flex;flex-direction:column;justify-content:center;height:100%">
+<p class="kicker">PENUTUP</p>
+<p class="quote d1" style="margin-top:24px">"Satu kalimat penutup yang merangkum seluruh isi deck ini."</p>
+<div class="rule d2"></div>
+<p class="small d3" style="margin-top:20px">Keterangan kecil di bawah kutipan</p>
+</div><div class="foot"><span>Contoh Deck | 20 SEP 2026</span><span>10 / 12</span></div></section>
+
+<!-- 11-timeline.html -->
+<!-- layout: templates/11-timeline.html -->
+<section class="slide"><div class="pad">
+<p class="kicker reveal">TAHAPAN</p><h1 class="title reveal d1">Urutan pelaksanaan</h1>
+<div class="timeline reveal d2">
+<div class="step"><div class="dot"></div><h3 style="font-size:32px;color:var(--ink)">Tahap satu</h3><p class="small">Keterangan singkat tahap ini</p></div>
+<div class="step"><div class="dot"></div><h3 style="font-size:32px;color:var(--ink)">Tahap dua</h3><p class="small">Keterangan singkat tahap ini</p></div>
+<div class="step"><div class="dot"></div><h3 style="font-size:32px;color:var(--ink)">Tahap tiga</h3><p class="small">Keterangan singkat tahap ini</p></div>
+<div class="step"><div class="dot"></div><h3 style="font-size:32px;color:var(--ink)">Tahap empat</h3><p class="small">Keterangan singkat tahap ini</p></div>
+</div>
+<p class="small reveal d3" style="margin-top:28px">Catatan singkat tentang alasan urutan ini dipilih</p>
+</div><div class="foot"><span>Contoh Deck | 20 SEP 2026</span><span>11 / 12</span></div></section>
+
+<!-- 12-checklist.html -->
+<!-- layout: templates/12-checklist.html -->
+<section class="slide"><div class="pad">
+<p class="kicker reveal">LANGKAH BERIKUT</p><h1 class="title reveal d1">Yang perlu dikerjakan</h1>
+<ul class="checklist reveal d2">
+<li>Langkah pertama yang paling mendesak</li>
+<li>Langkah kedua, bisa jalan paralel</li>
+<li>Langkah ketiga, menunggu hasil sebelumnya</li>
+<li>Langkah keempat sebagai penutup</li>
+</ul>
+</div><div class="foot"><span>Contoh Deck | 20 SEP 2026</span><span>12 / 12</span></div></section>
+
+</div></div>
+<div class="progress"><i id="bar"></i></div>
+<div class="deck-controls"><span id="pg" aria-live="polite">1 / 1</span> · ← → / Space navigasi · E edit teks <span id="editflag">· EDIT ON</span></div>
+<script>
+/* ==== NAV (frozen) ==== */
+let cur=0;const slides=[...document.querySelectorAll('.slide')];const pg=document.getElementById('pg');const bar=document.getElementById('bar');
+function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);const st=document.getElementById('stage');st.style.transform=`translate(${(innerWidth-1920*s)/2}px,${(innerHeight-1080*s)/2}px) scale(${s})`}
+function go(n){cur=Math.max(0,Math.min(slides.length-1,n));slides.forEach((s,i)=>{const on=i===cur;s.classList.toggle('active',on);s.classList.toggle('visible',on);s.setAttribute('aria-hidden',on?'false':'true')});pg.textContent=(cur+1)+' / '+slides.length;bar.style.width=((cur+1)/slides.length*100)+'%'}
+function isEditing(){return document.body.classList.contains('editing')}
+function setEdit(on){document.body.classList.toggle('editing',on);document.body.contentEditable=on?'true':'false';document.getElementById('editflag').style.display=on?'inline':'none'}
+addEventListener('resize',fit);
+addEventListener('keydown',e=>{
+  if(isEditing()){if(e.key==='Escape'){e.preventDefault();setEdit(false)}return}
+  if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();go(cur+1)}
+  else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(cur-1)}
+  else if(e.key==='Home'){e.preventDefault();go(0)}
+  else if(e.key==='End'){e.preventDefault();go(slides.length-1)}
+  else if(e.key.toLowerCase()==='e'){setEdit(true)}
+});
+slides.forEach(s=>s.addEventListener('click',(e)=>{if(isEditing())return;if(e.target.closest('.deck-controls,a,button'))return;const r=s.getBoundingClientRect();const leftSide=(e.clientX-r.left)/r.width<0.3;go(cur+(leftSide?-1:1))}));
+let sx=0;addEventListener('touchstart',e=>{sx=e.touches[0].clientX},{passive:true});addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40)go(cur+(dx<0?1:-1))},{passive:true});
+fit();go(0);
+</script>
+</body>
+</html>

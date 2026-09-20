@@ -25,8 +25,11 @@ Hasilnya masuk ke `examples/html/<nama>.html` — tinggal buka di browser, tanpa
 | `architectural-navy` | architectural | navy |
 | `ribbon-navy` | ribbon | navy |
 | `plate-navy` | plate | navy |
+| `campus-paper` | campus | paper |
+| `keynote-navy` | keynote | navy |
+| `colloquium-paper` | colloquium | paper |
 
-Lima baris pertama menunjukkan **perbedaan theme** (design sama). Tujuh baris terakhir menunjukkan **perbedaan design** (theme sama).
+Lima baris pertama menunjukkan **perbedaan theme** (design sama). Sepuluh baris terakhir menunjukkan **perbedaan design** (theme sama).
 
 ## Cara menambah contoh baru
 

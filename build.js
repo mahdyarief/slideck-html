@@ -5,7 +5,7 @@ const path = require("path");
 const crypto = require("crypto");
 const DIR = __dirname;
 
-const VERSION = "1.3.0";
+const VERSION = "1.4.0";
 const LOCK_FILE = "FROZEN.json";
 const relock = process.argv.includes("--lock");
 

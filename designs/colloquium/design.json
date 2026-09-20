@@ -1,0 +1,6 @@
+{
+  "name": "colloquium",
+  "label": "Colloquium Journal",
+  "description": "Halaman jurnal akademik: gutter folio di kiri, running head bergaris, teks isi serif, tabel booktabs, folio di bawah. Untuk seminar riset, grand rounds, dan presentasi akademik.",
+  "recommended": { "theme": "paper", "motion": "corporate" }
+}

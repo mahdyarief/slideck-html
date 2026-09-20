@@ -1,0 +1,9 @@
+{
+  "title": "Contoh Deck — campus / paper",
+  "footer": "Contoh Deck | 20 SEP 2026",
+  "output": "contoh-campus-paper.html",
+  "slides": "../slides",
+  "design": "campus",
+  "theme": "paper",
+  "motion": "corporate"
+}
