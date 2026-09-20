@@ -1,0 +1,16 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "slideck-html",
+  "description": "slideck-html — build and edit stable single-file HTML slide decks (frozen 1920x1080 template, 7 designs, 5 themes, 3 motions, 12 layouts, zero dependency).",
+  "owner": {
+    "name": "mahdyarief"
+  },
+  "plugins": [
+    {
+      "name": "slideck-html",
+      "source": "./",
+      "description": "Build and edit stable single-file HTML slide decks with the frozen slideck-html template system. Provides the `slideck-html` skill (designs, themes, motions, 12 layouts, `node build.js`, HTML→PDF export).",
+      "category": "design"
+    }
+  ]
+}

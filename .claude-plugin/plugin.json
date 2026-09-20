@@ -1,0 +1,9 @@
+{
+  "name": "slideck-html",
+  "description": "Stable single-file HTML slide decks — frozen 1920x1080 template with 7 designs, 5 themes, 3 motions, 12 layouts, a zero-dependency `node build.js`, and HTML→PDF export (one slide per page).",
+  "version": "1.3.0",
+  "keywords": ["slides", "deck", "presentation", "html", "pdf", "reporting"],
+  "author": {
+    "name": "mahdyarief"
+  }
+}

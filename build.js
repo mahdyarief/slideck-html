@@ -5,7 +5,7 @@ const path = require("path");
 const crypto = require("crypto");
 const DIR = __dirname;
 
-const VERSION = "1.2.0";
+const VERSION = "1.3.0";
 const LOCK_FILE = "FROZEN.json";
 const relock = process.argv.includes("--lock");
 
@@ -28,7 +28,7 @@ const walk = (rel) => {
   if (fs.statSync(abs).isFile()) return [rel];
   return fs.readdirSync(abs).flatMap((n) => walk(rel + "/" + n));
 };
-const FROZEN = ["template.html", "build.js", ...walk("designs"), ...walk("themes"), ...walk("motions")].sort();
+const FROZEN = ["template.html", "build.js", "pdf.js", ...walk("designs"), ...walk("themes"), ...walk("motions")].sort();
 
 /* ---------- 1. deck.json ---------- */
 const deck = JSON.parse(fs.readFileSync(path.join(SRC, "deck.json"), "utf8"));

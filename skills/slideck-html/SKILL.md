@@ -20,6 +20,8 @@ Four dimensions kept separate:
 
 Stage is fixed **1920×1080**, scaled as a whole to the viewport (letterboxed, never reflowed).
 
+**Framework root.** The framework files (`template.html`, `build.js`, `pdf.js`, `designs/`, `themes/`, `motions/`, `templates/`, `assets/`) sit together in one directory — resolve it by locating `build.js`. Installed as a plugin it is `${CLAUDE_PLUGIN_ROOT}`; after a manual copy it is the directory holding this `SKILL.md`. Run the tools from there, pointing `--root` at the deck folder.
+
 ## When to use
 
 - Weekly report / internal presentation decks as a single HTML file
@@ -41,12 +43,22 @@ New deck:
 1. edit `deck.json` — `title`, `footer`, `output`, `design`, `theme`, `motion`
 2. copy `templates/<n>-*.html` → `slides/NN-name.html`, replace `[...]` only, keep classes
 3. `node build.js` → `dist/<output>.html`, open in browser, arrow through every slide
+4. `node pdf.js` → `dist/<output>.pdf`, one slide per page
 
 ## Install as AI skill
 
+Install from the marketplace (auto-updates with the repo):
+
+```
+/plugin marketplace add mahdyarief/slideck-html
+/plugin install slideck-html@slideck-html
+```
+
+Or copy manually (a static snapshot — re-copy to update):
+
 ```bash
 mkdir -p ~/.openclaude/skills/slideck-html
-cp -r skill/SKILL.md template.html build.js designs themes motions templates assets ~/.openclaude/skills/slideck-html/
+cp -r skills/slideck-html/SKILL.md template.html build.js pdf.js designs themes motions templates assets ~/.openclaude/skills/slideck-html/
 ```
 
 ## Files
@@ -54,6 +66,7 @@ cp -r skill/SKILL.md template.html build.js designs themes motions templates ass
 ```
 template.html   FROZEN shell — {{TITLE}} {{FONTS}} {{COMPONENTS}} {{SLIDES}} + nav JS
 build.js        FROZEN — assembles output, validates placeholders, writes FROZEN.json lock
+pdf.js          TOOL — dist/<output>.html → dist/<output>.pdf, one slide per page
 designs/        FROZEN — default, editorial, brutalist, geometric, architectural, ribbon, plate
 deck.json       EDIT — title, footer, output, design, theme, motion
 themes/         FROZEN — navy, paper, botanical, swiss, neon (only :root color+font tokens)
@@ -102,6 +115,15 @@ Wrong theme or motion name → build warns and falls back to the default. Wrong 
 
 01 cover-split-kpi · 02 title-cards-3 · 03 compare-2col · 04 table-detail · 05 mapping-2col · 06 scope-4box · 07 stat-full-navy · 08 rows-list · 09 blocker-2col · 10 quote-closing · 11 timeline · 12 checklist
 
+## PDF export
+
+```bash
+node build.js        # first: dist/<output>.html
+node pdf.js          # then: dist/<output>.pdf — one slide per page, 1920×1080
+```
+
+`pdf.js` drives a locally installed Chromium/Chrome/Edge (`--headless=new --print-to-pdf`) and uses the shell's print stylesheet, so pages come out exactly stage-sized with one slide each, no header or footer. Flags: `--root <dir>` (deck elsewhere), `--html <file.html>` (print any built deck directly), `--out <file.pdf>`, and `CHROME_PATH=<exe>` to pin the browser. It prints `slides=N | halaman PDF=N | ukuran halaman=WxH pt` and exits non-zero if the page count does not match the slide count.
+
 ## Rules
 
 - Edit only `slides/*.html` + `deck.json`. Never edit frozen files (`template.html`, `build.js`, `designs/`, `themes/`, `motions/`, `templates/`, `assets/`).
@@ -111,7 +133,7 @@ Wrong theme or motion name → build warns and falls back to the default. Wrong 
 - Tables max 7 rows per slide — split overflow into a continuation slide.
 - No responsive breakpoints inside slides; the stage scales as a unit.
 - Text on `--navy` must use `var(--on-navy)` / `var(--on-navy-mut)`. Body text on light surfaces uses `var(--ink)`. Never hardcode a hex color.
-- `prefers-reduced-motion` and print (`@media print`, one slide per page) are handled by the frozen shell.
+- `prefers-reduced-motion` and print (`@media print`, one slide per page) are handled by the frozen shell. Use `node pdf.js` to capture that print layout as a PDF.
 
 ## Verification
 

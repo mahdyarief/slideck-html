@@ -36,10 +36,10 @@ Same design, five themes:
 
 If you were given this repo URL and asked to make slides, do exactly this:
 
-1. **Read** `AGENTS.md` (rules), then `skill/SKILL.md` (workflow + designs + themes + motions + templates).
-2. **Never edit** `template.html`, `build.js`, `designs/`, `themes/`, `motions/`, `templates/`, `assets/`. Edit only `slides/*.html` + `deck.json`.
+1. **Read** `AGENTS.md` (rules), then `skills/slideck-html/SKILL.md` (workflow + designs + themes + motions + templates).
+2. **Never edit** `template.html`, `build.js`, `pdf.js`, `designs/`, `themes/`, `motions/`, `templates/`, `assets/`. Edit only `slides/*.html` + `deck.json`.
 3. **New deck:** copy `templates/<n>-*.html` → `slides/NN-name.html`, replace `[...]` placeholders only, keep classes.
-4. **Build:** `node build.js` → `dist/<output>.html`. Open in browser to verify.
+4. **Build:** `node build.js` → `dist/<output>.html`. Open in browser to verify. Add `node pdf.js` for a PDF, one slide per page.
 5. **Tables max 7 rows** per slide — overflow goes to a continuation slide.
 6. **Never hardcode a hex color.** Text on `--navy` uses `var(--on-navy)`; body text on light surfaces uses `var(--ink)`.
 
@@ -49,6 +49,7 @@ If you were given this repo URL and asked to make slides, do exactly this:
 git clone https://github.com/mahdyarief/slideck-html.git
 cd slideck-html
 node build.js            # builds dist/contoh-deck.html from slides/
+node pdf.js              # builds dist/contoh-deck.pdf, one slide per page
 # new deck: edit deck.json (title/footer/output/design/theme/motion), put slides in slides/, run node build.js
 ```
 
@@ -56,10 +57,19 @@ No `npm install`. Node stdlib only.
 
 ## Install as an AI skill
 
+From the plugin marketplace — updates follow the repo:
+
+```
+/plugin marketplace add mahdyarief/slideck-html
+/plugin install slideck-html@slideck-html
+```
+
+Or copy manually — a static snapshot, re-copy to update:
+
 ```bash
 mkdir -p ~/.openclaude/skills/slideck-html
 cd slideck-html
-cp -r skill/SKILL.md template.html build.js designs themes motions templates assets ~/.openclaude/skills/slideck-html/
+cp -r skills/slideck-html/SKILL.md template.html build.js pdf.js designs themes motions templates assets ~/.openclaude/skills/slideck-html/
 ```
 
 Then an agent asked to build slides can follow `SKILL.md` directly.
@@ -67,8 +77,10 @@ Then an agent asked to build slides can follow `SKILL.md` directly.
 ## Layout
 
 ```
+.claude-plugin/    plugin + marketplace manifest (marketplace.json, plugin.json)
 template.html      FROZEN shell ({{TITLE}} {{FONTS}} {{COMPONENTS}} {{SLIDES}} + nav JS)
 build.js           FROZEN: slides/*.html → dist/<output>.html, validates placeholders, writes FROZEN.json
+pdf.js             TOOL: dist/<output>.html → dist/<output>.pdf, one slide per page
 designs/           FROZEN: default · editorial · brutalist · geometric · architectural · ribbon · plate
                    (components.css + design.json each)
 deck.json          EDIT: title, footer, output, design, theme, motion
@@ -79,7 +91,7 @@ slides/            YOUR content (only dir you + AI edit)
 assets/fonts/      woff2 + fonts.json — base64-inlined at build, no network needed
 dist/              build output (gitignored, never edit)
 FROZEN.json        hash lock of frozen files (see below)
-skill/SKILL.md     agent skill file
+skills/slideck-html/SKILL.md   agent skill file
 LICENSE            MIT
 ```
 
@@ -163,9 +175,18 @@ Prints version, design, theme, motion, slide count, font mode (inline/system), o
 
 Then open `dist/<output>.html` and arrow through every slide — check for overflow or clipping.
 
+## PDF export
+
+```bash
+node build.js        # first: dist/<output>.html
+node pdf.js          # then: dist/<output>.pdf — one slide per page, 1920×1080
+```
+
+`pdf.js` drives a locally installed Chromium/Chrome/Edge (`--headless=new --print-to-pdf`) and prints through the shell's existing `@media print` rules, so every page is exactly stage-sized with one slide each and no header or footer. Options: `--root <dir>` (deck in another folder), `--html <file.html>` (print any built deck directly), `--out <file.pdf>`, and `CHROME_PATH=<exe>` to pin a specific browser. It reports `slides=N | halaman PDF=N | ukuran halaman=WxH pt` and exits non-zero if the page count does not match the slide count, so a broken export is visible.
+
 ## Frozen-file lock
 
-`FROZEN.json` stores a short sha256 of `template.html`, `build.js`, and every file under `designs/`, `themes/`, and `motions/`. If one of them changes, the next build warns — so accidental edits to shared files are visible. If you *intentionally* changed a frozen file, regenerate the lock:
+`FROZEN.json` stores a short sha256 of `template.html`, `build.js`, `pdf.js`, and every file under `designs/`, `themes/`, and `motions/`. If one of them changes, the next build warns — so accidental edits to shared files are visible. If you *intentionally* changed a frozen file, regenerate the lock:
 
 ```bash
 node build.js --lock
@@ -176,7 +197,7 @@ node build.js --lock
 - Arrow keys / Space / PageUp-PageDown move between slides; `Home`/`End` jump to first/last.
 - `E` toggles inline text edit mode, `Esc` leaves it. Keys are ignored while editing.
 - `prefers-reduced-motion` disables reveals.
-- Print / Save as PDF gives one slide per page.
+- Print / Save as PDF (or `node pdf.js`) gives one slide per page.
 
 ## License
 
