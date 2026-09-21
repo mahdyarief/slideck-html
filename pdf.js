@@ -106,6 +106,7 @@ if (!browser) {
 
 const html = fs.readFileSync(htmlPath, "utf8");
 const slideCount = (html.match(/class="slide"/g) || []).length;
+const noteCount = (html.match(/class="slide-notes"/g) || []).length;
 
 fs.mkdirSync(path.dirname(outPath), { recursive: true });
 fs.rmSync(outPath, { force: true });
@@ -137,7 +138,7 @@ console.log("  slides=" + slideCount + " | halaman PDF=" + pageCount + " | ukura
   " | " + Math.round(fs.statSync(outPath).size / 1024) + " KB");
 console.log("  -> " + outPath.replace(/\\/g, "/"));
 
-if (slideCount && pageCount !== slideCount) {
-  console.warn("  ! jumlah halaman (" + pageCount + ") != jumlah slide (" + slideCount + ")");
+if (slideCount && pageCount !== slideCount + noteCount) {
+  console.warn("  ! jumlah halaman (" + pageCount + ") != slide (" + slideCount + ") + catatan (" + noteCount + ")");
   process.exitCode = 1;
 }

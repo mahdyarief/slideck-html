@@ -4,7 +4,7 @@ Stable single-file HTML slide decks. Frozen template + per-slide files + `node b
 
 Stage fixed **1920×1080**, scaled to viewport. Four dimensions separated: **design** (shape + typography treatment) × **theme** (color + font) × **layout** (12 templates) × **content** (`slides/`).
 
-Output is one self-contained `.html` with fonts inlined base64 — works offline, opens by double-click, prints one slide per page.
+Output is one self-contained `.html` with fonts inlined base64 — works offline, opens by double-click, prints one slide per page. A built-in **theme switcher** (top-right) swaps the palette live without rebuilding, and per-slide **speaker notes** (`data-notes`) print as their own pages in the PDF.
 
 ## Preview
 
@@ -164,6 +164,7 @@ cp templates/04-table-detail.html slides/03-progress.html
 - `[Footer kiri]` → replaced from `deck.footer`.
 - Prefix a filename with `_` (e.g. `_draft.html`) to keep it in `slides/` without rendering it.
 - Tables max 7 rows; split overflow into a continuation slide.
+- `data-notes="..."` on a `<section class="slide">` adds speaker notes. They're invisible on screen but print as their own page after that slide, so `node pdf.js` ships a presenter copy with notes.
 
 ## Examples
 
@@ -185,6 +186,7 @@ Prints version, design, theme, motion, slide count, font mode (inline/system), o
 
 - leftover `{{...}}` placeholders,
 - unfilled `[...]` placeholders,
+- `<img>` without `alt` (accessibility),
 - frozen files whose hash differs from `FROZEN.json`.
 
 Then open `dist/<output>.html` and arrow through every slide — check for overflow or clipping.
@@ -210,8 +212,9 @@ node build.js --lock
 
 - Arrow keys / Space / PageUp-PageDown move between slides; `Home`/`End` jump to first/last.
 - `E` toggles inline text edit mode, `Esc` leaves it. Keys are ignored while editing.
+- The theme dropdown (top-right) swaps between all themes in `themes/` at runtime and remembers the choice in `localStorage`.
 - `prefers-reduced-motion` disables reveals.
-- Print / Save as PDF (or `node pdf.js`) gives one slide per page.
+- Print / Save as PDF (or `node pdf.js`) gives one slide per page, plus a notes page after any slide that has `data-notes`.
 
 ## License
 

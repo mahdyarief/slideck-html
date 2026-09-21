@@ -128,13 +128,14 @@ node build.js        # first: dist/<output>.html
 node pdf.js          # then: dist/<output>.pdf — one slide per page, 1920×1080
 ```
 
-`pdf.js` drives a locally installed Chromium/Chrome/Edge (`--headless=new --print-to-pdf`) and uses the shell's print stylesheet, so pages come out exactly stage-sized with one slide each, no header or footer. Flags: `--root <dir>` (deck elsewhere), `--html <file.html>` (print any built deck directly), `--out <file.pdf>`, and `CHROME_PATH=<exe>` to pin the browser. It prints `slides=N | halaman PDF=N | ukuran halaman=WxH pt` and exits non-zero if the page count does not match the slide count.
+`pdf.js` drives a locally installed Chromium/Chrome/Edge (`--headless=new --print-to-pdf`) and uses the shell's print stylesheet, so pages come out exactly stage-sized with one slide each, no header or footer. Any slide carrying `data-notes="..."` gets an extra notes page printed right after it. Flags: `--root <dir>` (deck elsewhere), `--html <file.html>` (print any built deck directly), `--out <file.pdf>`, and `CHROME_PATH=<exe>` to pin the browser. It prints `slides=N | halaman PDF=N | ukuran halaman=WxH pt` and exits non-zero if the page count does not match slides + notes pages.
 
 ## Rules
 
 - Edit only `slides/*.html` + `deck.json`. Never edit frozen files (`template.html`, `build.js`, `designs/`, `themes/`, `motions/`, `templates/`, `assets/`).
 - Keep every class on every element; replace only `[...]` placeholder text.
 - `{{N}}` / `{{TOTAL}}` are replaced with slide numbers. `[Footer kiri]` comes from `deck.footer`.
+- Optional `data-notes="..."` on a `<section class="slide">` adds speaker notes — hidden on screen, printed as their own page after that slide by `node pdf.js`.
 - To keep a file in `slides/` without rendering it, prefix the name with `_` (build skips those).
 - Tables max 7 rows per slide — split overflow into a continuation slide.
 - No responsive breakpoints inside slides; the stage scales as a unit.
@@ -143,7 +144,7 @@ node pdf.js          # then: dist/<output>.pdf — one slide per page, 1920×108
 
 ## Verification
 
-`node build.js` prints design, theme, motion, slide count, font mode (inline/system) and output path. It warns on leftover `{{...}}`, unfilled `[...]`, and any frozen file whose hash differs from `FROZEN.json`. Regenerate the lock deliberately with `node build.js --lock`.
+`node build.js` prints design, theme, motion, slide count, font mode (inline/system) and output path. It warns on leftover `{{...}}`, unfilled `[...]`, `<img>` without `alt`, and any frozen file whose hash differs from `FROZEN.json`. Regenerate the lock deliberately with `node build.js --lock`.
 
 ## Common mistakes
 

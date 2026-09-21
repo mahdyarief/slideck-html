@@ -24,8 +24,9 @@ node pdf.js     # dist/<output>.html → dist/<output>.pdf, one slide per page
 - New deck: copy `templates/<n>-*.html` → `slides/NN-name.html`, replace `[...]` only, keep all classes.
 - Placeholders: `{{N}}` / `{{TOTAL}}` auto slide numbers, `[Footer kiri]` auto from `deck.footer`.
 - `deck.json` fields: `title`, `footer`, `output`, `design` (default|editorial|brutalist|geometric|architectural|ribbon|plate|campus|keynote|colloquium|lesson|spotlight|dark-academia), `theme` (navy|paper|botanical|swiss|neon), `motion` (corporate|cinematic|playful).
+- Optional `data-notes="..."` on a `<section class="slide">` adds speaker notes: hidden on screen, printed as their own page after that slide by `node pdf.js`.
 - Skip a slide file without deleting it: prefix the filename with `_`.
-- Verify: rebuild, open `dist/*.html` in browser, arrows navigate, no overflow.
+- Verify: rebuild, open `dist/*.html` in browser, arrows navigate, no overflow. The built deck has a theme dropdown (top-right) that swaps palettes at runtime without a rebuild.
 
 ## 4. Constraints
 
