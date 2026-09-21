@@ -1,0 +1,9 @@
+{
+  "title": "Contoh Deck — minimal / terracotta",
+  "footer": "Contoh Deck | 21 SEP 2026",
+  "output": "contoh-minimal-terracotta.html",
+  "slides": "../slides",
+  "design": "minimal",
+  "theme": "terracotta",
+  "motion": "cinematic"
+}

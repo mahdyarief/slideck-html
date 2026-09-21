@@ -1,0 +1,6 @@
+{
+  "name": "minimal",
+  "label": "Minimal",
+  "description": "Deck editorial/riset: tipografi display tipis besar, satu garis aksen tipis di bawah judul, tabel booktabs, kepadatan teks rendah dan ruang putih lega. Untuk laporan riset, essay, dan deck naratif.",
+  "recommended": { "theme": "terracotta", "motion": "cinematic" }
+}

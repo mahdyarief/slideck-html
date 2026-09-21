@@ -1,0 +1,9 @@
+{
+  "title": "Contoh Deck — consulting / slate-rust",
+  "footer": "Contoh Deck | 21 SEP 2026",
+  "output": "contoh-consulting-slate-rust.html",
+  "slides": "../slides",
+  "design": "consulting",
+  "theme": "slate-rust",
+  "motion": "corporate"
+}

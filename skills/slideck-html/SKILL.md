@@ -67,9 +67,9 @@ cp -r skills/slideck-html/SKILL.md template.html build.js pdf.js designs themes 
 template.html   FROZEN shell — {{TITLE}} {{FONTS}} {{COMPONENTS}} {{SLIDES}} + nav JS
 build.js        FROZEN — assembles output, validates placeholders, writes FROZEN.json lock
 pdf.js          TOOL — dist/<output>.html → dist/<output>.pdf, one slide per page
-designs/        FROZEN — default, editorial, brutalist, geometric, architectural, ribbon, plate, campus, keynote, colloquium, lesson, spotlight, dark-academia
+designs/        FROZEN — default, editorial, brutalist, geometric, architectural, ribbon, plate, campus, keynote, colloquium, lesson, spotlight, dark-academia, consulting, scholar, organic, minimal
 deck.json       EDIT — title, footer, output, design, theme, motion
-themes/         FROZEN — navy, paper, botanical, swiss, neon (only :root color+font tokens)
+themes/         FROZEN — navy, paper, botanical, swiss, neon, slate-rust, petrol-gold, terracotta, parchment-gold (only :root color+font tokens)
 motions/        FROZEN — corporate, cinematic, playful (only .reveal timing)
 templates/      FROZEN — 12 copy-paste layouts with [...] placeholders, shared across designs
 slides/         EDIT — your content
@@ -94,6 +94,10 @@ dist/           OUTPUT — never edit
 | lesson | dot-grid background, vertical connector, numbered steps, multi-accent pills, timeline connector | shared 12 |
 | spotlight | centered focus area with dimmed surroundings, radial glow, spotlight cards, centered layout | shared 12 |
 | dark-academia | navy canvas, serif display, ornamental border, earthy accents, double-rule tables | shared 12 |
+| consulting | warm grey canvas, elevated white cards with soft shadow, small-caps coloured eyebrows, step indicator | shared 12 |
+| scholar | serif display headings, circular numbered badges on cards, accent medallions, rounded white cards | shared 12 |
+| organic | imagery-led cover, soft blob/wave decorations, 01/02/03 list markers, pill cards with circular icons | shared 12 |
+| minimal | thin large display type, single hairline accent rule under title, booktabs tables, low density | shared 12 |
 
 A design owns shape, spacing, and typography treatment, and styles only through the shared token names — never a raw hex. That is what lets any design work with any theme. To add one, write `designs/<name>/components.css` + `design.json`, then re-freeze with `node build.js --lock`.
 
@@ -106,6 +110,10 @@ A design owns shape, spacing, and typography treatment, and styles only through 
 | botanical | dark green-black | system stack |
 | swiss | high-contrast minimal | system stack |
 | neon | dark blue-black | system stack |
+| slate-rust | dark slate + rust, warm grey canvas | system stack |
+| petrol-gold | deep petrol teal + gold | system stack |
+| terracotta | terracotta + light grey, thin display | system stack |
+| parchment-gold | cream canvas + navy + gold | system stack |
 
 ## Motions (`deck.json` `"motion"`)
 

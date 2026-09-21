@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contoh Deck — default / neon</title>
+<title>Contoh Deck — consulting / slate-rust</title>
 <style>
 /* ==== slideck-html template.html — FROZEN. Jangan edit per deck. ==== */
 /* Font theme default di-inline base64 oleh build.js dari assets/fonts/. Theme lain pakai font sistem. */
@@ -17,65 +17,107 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#0b1116}
 /* ==== TOKENS + KOMPONEN (frozen) ==== */
 /* slideck-html components.css — FROZEN. Jangan edit per deck. Struktur + kontrak token. */
 /* TOKEN CONTRACT (wajib dipenuhi tiap theme, kalau tidak tema lain akan rusak):
-   --surface     latar slide/halaman
-   --navy        permukaan GELAP utama (cover/stat). WAJIB gelap.
-   --on-navy     warna teks di atas --navy. WAJIB kontras dengan --navy.
-   --on-navy-mut teks sekunder di atas --navy (footer cover, subjudul)
-   --grey        permukaan panel/kartu
-   --ink         warna teks utama (judul + isi) di atas --surface/--grey
-   --mut         teks sekunder
-   --teal        aksen isian (bar, dot, garis)
-   --teal-d      aksen untuk TEKS (harus kontras di mint/tag)
-   --mint        permukaan aksen lembut
-   --accent-line border kartu aksen
-   --tag-bg      latar pill .tag
-   --line        garis rambut
-   --font-d / --font-s / --ease */
+   --surface      warna kanvas kartu/panel
+   --navy         bidang gelap penuh (cover / slide statement)
+   --on-navy      warna teks di atas --navy. WAJIB kontras dengan --navy.
+   --on-navy-mut  teks sekunder di atas --navy
+   --ink          warna teks utama (judul + isi) di atas --surface/--grey
+   --mut          teks sekunder di atas kanvas terang
+   --teal         aksen utama
+   --teal-d       aksen utama versi gelap (teks di atas latar aksen muda)
+   --grey         kanvas halaman / latar kartu
+   --mint         latar aksen lembut (kartu accent)
+   --accent-line  garis tepi untuk latar aksen (kartu accent)
+   --tag-bg       latar tag/pil
+   --line         garis pemisah tipis
+   --font-d       font display (judul)
+   --font-s       font serif
+   --ease         easing kurva
+*/
+/* DESIGN: consulting — kanvas abu hangat, kartu putih naik dengan elevasi lembut,
+   eyebrow small-caps berwarna, aturan tipis di footer. Untuk deck bisnis/klien. */
 :root{--surface:#fff;--navy:#1C2833;--on-navy:#fff;--on-navy-mut:#AAB7B8;--teal:#5EA8A7;--teal-d:#2F7E7D;--grey:#F4F6F6;--mut:#5A6C7D;--ink:#2E4053;--mint:#EAF6F4;--accent-line:#BFDCD8;--tag-bg:#D9ECEA;--line:#E2E8EC;--font-d:'Plus Jakarta Sans',sans-serif;--font-s:'Source Serif 4',serif;--ease:cubic-bezier(.16,1,.3,1)}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:var(--font-d);-webkit-font-smoothing:antialiased}
-.kicker{font-size:25px;letter-spacing:6px;color:var(--teal);font-weight:800}
-h1.title{font-size:78px;color:var(--ink);font-weight:800;line-height:1.04;margin-top:12px;letter-spacing:-1px}
-h1.serif{font-family:var(--font-s);letter-spacing:0}
-.pad{padding:78px 100px 104px}
-.rule{width:130px;height:10px;background:var(--teal);border-radius:99px;margin:24px 0 0}
-.card{background:var(--grey);border-radius:24px;padding:34px 38px;border:1px solid var(--line)}
-.card.accent{background:var(--mint);border-color:var(--accent-line)}
-.kpi-num{font-size:84px;font-weight:800;color:var(--ink);line-height:1;letter-spacing:-2px}
-.kpi-lab{font-size:26px;color:var(--mut);margin-top:8px}
-.bul{font-size:30px;color:var(--ink);line-height:1.55}
-.small{font-size:25px;color:var(--mut);line-height:1.5}
+
+/* Kanvas abu hangat; kartu putih naik di atasnya (token dibalik) */
+.slide{background:var(--grey)}
+.slide[style*="var(--navy)"]{background:var(--navy)}
+.slide>*{position:relative;z-index:1}
+
+.pad{padding:88px 104px 116px}
+
+/* Eyebrow: uppercase kecil berwarna, bukan pil */
+.kicker{display:block;font-size:19px;font-weight:800;letter-spacing:3.6px;text-transform:uppercase;color:var(--teal);margin-bottom:4px}
+h1.title{font-size:72px;font-weight:800;color:var(--ink);line-height:1.06;letter-spacing:-1.6px;margin-top:8px;max-width:1480px}
+h1.serif{font-family:var(--font-d);letter-spacing:-1.4px}
+
+/* Rule: potongan garis aksen pendek */
+.rule{width:72px;height:5px;background:var(--teal);border-radius:3px;margin:26px 0 0}
+
+/* Kartu: putih, sudut 16, shadow elevasi lembut */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:36px 38px;box-shadow:0 1px 2px var(--line),0 18px 36px -24px var(--mut)}
+.card.accent{background:var(--mint);border-color:var(--accent-line);box-shadow:0 1px 2px var(--accent-line),0 18px 36px -24px var(--mut)}
+
+.kpi-num{font-size:80px;font-weight:800;color:var(--teal);line-height:1;letter-spacing:-2px}
+.kpi-lab{font-size:25px;color:var(--mut);margin-top:10px}
+.bul{font-size:29px;color:var(--ink);line-height:1.58}
+.small{font-size:24px;color:var(--mut);line-height:1.55}
+.quote{font-size:42px;font-weight:600;color:var(--ink);line-height:1.38;letter-spacing:-.6px}
+
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:28px}
-.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:28px}
-.grid4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:24px}
-.tag{display:inline-block;font-size:21px;font-weight:800;letter-spacing:3px;color:var(--teal-d);background:var(--tag-bg);border-radius:99px;padding:7px 18px;margin-bottom:12px}
-.map{display:flex;align-items:stretch;gap:18px;margin-top:36px}
-.mapcol{flex:1;border-radius:24px;padding:32px 34px}
-.mapcol h3{font-size:30px;margin-bottom:6px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:26px}
+.grid4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:22px}
+
+/* Tag: eyebrow bergaris bawah, bukan pil */
+.tag{display:inline-block;font-size:18px;font-weight:800;letter-spacing:2.8px;text-transform:uppercase;color:var(--teal);background:transparent;border-radius:0;padding:0 0 8px;border-bottom:2px solid var(--teal);margin-bottom:14px}
+
+.map{display:flex;align-items:stretch;gap:20px;margin-top:36px}
+.mapcol{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:32px 34px;box-shadow:0 1px 2px var(--line),0 18px 36px -24px var(--mut)}
+.mapcol h3{font-size:30px;margin-bottom:6px;color:var(--ink)}
 .mapcol ul{list-style:none;margin-top:14px}
-.mapcol li{font-size:26px;line-height:1.6;color:var(--ink)}
+.mapcol li{font-size:25px;line-height:1.62;color:var(--ink)}
 .mapcol li b{color:var(--ink)}
-.arrow{align-self:center;font-size:52px;color:var(--teal);font-weight:800}
-table.t{width:100%;border-collapse:collapse;margin-top:28px;font-size:26px}
-table.t th{text-align:left;font-size:22px;letter-spacing:2px;color:var(--teal-d);padding:10px 14px;border-bottom:3px solid var(--teal)}
-table.t td{padding:12px 14px;border-bottom:1px solid var(--line);color:var(--ink)}
+.arrow{align-self:center;font-size:44px;color:var(--teal);font-weight:800}
+
+table.t{width:100%;border-collapse:collapse;margin-top:28px;font-size:25px}
+table.t th{text-align:left;font-size:19px;letter-spacing:2px;text-transform:uppercase;color:var(--mut);padding:12px 16px;border-bottom:2px solid var(--ink)}
+table.t td{padding:14px 16px;border-bottom:1px solid var(--line);color:var(--ink)}
 table.t td.n{text-align:right;font-weight:800;color:var(--ink);white-space:nowrap}
-.foot{position:absolute;bottom:32px;left:100px;right:100px;display:flex;justify-content:space-between;align-items:center;font-size:21px;color:var(--mut)}
-.reveal{opacity:0;transform:translateY(32px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+
+.foot{position:absolute;bottom:34px;left:104px;right:104px;display:flex;justify-content:space-between;align-items:center;font-size:19px;color:var(--mut);letter-spacing:.4px}
+
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
 .visible .reveal{opacity:1;transform:none}
 .visible .reveal.d1{transition-delay:.08s}.visible .reveal.d2{transition-delay:.16s}.visible .reveal.d3{transition-delay:.24s}
-.quote{font-size:44px;font-style:italic;color:var(--ink);line-height:1.4}
-.stat-big{font-size:120px;font-weight:800;color:var(--on-navy);letter-spacing:-3px}
+
 .timeline{display:flex;gap:0;margin-top:36px}
 .timeline .step{flex:1;text-align:center;position:relative;padding-top:44px}
-.timeline .dot{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:28px;height:28px;border-radius:50%;background:var(--teal)}
-.timeline .step::before{content:"";position:absolute;top:25px;left:0;right:0;height:4px;background:var(--line);z-index:-1}
+.timeline .dot{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:24px;height:24px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 7px var(--accent-line)}
+.timeline .step::before{content:"";position:absolute;top:23px;left:0;right:0;height:2px;background:var(--line);z-index:-1}
 .timeline .step:first-child::before{left:50%}.timeline .step:last-child::before{right:50%}
+
 .checklist{list-style:none;margin-top:24px}
-.checklist li{font-size:29px;color:var(--ink);padding:14px 0 14px 64px;position:relative;line-height:1.4}
-.checklist li::before{content:"✓";position:absolute;left:0;top:12px;width:44px;height:44px;border-radius:50%;background:var(--mint);color:var(--teal-d);font-weight:800;text-align:center;line-height:44px;font-size:24px}
-/* THEME neon — adaptasi Neon Cyber (frontend-slides #9). Gelap techy, font sistem. Bukan untuk laporan formal. */
-:root{--surface:#0b1220;--navy:#0b1220;--on-navy:#e5e7eb;--on-navy-mut:#9ca3af;--teal:#00ffcc;--teal-d:#00ccaa;--grey:#111827;--mut:#9ca3af;--ink:#e5e7eb;--mint:#0f2733;--accent-line:#1f3a4d;--tag-bg:#0f2733;--line:#1f3a4d;--font-d:ui-sans-serif,system-ui,sans-serif;--font-s:ui-monospace,'Cascadia Mono',Consolas,monospace;--ease:cubic-bezier(.16,1,.3,1)}
+.checklist li{font-size:28px;color:var(--ink);padding:14px 0 14px 62px;position:relative;line-height:1.42}
+.checklist li::before{content:"✓";position:absolute;left:0;top:12px;width:42px;height:42px;border-radius:50%;background:var(--teal);color:var(--on-navy);font-weight:800;text-align:center;line-height:42px;font-size:22px}
+
+/* Cover split (template 01): panel kiri dibuat putih agar terpisah dari kanvas abu */
+.slide>div[style*="display:flex"][style*="height:100%"]>div[style*="background:var(--grey)"]{background:var(--surface)!important;box-shadow:0 1px 2px var(--line),0 18px 36px -24px var(--mut)}
+
+/* Slide navy: semua teks pakai token on-navy */
+.slide[style*="var(--navy)"] .kicker{color:var(--on-navy)}
+.slide[style*="var(--navy)"] .bul{color:var(--on-navy)}
+.slide[style*="var(--navy)"] .small{color:var(--on-navy-mut)}
+.slide[style*="var(--navy)"] .kpi-num{color:var(--on-navy)}
+.slide[style*="var(--navy)"] .kpi-lab{color:var(--on-navy-mut)}
+.slide[style*="var(--navy)"] .quote{color:var(--on-navy)}
+.slide[style*="var(--navy)"] .tag{color:var(--on-navy);border-bottom-color:var(--on-navy)}
+.slide[style*="var(--navy)"] .foot{color:var(--on-navy-mut)}
+.slide[style*="var(--navy)"] .timeline .step::before{background:var(--on-navy-mut)}
+.slide[style*="var(--navy)"] .checklist li{color:var(--on-navy)}
+
+:root{--surface:#fff;--navy:#1A2233;--on-navy:#F5F3F1;--on-navy-mut:#A8AFBD;--teal:#C1502E;--teal-d:#9A3D22;--grey:#F2F2F0;--mut:#6B6B66;--ink:#1A2233;--mint:#F7EDE8;--accent-line:#E7D5CC;--tag-bg:#F3E2DA;--line:#E4E2DE;--font-d:ui-sans-serif,system-ui,'Segoe UI',Arial,sans-serif;--font-s:Georgia,'Times New Roman',serif;--ease:cubic-bezier(.16,1,.3,1)}
+
 /* MOTION corporate — default. Subtle fast 200-300ms, dari frontend-slides Professional/Corporate. */
 .reveal{opacity:0;transform:translateY(32px);transition:opacity .3s var(--ease),transform .3s var(--ease)}
 .visible .reveal{opacity:1;transform:none}
@@ -150,7 +192,7 @@ body.editing .slide{outline:3px dashed var(--teal);outline-offset:-10px}
 <div class="reveal d2"><div class="kpi-num">12</div><div class="kpi-lab">contoh angka ketiga</div></div>
 </div>
 </div>
-<div class="foot" style="color:var(--on-navy-mut)"><span>Contoh Deck | 18 SEP 2026</span><span>1 / 12</span></div>
+<div class="foot" style="color:var(--on-navy-mut)"><span>Contoh Deck | 21 SEP 2026</span><span>1 / 12</span></div>
 </section>
 
 <!-- 02-summary.html -->
@@ -167,7 +209,7 @@ body.editing .slide{outline:3px dashed var(--teal);outline-offset:-10px}
 <li>Poin kedua menyorot hal yang perlu diperhatikan</li>
 <li>Poin ketiga menutup dengan kesimpulan utama</li>
 </ul>
-</div><div class="foot"><span>Contoh Deck | 18 SEP 2026</span><span>2 / 12</span></div></section>
+</div><div class="foot"><span>Contoh Deck | 21 SEP 2026</span><span>2 / 12</span></div></section>
 
 <!-- 03-compare.html -->
 <!-- layout: templates/03-compare-2col.html -->
@@ -182,7 +224,7 @@ body.editing .slide{outline:3px dashed var(--teal);outline-offset:-10px}
 <p class="bul" style="font-size:27px;margin-top:12px">Jelaskan perubahannya. Fokus ke satu perbedaan yang paling menentukan, bukan daftar panjang.</p></div>
 </div>
 <p class="small reveal d3" style="margin-top:24px">Satu baris penutup yang merangkum kenapa perubahan ini penting</p>
-</div><div class="foot"><span>Contoh Deck | 18 SEP 2026</span><span>3 / 12</span></div></section>
+</div><div class="foot"><span>Contoh Deck | 21 SEP 2026</span><span>3 / 12</span></div></section>
 
 <!-- 04-table.html -->
 <!-- layout: templates/04-table-detail.html -->
@@ -196,7 +238,7 @@ body.editing .slide{outline:3px dashed var(--teal);outline-offset:-10px}
 <tr><td>Item keempat</td><td>Menunggu</td><td class="n">—</td></tr>
 </table>
 <p class="small reveal d3" style="margin-top:18px">Catatan sumber angka dan tanggal pengambilan data</p>
-</div><div class="foot"><span>Contoh Deck | 18 SEP 2026</span><span>4 / 12</span></div></section>
+</div><div class="foot"><span>Contoh Deck | 21 SEP 2026</span><span>4 / 12</span></div></section>
 
 <!-- 05-mapping.html -->
 <!-- layout: templates/05-mapping-2col.html -->
@@ -214,7 +256,7 @@ body.editing .slide{outline:3px dashed var(--teal);outline-offset:-10px}
 </div>
 </div>
 <p class="small reveal d3" style="margin-top:24px">Catatan singkat tentang ruang lingkup pemetaan ini</p>
-</div><div class="foot"><span>Contoh Deck | 18 SEP 2026</span><span>5 / 12</span></div></section>
+</div><div class="foot"><span>Contoh Deck | 21 SEP 2026</span><span>5 / 12</span></div></section>
 
 <!-- 06-scope.html -->
 <!-- layout: templates/06-scope-4box.html -->
@@ -226,7 +268,7 @@ body.editing .slide{outline:3px dashed var(--teal);outline-offset:-10px}
 <div class="card"><span class="tag">DI LUAR</span><h3 style="font-size:38px;color:var(--ink)">Poin ketiga</h3><p class="bul" style="font-size:27px;color:var(--mut)">Penjelasan singkat satu baris</p></div>
 <div class="card"><span class="tag">DI LUAR</span><h3 style="font-size:38px;color:var(--ink)">Poin keempat</h3><p class="bul" style="font-size:27px;color:var(--mut)">Penjelasan singkat satu baris</p></div>
 </div>
-</div><div class="foot"><span>Contoh Deck | 18 SEP 2026</span><span>6 / 12</span></div></section>
+</div><div class="foot"><span>Contoh Deck | 21 SEP 2026</span><span>6 / 12</span></div></section>
 
 <!-- 07-highlight.html -->
 <!-- layout: templates/07-stat-full-navy.html -->
@@ -235,7 +277,7 @@ body.editing .slide{outline:3px dashed var(--teal);outline-offset:-10px}
 <h1 class="title serif d1" style="color:var(--on-navy)">Satu angka yang paling menentukan</h1><div class="rule d2"></div>
 <div class="kpi-num d2" style="color:var(--on-navy);font-size:104px;margin-top:26px">86% selesai</div>
 <p class="bul d3" style="color:var(--on-navy-mut);margin-top:18px">Satu sampai dua kalimat yang menjelaskan kenapa angka ini penting.</p>
-</div><div class="foot" style="color:var(--on-navy-mut)"><span>Contoh Deck | 18 SEP 2026</span><span>7 / 12</span></div></section>
+</div><div class="foot" style="color:var(--on-navy-mut)"><span>Contoh Deck | 21 SEP 2026</span><span>7 / 12</span></div></section>
 
 <!-- 08-rows.html -->
 <!-- layout: templates/08-rows-list.html -->
@@ -246,7 +288,7 @@ body.editing .slide{outline:3px dashed var(--teal);outline-offset:-10px}
 <div class="card"><h3 style="font-size:37px;color:var(--ink)">2 — Poin kedua</h3><p class="bul" style="font-size:27px;color:var(--mut)">Penjelasan dua baris yang cukup untuk memberi konteks tanpa bertele-tele.</p></div>
 <div class="card"><h3 style="font-size:37px;color:var(--ink)">3 — Poin ketiga</h3><p class="bul" style="font-size:27px;color:var(--mut)">Penjelasan dua baris yang cukup untuk memberi konteks tanpa bertele-tele.</p></div>
 </div>
-</div><div class="foot"><span>Contoh Deck | 18 SEP 2026</span><span>8 / 12</span></div></section>
+</div><div class="foot"><span>Contoh Deck | 21 SEP 2026</span><span>8 / 12</span></div></section>
 
 <!-- 09-blockers.html -->
 <!-- layout: templates/09-blocker-2col.html -->
@@ -257,7 +299,7 @@ body.editing .slide{outline:3px dashed var(--teal);outline-offset:-10px}
 <div class="card accent" style="border:3px solid var(--teal)"><span class="tag">PERLU KEPUTUSAN</span><h3 style="font-size:35px;color:var(--ink)">Kendala kedua</h3><p class="bul" style="font-size:26px;color:var(--mut);margin-top:10px">Jelaskan pilihan yang tersedia dan siapa yang perlu memutuskan.</p></div>
 </div>
 <p class="reveal d3" style="font-size:28px;color:var(--ink);margin-top:28px"><b>Keputusan:</b> satu sampai dua kalimat tentang langkah yang diambil minggu ini.</p>
-</div><div class="foot"><span>Contoh Deck | 18 SEP 2026</span><span>9 / 12</span></div></section>
+</div><div class="foot"><span>Contoh Deck | 21 SEP 2026</span><span>9 / 12</span></div></section>
 
 <!-- 10-quote.html -->
 <!-- layout: templates/10-quote-closing.html -->
@@ -266,7 +308,7 @@ body.editing .slide{outline:3px dashed var(--teal);outline-offset:-10px}
 <p class="quote d1" style="margin-top:24px">"Satu kalimat penutup yang merangkum seluruh isi deck ini."</p>
 <div class="rule d2"></div>
 <p class="small d3" style="margin-top:20px">Keterangan kecil di bawah kutipan</p>
-</div><div class="foot"><span>Contoh Deck | 18 SEP 2026</span><span>10 / 12</span></div></section>
+</div><div class="foot"><span>Contoh Deck | 21 SEP 2026</span><span>10 / 12</span></div></section>
 
 <!-- 11-timeline.html -->
 <!-- layout: templates/11-timeline.html -->
@@ -279,7 +321,7 @@ body.editing .slide{outline:3px dashed var(--teal);outline-offset:-10px}
 <div class="step"><div class="dot"></div><h3 style="font-size:32px;color:var(--ink)">Tahap empat</h3><p class="small">Keterangan singkat tahap ini</p></div>
 </div>
 <p class="small reveal d3" style="margin-top:28px">Catatan singkat tentang alasan urutan ini dipilih</p>
-</div><div class="foot"><span>Contoh Deck | 18 SEP 2026</span><span>11 / 12</span></div></section>
+</div><div class="foot"><span>Contoh Deck | 21 SEP 2026</span><span>11 / 12</span></div></section>
 
 <!-- 12-checklist.html -->
 <!-- layout: templates/12-checklist.html -->
@@ -291,7 +333,7 @@ body.editing .slide{outline:3px dashed var(--teal);outline-offset:-10px}
 <li>Langkah ketiga, menunggu hasil sebelumnya</li>
 <li>Langkah keempat sebagai penutup</li>
 </ul>
-</div><div class="foot"><span>Contoh Deck | 18 SEP 2026</span><span>12 / 12</span></div></section>
+</div><div class="foot"><span>Contoh Deck | 21 SEP 2026</span><span>12 / 12</span></div></section>
 
 </div></div>
 <div class="progress"><i id="bar"></i></div>
@@ -342,11 +384,11 @@ fit();go(0);
   <select id="theme-select" class="deck-theme-select" aria-label="Pilih tema">
     <option value="botanical">botanical</option>
     <option value="navy">navy</option>
-    <option value="neon" selected>neon</option>
+    <option value="neon">neon</option>
     <option value="paper">paper</option>
     <option value="parchment-gold">parchment-gold</option>
     <option value="petrol-gold">petrol-gold</option>
-    <option value="slate-rust">slate-rust</option>
+    <option value="slate-rust" selected>slate-rust</option>
     <option value="swiss">swiss</option>
     <option value="terracotta">terracotta</option>
   </select>
@@ -366,7 +408,7 @@ fit();go(0);
   var saved = null;
   try{ saved = localStorage.getItem('slideck-theme') }catch(e){}
   if(saved && validThemes.indexOf(saved) >= 0){ ts.value = saved; st.setAttribute('data-theme', saved) }
-  else{ ts.value = 'neon'; st.setAttribute('data-theme','neon') }
+  else{ ts.value = 'slate-rust'; st.setAttribute('data-theme','slate-rust') }
 })();</script>
 <script>window.__slideckNotes={};</script>
 </body>

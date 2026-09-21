@@ -1,0 +1,9 @@
+{
+  "title": "Contoh Deck — organic / petrol-gold",
+  "footer": "Contoh Deck | 21 SEP 2026",
+  "output": "contoh-organic-petrol-gold.html",
+  "slides": "../slides",
+  "design": "organic",
+  "theme": "petrol-gold",
+  "motion": "playful"
+}

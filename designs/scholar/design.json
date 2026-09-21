@@ -1,0 +1,6 @@
+{
+  "name": "scholar",
+  "label": "Scholar",
+  "description": "Deck akademik/seminar: judul serif display, badge bulat bernomor di tiap kartu, medali aksen, kartu putih radius dengan elevasi halus. Untuk kuliah, seminar riset, dan presentasi ilmiah.",
+  "recommended": { "theme": "petrol-gold", "motion": "corporate" }
+}

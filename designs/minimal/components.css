@@ -1,0 +1,85 @@
+/* slideck-html components.css — FROZEN. Jangan edit per deck. Struktur + kontrak token. */
+/* TOKEN CONTRACT (wajib dipenuhi tiap theme, kalau tidak tema lain akan rusak):
+   --surface --navy --on-navy --on-navy-mut --ink --mut --teal --teal-d
+   --grey --mint --accent-line --tag-bg --line --font-d --font-s --ease
+*/
+/* DESIGN: minimal — tipografi display tipis besar, satu garis aksen tipis di bawah judul,
+   tabel booktabs, kepadatan rendah. Untuk deck editorial/riset. */
+:root{--surface:#fff;--navy:#1C2833;--on-navy:#fff;--on-navy-mut:#AAB7B8;--teal:#5EA8A7;--teal-d:#2F7E7D;--grey:#F4F6F6;--mut:#5A6C7D;--ink:#2E4053;--mint:#EAF6F4;--accent-line:#BFDCD8;--tag-bg:#D9ECEA;--line:#E2E8EC;--font-d:'Plus Jakarta Sans',sans-serif;--font-s:'Source Serif 4',serif;--ease:cubic-bezier(.16,1,.3,1)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-d);-webkit-font-smoothing:antialiased}
+
+.slide{background:var(--surface)}
+.slide>*{position:relative;z-index:1}
+
+.pad{padding:96px 120px 124px}
+
+/* Kicker: mikro, muted, uppercase — bukan aksen */
+.kicker{display:block;font-size:17px;font-weight:600;letter-spacing:4.4px;text-transform:uppercase;color:var(--mut);margin-bottom:10px}
+
+/* Judul: display tipis besar */
+h1.title{font-size:82px;font-weight:300;color:var(--ink);line-height:1.08;letter-spacing:-1.6px;margin-top:6px;max-width:1500px}
+h1.serif{font-family:var(--font-s);font-weight:400;letter-spacing:-1px}
+
+/* Rule: satu garis aksen tipis penuh lebar */
+.rule{width:100%;height:1px;background:var(--teal);margin:30px 0 0}
+
+/* Kartu: rata, tanpa fill dan sudut */
+.card{background:transparent;border:0;border-top:1px solid var(--line);border-radius:0;padding:28px 0;box-shadow:none}
+.card.accent{background:transparent;border:0;border-top:2px solid var(--teal);border-radius:0;padding:28px 0}
+
+.kpi-num{font-size:88px;font-weight:300;color:var(--ink);line-height:1;letter-spacing:-2.4px}
+.kpi-lab{font-size:24px;color:var(--mut);margin-top:12px}
+.bul{font-size:28px;font-weight:300;color:var(--ink);line-height:1.7}
+.small{font-size:23px;font-weight:300;color:var(--mut);line-height:1.7}
+.quote{font-size:44px;font-weight:300;color:var(--ink);line-height:1.45;letter-spacing:-.8px}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:40px 44px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:40px 36px}
+.grid4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:34px 28px}
+
+/* Tag: teks mikro tanpa pil */
+.tag{display:inline-block;font-size:16px;font-weight:700;letter-spacing:3.2px;text-transform:uppercase;color:var(--mut);background:transparent;border-radius:0;padding:0;margin-bottom:16px}
+
+.map{display:flex;align-items:stretch;gap:36px;margin-top:44px}
+.mapcol{flex:1;border-top:1px solid var(--line);padding:26px 0 0}
+.mapcol h3{font-size:30px;font-weight:400;margin-bottom:10px;color:var(--ink)}
+.mapcol ul{list-style:none;margin-top:20px}
+.mapcol li{font-size:24px;font-weight:300;line-height:1.75;color:var(--ink);margin-bottom:14px}
+.mapcol li b{font-weight:600;color:var(--ink)}
+.arrow{align-self:center;font-size:36px;color:var(--teal);font-weight:300}
+
+/* Tabel booktabs: garis tebal atas-bawah, garis tipis bawah header, tanpa garis baris */
+table.t{width:100%;border-collapse:collapse;margin-top:34px;font-size:24px;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
+table.t th{text-align:left;font-size:17px;font-weight:700;letter-spacing:2.4px;text-transform:uppercase;color:var(--mut);padding:16px 18px;border-bottom:1px solid var(--ink)}
+table.t td{padding:18px;border-bottom:0;color:var(--ink);font-weight:300;vertical-align:top}
+table.t td.n{text-align:right;font-weight:600;color:var(--ink);white-space:nowrap}
+
+.foot{position:absolute;bottom:40px;left:120px;right:120px;display:flex;justify-content:space-between;align-items:center;font-size:18px;color:var(--mut);letter-spacing:.6px}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.visible .reveal{opacity:1;transform:none}
+.visible .reveal.d1{transition-delay:.1s}.visible .reveal.d2{transition-delay:.2s}.visible .reveal.d3{transition-delay:.3s}
+
+.timeline{display:flex;gap:0;margin-top:44px}
+.timeline .step{flex:1;position:relative;padding-top:38px}
+.timeline .dot{position:absolute;top:12px;left:0;width:14px;height:14px;border-radius:50%;background:var(--teal)}
+.timeline .step::before{content:"";position:absolute;top:18px;left:0;right:0;height:1px;background:var(--line);z-index:-1}
+.timeline .step:last-child::before{right:100%}
+.timeline .step h3{font-weight:400!important}
+
+.checklist{list-style:none;margin-top:28px}
+.checklist li{font-size:27px;font-weight:300;color:var(--ink);padding:16px 0 16px 52px;position:relative;line-height:1.55;border-bottom:1px solid var(--line)}
+.checklist li::before{content:"";position:absolute;left:6px;top:28px;width:16px;height:2px;background:var(--teal)}
+
+/* Slide navy: teks pakai token on-navy */
+.slide[style*="var(--navy)"] .kicker{color:var(--on-navy-mut)}
+.slide[style*="var(--navy)"] .bul{color:var(--on-navy)}
+.slide[style*="var(--navy)"] .small{color:var(--on-navy-mut)}
+.slide[style*="var(--navy)"] .kpi-num{color:var(--on-navy)}
+.slide[style*="var(--navy)"] .kpi-lab{color:var(--on-navy-mut)}
+.slide[style*="var(--navy)"] .quote{color:var(--on-navy)}
+.slide[style*="var(--navy)"] .tag{color:var(--on-navy-mut)}
+.slide[style*="var(--navy)"] .foot{color:var(--on-navy-mut)}
+.slide[style*="var(--navy)"] .checklist li{color:var(--on-navy);border-bottom-color:var(--on-navy-mut)}
+.slide[style*="var(--navy)"] .timeline .step::before{background:var(--on-navy-mut)}

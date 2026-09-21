@@ -1,0 +1,6 @@
+{
+  "name": "consulting",
+  "label": "Consulting",
+  "description": "Deck konsultasi/advisory: kanvas abu hangat, kartu putih naik dengan elevasi lembut, eyebrow small-caps berwarna, garis aksen tipis di footer. Untuk presentasi klien, proposal, dan laporan manajemen.",
+  "recommended": { "theme": "slate-rust", "motion": "corporate" }
+}

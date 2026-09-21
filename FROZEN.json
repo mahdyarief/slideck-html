@@ -1,5 +1,5 @@
 {
-  "build.js": "63b090ff5c9697d4",
+  "build.js": "12936a6354140bfc",
   "designs/architectural/components.css": "18f7658dbe0d60f9",
   "designs/architectural/design.json": "9aa80bf99c6cccfb",
   "designs/brutalist/components.css": "7a70d2962ad87d64",
@@ -8,6 +8,8 @@
   "designs/campus/design.json": "48802ada227180ff",
   "designs/colloquium/components.css": "7004e6c6d6afda2c",
   "designs/colloquium/design.json": "09f23f17423829d8",
+  "designs/consulting/components.css": "21050b712068d46d",
+  "designs/consulting/design.json": "403ed70aa4fe06d2",
   "designs/dark-academia/components.css": "be6f23579597fc60",
   "designs/dark-academia/design.json": "02d8e743f5d7e5c3",
   "designs/default/components.css": "862effe5e8e78dc8",
@@ -20,10 +22,16 @@
   "designs/keynote/design.json": "49c90b6b3d7e5852",
   "designs/lesson/components.css": "66994ad14087c9ac",
   "designs/lesson/design.json": "f16fb3bc2c87c2fd",
+  "designs/minimal/components.css": "fde71bed7efd0ce7",
+  "designs/minimal/design.json": "8c8a2e1004e27a5f",
+  "designs/organic/components.css": "74ef54dd07b6ec39",
+  "designs/organic/design.json": "a6d6eec56e124bd2",
   "designs/plate/components.css": "4274f496805fc68e",
   "designs/plate/design.json": "41229834029d74cc",
   "designs/ribbon/components.css": "edeb328764a6b433",
   "designs/ribbon/design.json": "8462ef89e1625e17",
+  "designs/scholar/components.css": "16d9e5c3bb87cfe8",
+  "designs/scholar/design.json": "c3d85c49a1d359c0",
   "designs/spotlight/components.css": "d4f917d9fc8a5191",
   "designs/spotlight/design.json": "778edab3b8945a43",
   "motions/cinematic.css": "59e5809300f9cbfe",
@@ -35,5 +43,9 @@
   "themes/navy.css": "66baa3c6582b1b98",
   "themes/neon.css": "b16481bb54905fd1",
   "themes/paper.css": "46f0d2a6f756c9e2",
-  "themes/swiss.css": "3b5120191562e422"
+  "themes/parchment-gold.css": "751dcac431fcacb5",
+  "themes/petrol-gold.css": "aef6b35624d8e387",
+  "themes/slate-rust.css": "de2c25db073e571e",
+  "themes/swiss.css": "3b5120191562e422",
+  "themes/terracotta.css": "e0931fe7b41b152c"
 }

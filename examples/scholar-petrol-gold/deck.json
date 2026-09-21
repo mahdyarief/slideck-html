@@ -1,0 +1,9 @@
+{
+  "title": "Contoh Deck — scholar / petrol-gold",
+  "footer": "Contoh Deck | 21 SEP 2026",
+  "output": "contoh-scholar-petrol-gold.html",
+  "slides": "../slides",
+  "design": "scholar",
+  "theme": "petrol-gold",
+  "motion": "corporate"
+}

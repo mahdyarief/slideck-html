@@ -8,7 +8,7 @@ Output is one self-contained `.html` with fonts inlined base64 — works offline
 
 ## Preview
 
-Same slides and theme, thirteen designs:
+Same slides and theme, seventeen designs:
 
 | default | editorial | brutalist |
 |---|---|---|
@@ -26,19 +26,27 @@ Same slides and theme, thirteen designs:
 |---|---|---|
 | ![colloquium](assets/preview/design-colloquium.png) | ![lesson](assets/preview/design-lesson.png) | ![spotlight](assets/preview/design-spotlight.png) |
 
-| dark-academia | | |
+| dark-academia | consulting | scholar |
 |---|---|---|
-| ![dark-academia](assets/preview/design-dark-academia.png) | | |
+| ![dark-academia](assets/preview/design-dark-academia.png) | ![consulting](assets/preview/design-consulting.png) | ![scholar](assets/preview/design-scholar.png) |
 
-Same design, five themes:
+| organic | minimal | |
+|---|---|---|
+| ![organic](assets/preview/design-organic.png) | ![minimal](assets/preview/design-minimal.png) | |
+
+Same design, nine themes:
 
 | navy (default) | paper | botanical |
 |---|---|---|
 | ![navy](assets/preview/deck-navy.png) | ![paper](assets/preview/deck-paper.png) | ![botanical](assets/preview/deck-botanical.png) |
 
-| swiss | neon |
-|---|---|
-| ![swiss](assets/preview/deck-swiss.png) | ![neon](assets/preview/deck-neon.png) |
+| swiss | neon | slate-rust |
+|---|---|---|
+| ![swiss](assets/preview/deck-swiss.png) | ![neon](assets/preview/deck-neon.png) | ![slate-rust](assets/preview/deck-slate-rust.png) |
+
+| petrol-gold | terracotta | parchment-gold |
+|---|---|---|
+| ![petrol-gold](assets/preview/deck-petrol-gold.png) | ![terracotta](assets/preview/deck-terracotta.png) | ![parchment-gold](assets/preview/deck-parchment-gold.png) |
 
 ## For AI agents: read this first
 
@@ -90,9 +98,11 @@ template.html      FROZEN shell ({{TITLE}} {{FONTS}} {{COMPONENTS}} {{SLIDES}} +
 build.js           FROZEN: slides/*.html → dist/<output>.html, validates placeholders, writes FROZEN.json
 pdf.js             TOOL: dist/<output>.html → dist/<output>.pdf, one slide per page
 designs/           FROZEN: default · editorial · brutalist · geometric · architectural · ribbon · plate ·
-                   campus · keynote · colloquium · lesson · spotlight · dark-academia   (components.css + design.json each)
+                   campus · keynote · colloquium · lesson · spotlight · dark-academia ·
+                   consulting · scholar · organic · minimal   (components.css + design.json each)
 deck.json          EDIT: title, footer, output, design, theme, motion
-themes/            navy (default) · paper · botanical · swiss · neon   (:root color+font only)
+themes/            navy (default) · paper · botanical · swiss · neon ·
+                   slate-rust · petrol-gold · terracotta · parchment-gold   (:root color+font only)
 motions/           corporate (default) · cinematic · playful           (.reveal timing only)
 templates/         12 copy-paste layouts with [...] placeholders
 slides/            YOUR content (only dir you + AI edit)
@@ -133,6 +143,10 @@ LICENSE            MIT
 | `lesson` | dot-grid background, vertical connector, numbered steps, multi-accent pills, timeline connector | shared 12 |
 | `spotlight` | centered focus area with dimmed surroundings, radial glow, spotlight cards, centered layout | shared 12 |
 | `dark-academia` | navy canvas, serif display, ornamental border, earthy accents, double-rule tables | shared 12 |
+| `consulting` | warm grey canvas, elevated white cards with soft shadow, small-caps coloured eyebrows, step indicator | shared 12 |
+| `scholar` | serif display headings, circular numbered badges on cards, accent medallions, rounded white cards | shared 12 |
+| `organic` | imagery-led cover, soft blob/wave decorations, 01/02/03 list markers, pill cards with circular icons | shared 12 |
+| `minimal` | thin large display type, single hairline accent rule under title, booktabs tables, low density | shared 12 |
 
 | Theme | Look | Font |
 |---|---|---|
@@ -141,6 +155,10 @@ LICENSE            MIT
 | `botanical` | dark green-black | system stack |
 | `swiss` | high-contrast minimal | system stack |
 | `neon` | dark blue-black | system stack |
+| `slate-rust` | dark slate + rust, warm grey canvas | system stack |
+| `petrol-gold` | deep petrol teal + gold | system stack |
+| `terracotta` | terracotta + light grey, thin display | system stack |
+| `parchment-gold` | cream canvas + navy + gold | system stack |
 
 | Motion | Feel |
 |---|---|
