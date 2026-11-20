@@ -5,7 +5,7 @@ You are building slides with slideck-html. Follow these rules exactly.
 ## 1. Read first (in order)
 
 1. This file (`AGENTS.md`).
-2. `skills/slideck-html/SKILL.md` — full workflow, 19 designs, 10 themes, 3 motions, 12 templates.
+2. `skills/slideck-html/SKILL.md` — full workflow, 19 designs, 10 themes, 5 motions, 38 templates (with an order per deck type), and the rules for steps and interactive components.
 3. `deck.json` — current deck config (title, footer, output, design, theme, motion).
 
 ## 2. Frozen vs editable
@@ -22,17 +22,18 @@ node pdf.js     # dist/<output>.html → dist/<output>.pdf, one slide per page
 ```
 
 - New deck, preferred: write `slides/NN-name.html` as `<slide layout="title|section|title-content|two-content|comparison|title-only|content-caption|picture-caption|content-aside|blank" [dark] [notes="..."]>` with `<ph name="...">` placeholders (names per layout in SKILL.md). Empty placeholders are dropped.
-- Or copy `templates/<n>-*.html` → `slides/NN-name.html`, replace `[...]` only, keep all classes.
+- Or copy `templates/<n>-*.html` → `slides/NN-name.html`, replace every `[...]`, keep all classes. 38 templates cover reports, pitches, proposals and research defences (cover, agenda, exec summary, SWOT, market size, competition, positioning, team, pricing, case study, logo wall, Gantt, methodology, references, Q&A …); SKILL.md lists them by purpose and gives an order per deck type. The build warns about any `[text]` left unfilled. Filled examples: `examples/templates/` (slide N = template N).
 - Visuals, drawn at build time as SVG and coloured by the theme:
   - `<chart type="bar|hbar|line|area|pie|doughnut">` with `labels: …` / `Series: …` lines;
-  - `<diagram type="venn|matrix|cycle|funnel|pyramid|scale">` with one `Title: description` line per item (`key: N` highlights one);
+  - `<diagram type="venn|matrix|cycle|funnel|pyramid|scale|nested|positioning|gantt">` with one `Title: description` line per item (`key: N` highlights one);
   - `<icon name="target" [badge] [tone="accent2|navy|soft"]>` line icons (names in SKILL.md);
-  - layout blocks in any design: `.rows`, `.is-key`, `.bands`, `.hero`, `.with-aside`, `.callout`, `.boxed`, `.chips`, `.source` (SKILL.md §3);
+  - layout blocks in any design: `.rows`, `.is-key`, `.bands`, `.hero`, `.with-aside`, `.callout`, `.boxed`, `.chips`, `.source`, `.people`, `.tiers`, `td.yes/.no`, `ol.refs`, `.logos` (SKILL.md §3);
   - `<shape type="…">text</shape>` and `<connector from="#a" to="#b">`;
   - `<pre class="mermaid">flowchart LR …</pre>`.
 - PowerPoint: `node import.js file.pptx --root <dir>` (pptx → slides), `node pptx.js` (built deck → editable .pptx).
 - Placeholders: `{{N}}` / `{{TOTAL}}` auto slide numbers, `[Footer kiri]` auto from `deck.footer`.
-- `deck.json` fields: `title`, `footer`, `output`, `design` (default|editorial|brutalist|geometric|architectural|ribbon|plate|campus|keynote|colloquium|lesson|spotlight|dark-academia|consulting|scholar|organic|minimal|campus-slide|lineart), `theme` (navy|paper|botanical|swiss|neon|slate-rust|petrol-gold|terracotta|parchment-gold|campus-slide), `motion` (corporate|cinematic|playful); optional for web publishing: `lang` (id|en), `scroll` (auto|on|off), `description`, `url`, `image`, `icon`.
+- `deck.json` fields: `title`, `footer`, `output`, `design` (default|editorial|brutalist|geometric|architectural|ribbon|plate|campus|keynote|colloquium|lesson|spotlight|dark-academia|consulting|scholar|organic|minimal|campus-slide|lineart), `theme` (navy|paper|botanical|swiss|neon|slate-rust|petrol-gold|terracotta|parchment-gold|campus-slide), `motion` (corporate|cinematic|editorial|keynote|static; see `docs/motion.md`), `interactive` (live|shared); optional for web publishing: `lang` (id|en), `scroll` (auto|on|off), `description`, `url`, `image`, `icon`.
+- Interaction (`docs/motion.md`, SKILL.md "Interactive and step-by-step"): set `deck.json` `"interactive": "live"` (presented: steps only, `data-step` / `data-steps="dim"`) or `"shared"` (read alone: tabs, swap, peek, hotspots allowed). Pick the component from the content, keep it to the slides that need it, and copy templates 13–18. Every tab/swap state prints as its own page. Verify with the `~` lines of `node check.js`, and open `dist/<deck>.html#N.k` to see slide N after k steps.
 - Optional `data-notes="..."` on a `<section class="slide">` adds speaker notes: hidden on screen, printed as their own page after that slide by `node pdf.js`.
 - Skip a slide file without deleting it: prefix the filename with `_`.
 - Verify: rebuild, then `node check.js`. It exits 1 on overflow that autofit could not fix, broken components, or pixel changes from the baseline; `--update` accepts intended changes. Open `dist/*.html#N` to look at slide N. The built deck has a theme dropdown (top-right) that swaps palettes at runtime without a rebuild.

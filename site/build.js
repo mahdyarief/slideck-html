@@ -38,7 +38,7 @@ function shot(html, out, slide, w, h) {
     .replace(/(<html[^>]*?)data-scroll="[^"]*"/, '$1data-scroll="off"')
     .replace("</body>", "<style>*,*::before,*::after{transition:none!important;animation:none!important}</style></body>"));
   try {
-    runHeadless(browser, ["--screenshot=" + out, "--window-size=" + w + "," + h, "--force-device-scale-factor=1"], fileUrl(still) + "?clean#" + slide, { budget: 4000 });
+    runHeadless(browser, ["--screenshot=" + out, "--window-size=" + w + "," + h, "--force-device-scale-factor=1"], fileUrl(still) + "?clean&final#" + slide, { budget: 4000 });
   } finally { fs.rmSync(still, { force: true }); }
   if (!fs.existsSync(out)) throw new Error("tangkapan layar gagal: " + out);
 }
@@ -49,6 +49,11 @@ run([path.join("examples", "build-all.js")]);
 step("thumbnail");
 fs.mkdirSync(THUMBS, { recursive: true });
 for (const [d, ex] of Object.entries(DESIGNS)) shot(path.join(ROOT, "examples", "html", ex + ".html"), path.join(THUMBS, "design-" + d + ".png"), 1, 640, 360);
+/* template NN → slide NN di examples/templates (deck contoh yang sudah terisi, urutannya sama dengan nomor template) */
+for (const f of fs.readdirSync(path.join(ROOT, "templates")).filter((f) => /^\d\d-.+\.html$/.test(f))) {
+  const nn = f.slice(0, 2);
+  shot(path.join(ROOT, "examples", "html", "templates.html"), path.join(THUMBS, "tpl-" + nn + ".png"), parseInt(nn, 10), 640, 360);
+}
 for (const t of THEMES) {
   const out = path.join(THUMBS, "theme-" + t + ".png");
   if (FAST && fs.existsSync(out)) continue;

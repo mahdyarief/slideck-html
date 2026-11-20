@@ -412,7 +412,33 @@ from: Low
 to: High
 </diagram>
 ```
-`venn` (2–3 sets + `overlap:`), `cycle` (3–6 steps + `center:`) and `pyramid` (2–6 layers, top first) use the same line format. A working deck with every block and diagram is in `examples/components/`.
+`venn` (2–3 sets + `overlap:`), `cycle` (3–6 steps + `center:`) and `pyramid` (2–6 layers, top first) use the same line format.
+
+**Business and research slides:**
+- market size: `<diagram type="nested">` with `TAM:` / `SAM:` / `SOM:` lines, plus a `.source` line with the calculation;
+- positioning map: `<diagram type="positioning">` with `Name: x y` (0–100) and `x: Low | High`;
+- schedule: `<diagram type="gantt">` with `periods: Jan | Feb …` and `Task: 2-4` lines;
+- team: `.people`; pricing: `.tiers` with one `.card.is-key`; competition: `table.t` with `td.yes` / `td.no` and our column `.is-key`; references: `ol.refs`; clients: `.logos`.
+
+Ready-made versions are templates 19–38; SKILL.md lists them by purpose and gives an order per deck type. A working deck with every block and diagram is in `examples/components/`.
+
+### 4.x Steps and interaction: when they earn their place
+Motion already gives every slide a clean entrance. Add interaction only when it changes how the content is understood. The reference is docs/motion.md.
+
+- **Live talk** (`"interactive": "live"`): use steps to stop the audience from reading ahead. Build an argument with `data-steps="dim"` (3–4 points) and end with `<ph name="takeaway" data-step>`. A slide that is only read aloud needs no steps.
+- **Shared link** (`"interactive": "shared"`): let the reader dig. Use `.tabs` for 2–4 views of one thing, `.peek` cards for detail on demand, and `.hotspots` on a screenshot.
+- **Before/after:** `.swap` keeps both states in the same place, so the change itself is what the eye sees. Copy template 14.
+- **One number, then why:** `data-morph` on the KPI card in two slides in a row, with `data-count` on the first. Copy templates 16 and 17.
+- **Never:**
+  - a step on every slide;
+  - more than 6 steps;
+  - hover in a live talk;
+  - a tab whose content means nothing without the others (each state prints as its own page);
+  - `data-count` on more than 3 numbers.
+- **Check:**
+  - `slideck check` prints `~ slide N: …` for each interactive slide: compare it with your plan;
+  - open `dist/<deck>.html#N.k` to see slide N after k steps;
+  - the PDF must still read complete.
 
 ---
 
@@ -437,6 +463,7 @@ A deck isn't done when it builds. It's done when you've **looked at it** and fix
 Report "done" only when **the tool output shows it**:
 - `slideck build` prints no `x` line;
 - `slideck check` prints `Semua lolos.`;
-- `slideck pdf` shows `halaman PDF` = slides + notes pages, if a PDF was asked for.
+- `slideck pdf` shows `halaman PDF` = slides + notes pages + tab/swap state pages, if a PDF was asked for;
+- for interactive slides, the `~` lines of `slideck check` match the steps and components you planned.
 
 Never write "passed" or "looks good" without having run the command in this session and seen that output. If something can't pass, say which slide and why.

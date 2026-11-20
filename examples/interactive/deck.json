@@ -1,0 +1,10 @@
+{
+  "title": "Interactive slides — slideck-html",
+  "footer": "slideck-html | interactive + motion v2",
+  "output": "interactive.html",
+  "lang": "en",
+  "interactive": "shared",
+  "design": "default",
+  "theme": "navy",
+  "motion": "corporate"
+}

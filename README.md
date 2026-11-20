@@ -17,9 +17,10 @@ slideck build        # → dist/deck.html
 ## What you get
 
 - **One self-contained file.** Fonts, CSS, scripts and your images are embedded. It opens by double-click, works offline and prints one slide per page.
-- **19 designs × 10 themes × 3 motions.** A design sets the shape (layout, spacing, typography, cover), a theme sets colours and fonts, and any design works with any theme. The built deck has a theme menu that recolours it live.
+- **19 designs × 10 themes × 5 motions.** A design sets the shape (layout, spacing, typography, cover), a theme sets colours and fonts, and any design works with any theme. The built deck has a theme menu that recolours it live.
+- **Motion and interaction.** Slides glide in the direction you move, content enters in reading order, charts draw themselves and numbers count up. Step-by-step builds, before/after swaps, tabs, hover details and morphing elements, with no JavaScript to write. PDF prints every step and every tab/swap state; PowerPoint keeps the steps as click animations.
 - **Placeholder layouts** like PowerPoint (`title`, `two-content`, `comparison`, `content-aside`, …) with autofit that shrinks overflowing text.
-- **Visuals drawn at build time as SVG** and coloured by the theme: charts, concept diagrams (venn, matrix, cycle, funnel, pyramid, scale), 46 line icons, shapes and connectors, Mermaid flowcharts. No network, no extra libraries.
+- **Visuals drawn at build time as SVG** and coloured by the theme: charts, concept diagrams (venn, matrix, cycle, funnel, pyramid, scale, TAM/SAM/SOM, positioning map, Gantt), 46 line icons, shapes and connectors, Mermaid flowcharts. No network, no extra libraries.
 - **PDF and PowerPoint.** `slideck pdf` prints one slide per page (with speaker notes pages). `slideck pptx` writes native, editable PowerPoint objects with the fonts embedded. `slideck import` turns a `.pptx` into slides.
 - **Quality checks.** `slideck check` reports overflow, broken components and pixel changes against a baseline; it exits 1, so it can gate CI. Every theme is held to WCAG AA contrast.
 - **Web publishing.** Phone-friendly scroll mode, page metadata and share image, copy-to-clipboard command blocks.
@@ -92,6 +93,7 @@ Then ask in plain words, e.g. *"make a 10-slide deck about our Q3 results, consu
 |---|---|
 | [skills/slideck-html/SKILL.md](skills/slideck-html/SKILL.md) | the complete reference: layouts and placeholder names, every design and theme, charts, diagrams, icons, layout blocks, export |
 | [docs/slide-craft.md](docs/slide-craft.md) | what to put on slides: storyline, action titles, density, choosing charts, copy-paste recipes |
+| [docs/motion.md](docs/motion.md) | motions, step-by-step builds and interactive components (swap, tabs, peek, hotspots, morph) |
 | [docs/custom-design.md](docs/custom-design.md) | building your own design or theme: token contract, rules (D1–D9, T1–T4), checklist |
 | [AGENTS.md](AGENTS.md) | the rules an AI agent follows in this repo |
 | [examples/](examples/) | one demo deck built across design × theme combinations (`node examples/build-all.js`) |
@@ -108,8 +110,8 @@ template.html      deck shell: navigation, autofit, theme menu, print
 core.css           components shared by every design
 lib/               layout, chart, diagram, icon, shape, flowchart, pptx and font engines
 layouts/           placeholder layouts for <slide layout="…">
-designs/ themes/ motions/   the looks (design = shape, theme = colour + font, motion = reveal timing)
-templates/         copy-paste slide templates
+designs/ themes/ motions/   the looks (design = shape, theme = colour + font, motion = transitions + choreography)
+templates/         38 copy-paste slide templates (report, pitch, proposal, research); filled versions in examples/templates/
 assets/fonts/      bundled OFL fonts, inlined at build time
 skills/            the agent skill
 site/              source of slideck.nimb.us.ci (itself a slideck-html deck)

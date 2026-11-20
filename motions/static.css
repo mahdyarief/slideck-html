@@ -1,0 +1,9 @@
+/* MOTION static — tanpa gerak. Slide berganti langsung, isi langsung tampil; step (data-step) tetap bekerja
+   tapi tanpa animasi. Untuk presentasi formal, layar lambat, atau penonton yang sensitif terhadap gerak. */
+:root{
+  --m-dur:0ms; --m-dur-out:0ms;
+  --m-ease:linear; --m-ease-in:linear;
+  --m-dist:0px; --m-scale:1; --m-stagger:0ms; --m-start:0ms;
+  --m-slide-dur:0ms; --m-slide-out:0ms; --m-slide-x:0px; --m-slide-scale:1;
+  --m-morph-dur:0ms; --m-draw-dur:0ms; --m-count-dur:0ms;
+}

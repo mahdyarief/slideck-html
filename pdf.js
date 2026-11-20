@@ -46,11 +46,18 @@ if (!browser) {
 const html = fs.readFileSync(htmlPath, "utf8");
 const slideCount = (html.match(/<section\b[^>]*class="[^"]*\bslide\b/g) || []).length;
 const noteCount = (html.match(/class="slide-notes"/g) || []).length;
+/* motion v2: tiap keadaan .swap/.tabs selain yang tampil dicetak sebagai halaman salinan (kecuali data-print="first|last") */
+const { directChildren } = require("./lib/interactive-lint.js");
+let copyCount = 0;
+for (const m of html.matchAll(/<div\b[^>]*class="[^"]*\b(swap|tabs)\b[^"]*"[^>]*>/g)) {
+  if (/\bdata-print="(first|last)"/.test(m[0])) continue;
+  copyCount += Math.max(0, directChildren(html, m.index).length - 1);
+}
 
 fs.mkdirSync(path.dirname(outPath), { recursive: true });
 fs.rmSync(outPath, { force: true });
 
-const result = runHeadless(browser, ["--no-pdf-header-footer", "--print-to-pdf=" + outPath.replace(/\\/g, "/")], fileUrl(htmlPath), { budget: 5000 });
+const result = runHeadless(browser, ["--no-pdf-header-footer", "--print-to-pdf=" + outPath.replace(/\\/g, "/")], fileUrl(htmlPath) + "?final", { budget: 5000 }); /* ?final: motion v2 → semua langkah terbuka, isi di keadaan akhir */
 
 if (result.status !== 0 || !fs.existsSync(outPath)) {
   process.stderr.write(result.stdout || "");
@@ -92,10 +99,10 @@ const sizePt = box ? Math.round(Number(box[1])) + "x" + Math.round(Number(box[2]
 
 console.log("slideck-html pdf | " + path.basename(htmlPath) + " → " + path.basename(outPath));
 console.log("  slides=" + slideCount + " | halaman PDF=" + pageCount + " | ukuran halaman=" + sizePt +
-  " | " + Math.round(fs.statSync(outPath).size / 1024) + " KB");
+  (copyCount ? " | +" + copyCount + " halaman keadaan tab/swap" : "") + " | " + Math.round(fs.statSync(outPath).size / 1024) + " KB");
 console.log("  -> " + outPath.replace(/\\/g, "/"));
 
-if (slideCount && pageCount !== slideCount + noteCount) {
-  console.warn("  ! jumlah halaman (" + pageCount + ") != slide (" + slideCount + ") + catatan (" + noteCount + ")");
+if (slideCount && pageCount !== slideCount + noteCount + copyCount) {
+  console.warn("  ! jumlah halaman (" + pageCount + ") != slide (" + slideCount + ") + catatan (" + noteCount + ")" + (copyCount ? " + keadaan tab/swap (" + copyCount + ")" : ""));
   process.exitCode = 1;
 }

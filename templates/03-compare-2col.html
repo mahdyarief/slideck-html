@@ -1,13 +1,10 @@
-<!-- TEMPLATE 03 compare-2col: dua panel bersanding (kiri accent, kanan netral). -->
-<section class="slide"><div class="pad">
-<p class="kicker reveal">[KICKER]</p><h1 class="title reveal d1">[Judul perbandingan]</h1>
-<div class="grid2 reveal d2" style="margin-top:44px">
-<div class="card accent"><span class="tag">[LABEL KIRI]</span>
-<h3 style="font-size:36px;color:var(--ink)">[Judul kiri]</h3>
-<p class="bul" style="font-size:27px;margin-top:12px">[Isi kiri]</p></div>
-<div class="card"><span class="tag">[LABEL KANAN]</span>
-<h3 style="font-size:36px;color:var(--ink)">[Judul kanan]</h3>
-<p class="bul" style="font-size:27px;margin-top:12px">[Isi kanan]</p></div>
-</div>
-<p class="small reveal d3" style="margin-top:24px">[Catatan kaki opsional]</p>
-</div><div class="foot"><span>[Footer kiri]</span><span>{{N}} / {{TOTAL}}</span></div></section>
+<!-- TEMPLATE 03 compare-2col: dua pilihan bersanding, tiap sisi diberi label. Kesimpulan = pilihan yang disarankan. Ganti teks dalam kurung siku saja, pertahankan class. -->
+<slide layout="comparison">
+<ph name="kicker">[KICKER]</ph>
+<ph name="title">[Judul: pilihan mana yang lebih baik dan kenapa]</ph>
+<ph name="left-head"><span class="tag">[LABEL KIRI]</span></ph>
+<ph name="left"><ul class="bul"><li>[Isi kiri 1]</li><li>[Isi kiri 2]</li><li>[Isi kiri 3]</li></ul></ph>
+<ph name="right-head"><span class="tag">[LABEL KANAN]</span></ph>
+<ph name="right"><ul class="bul"><li>[Isi kanan 1]</li><li>[Isi kanan 2]</li><li>[Isi kanan 3]</li></ul></ph>
+<ph name="takeaway"><b>Kesimpulan:</b> [Isi kesimpulan: apa yang harus diputuskan atau diingat]</ph>
+</slide>

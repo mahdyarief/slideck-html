@@ -1,4 +1,11 @@
-/* MOTION cinematic — slow fade 1s + scale, dari frontend-slides Dramatic/Cinematic. */
-.reveal{opacity:0;transform:scale(.92) translateY(20px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
-.visible .reveal{opacity:1;transform:none}
-.visible .reveal.d1{transition-delay:.15s}.visible .reveal.d2{transition-delay:.3s}.visible .reveal.d3{transition-delay:.45s}
+/* MOTION cinematic — lambat dan dalam. Isi muncul dengan fade panjang dan sedikit membesar,
+   slide baru masuk dari skala 1,035 (dolly-out) sementara slide lama meredup. Untuk keynote, peluncuran, cerita. */
+:root{
+  --m-dur:1000ms; --m-dur-out:360ms;
+  --m-ease:cubic-bezier(.16,1,.3,1); --m-ease-in:cubic-bezier(.7,0,.84,0);
+  --m-dist:22px; --m-scale:.985; --m-stagger:120ms; --m-start:320ms;
+  --m-slide-dur:900ms; --m-slide-out:520ms; --m-slide-x:0px; --m-slide-scale:1.035;
+  --m-morph-dur:900ms; --m-draw-dur:1400ms; --m-count-dur:1600ms;
+}
+@keyframes m-slide-in{from{opacity:0;scale:var(--m-slide-scale)}}
+@keyframes m-slide-out{to{opacity:0}}

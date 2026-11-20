@@ -1,16 +1,10 @@
-<!-- TEMPLATE 05 mapping-2col: sumber → tujuan dengan panah. -->
-<section class="slide"><div class="pad">
-<p class="kicker reveal">[KICKER]</p><h1 class="title reveal d1">[Judul mapping]</h1>
-<div class="map reveal d2">
-<div class="mapcol" style="background:var(--grey);border:1px solid var(--line)">
-<h3 style="color:var(--ink)">[Sumber]</h3><p class="small">[Sub]</p>
-<ul><li><b>[item]</b> [detail]</li><li><b>[item]</b> [detail]</li><li><b>[item]</b> [detail]</li></ul>
-</div>
+<!-- TEMPLATE 05 mapping-2col: sumber → tujuan (migrasi, pemetaan, alur data). Ganti teks dalam kurung siku saja, pertahankan class. -->
+<slide layout="title-content">
+<ph name="kicker">[KICKER]</ph>
+<ph name="title">[Judul pemetaan]</ph>
+<ph name="body"><div class="map">
+<div class="mapcol card"><h3>[Sumber]</h3><p class="small">[Keterangan sumber]</p><ul><li><b>[Item]</b> [detail]</li><li><b>[Item]</b> [detail]</li><li><b>[Item]</b> [detail]</li></ul></div>
 <div class="arrow">→</div>
-<div class="mapcol" style="background:var(--mint);border:1px solid var(--accent-line)">
-<h3 style="color:var(--ink)">[Tujuan]</h3><p class="small">[Sub]</p>
-<ul><li><b>[item]</b> [detail]</li><li><b>[item]</b> [detail]</li><li><b>[item]</b> [detail]</li></ul>
-</div>
-</div>
-<p class="small reveal d3" style="margin-top:24px">[Catatan scope / filter]</p>
-</div><div class="foot"><span>[Footer kiri]</span><span>{{N}} / {{TOTAL}}</span></div></section>
+<div class="mapcol card accent"><h3>[Tujuan]</h3><p class="small">[Keterangan tujuan]</p><ul><li><b>[Item]</b> [detail]</li><li><b>[Item]</b> [detail]</li><li><b>[Item]</b> [detail]</li></ul></div>
+</div><p class="source">[Catatan scope atau filter]</p></ph>
+</slide>

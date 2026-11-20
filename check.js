@@ -37,7 +37,7 @@ const SHEET_CSS = "<style>" +
   "</style>" +
   /* tampilkan semua slide lewat kelas aslinya (bukan override CSS !important — Chrome bisa meninggalkan visibility
      anak dalam keadaan hidden), lalu hitung ulang autofit + connector */
-  "<script>document.querySelectorAll('section.slide').forEach(function(s){s.classList.add('active','visible')});" +
+  "<script>if(window.slideckFinal)slideckFinal();document.querySelectorAll('section.slide').forEach(function(s){s.classList.add('active','visible')});" +
   "if(window.slideckFit)window.slideckFit();</script>";
 
 const PROBE_JS = "<script>" + OUT_SNIPPET + `
@@ -47,9 +47,18 @@ const PROBE_JS = "<script>" + OUT_SNIPPET + `
   try{ if(document.fonts&&document.fonts.ready) await Promise.race([document.fonts.ready,wait(1500)]) }catch(e){}
   await wait(60);
   if(window.slideckFit) window.slideckFit();
-  const out=[];
+  const out=[];let orig=0;
   document.querySelectorAll('section.slide').forEach((sl,i)=>{
-    const r={n:i+1,layout:sl.dataset.layout||'',fit:sl.dataset.fitScale?+sl.dataset.fitScale:1,fail:sl.hasAttribute('data-fit-fail'),ph:[],issues:[]};
+    const r={n:sl.dataset.copyOf?+sl.dataset.copyOf:++orig,layout:sl.dataset.layout||'',fit:sl.dataset.fitScale?+sl.dataset.fitScale:1,fail:sl.hasAttribute('data-fit-fail'),ph:[],issues:[],warn:[],ix:[],copyOf:sl.dataset.copyOf?+sl.dataset.copyOf:0,state:sl.dataset.state||''};
+    /* interaksi (motion v2): ringkasan per slide + pola yang hanya terlihat dari tata letak nyata */
+    if(!r.copyOf){
+      const G=sl._steps||[];if(G.length)r.ix.push(G.length+' langkah');
+      sl.querySelectorAll('.swap,.tabs').forEach(c=>{const n=c.classList.contains('tabs')?c.querySelectorAll(':scope>.tab-panels>*').length:[...c.children].length;r.ix.push((c.classList.contains('tabs')?'tabs ':'swap ')+n+' keadaan'+(c.hasAttribute('data-step')?' (via langkah)':''))});
+      [['.peek','peek'],['.hotspot','hotspot'],['.focus-group','focus-group'],['[data-count]','count-up']].forEach(([q,l])=>{const k=sl.querySelectorAll(q).length;if(k)r.ix.push(l+(k>1?' ×'+k:''))});
+      sl.querySelectorAll('[data-morph]').forEach(el=>{r.ix.push('morph "'+el.dataset.morph+'"');
+        const clear=c=>c==='transparent'||/^rgba\\(\\d+, \\d+, \\d+, 0\\)$/.test(c);if(!clear(getComputedStyle(el).backgroundColor))return;
+        for(let a=el.parentElement;a&&a!==sl;a=a.parentElement){if(a.matches('.pad,.ph,.bul'))continue;if(!clear(getComputedStyle(a).backgroundColor)){r.warn.push('data-morph="'+el.dataset.morph+'" ada di dalam kotak berlatar — pindahkan data-morph ke kotaknya agar latar ikut meluncur');break}}});
+    }
     sl.querySelectorAll('.ph').forEach(ph=>{
       if(ph.dataset.fitScale||ph.hasAttribute('data-fit-fail')) r.ph.push({name:ph.dataset.ph||'',fit:ph.dataset.fitScale?+ph.dataset.fitScale:1,fail:ph.hasAttribute('data-fit-fail')});
       else if(sl.dataset.fit==='off'&&typeof phOver==='function'&&phOver(ph)) r.ph.push({name:ph.dataset.ph||'',fit:1,fail:true});
@@ -145,7 +154,7 @@ for (const htmlPath of targets) {
   const lines = [];
   let bad = 0;
   for (const s of rep.slides) {
-    const tag = "slide " + String(s.n).padStart(2) + (s.layout ? " [" + s.layout + "]" : "");
+    const tag = (s.copyOf ? "slide " + String(s.copyOf).padStart(2) + " · keadaan \"" + s.state + "\"" : "slide " + String(s.n).padStart(2)) + (s.layout ? " [" + s.layout + "]" : "");
     if (s.fail) { bad++; lines.push("    x " + tag + ": masih meluber walau autofit sudah di skala minimum " + s.fit); }
     else if (s.fit < 1) { lines.push("    " + (s.fit < 0.75 ? "!" : "·") + " " + tag + ": autofit slide " + s.fit + (s.fit < 0.75 ? " — teks jadi kecil, kurangi isi" : "")); if (s.fit < 0.75) warns++; }
     for (const p of s.ph) {
@@ -153,6 +162,8 @@ for (const htmlPath of targets) {
       else { lines.push("    " + (p.fit < 0.75 ? "!" : "·") + " " + tag + ": autofit \"" + p.name + "\" " + p.fit + (p.fit < 0.75 ? " — teks jadi kecil, kurangi isi" : "")); if (p.fit < 0.75) warns++; }
     }
     for (const m of s.issues) { bad++; lines.push("    x " + tag + ": " + m); }
+    for (const m of s.warn || []) { warns++; lines.push("    ! " + tag + ": " + m); }
+    if (s.ix && s.ix.length) lines.push("    ~ " + tag + ": " + s.ix.join(" · "));
   }
   if (!rep.hasFit) lines.push("    · deck ini dibangun dengan shell lama (tanpa autofit) — rebuild dengan build.js 2.x");
 
@@ -189,5 +200,5 @@ for (const htmlPath of targets) {
   lines.forEach((l) => console.log(l));
 }
 if (!noShot) console.log("\n  foto: " + path.relative(process.cwd(), curDir).replace(/\\/g, "/") + "/  baseline: " + path.relative(process.cwd(), baseDir).replace(/\\/g, "/") + "/");
-console.log(failures ? "\n" + failures + " masalah." + (noShot ? "" : " Perubahan disengaja? jalankan lagi dengan --update.") : "\nSemua lolos." + (warns ? " (" + warns + " peringatan skala kecil)" : ""));
+console.log(failures ? "\n" + failures + " masalah." + (noShot ? "" : " Perubahan disengaja? jalankan lagi dengan --update.") : "\nSemua lolos." + (warns ? " (" + warns + " peringatan)" : ""));
 process.exit(failures ? 1 : 0);

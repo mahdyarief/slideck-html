@@ -1,0 +1,16 @@
+/* MOTION editorial — gaya majalah. Baris teks terbuka dari bawah lewat mask (wipe), elemen lain memudar;
+   slide baru menyapu masuk dari tepi searah navigasi di atas slide lama. Untuk laporan bergaya, editorial, riset. */
+:root{
+  --m-dur:760ms; --m-dur-out:260ms;
+  --m-ease:cubic-bezier(.77,0,.18,1); --m-ease-in:cubic-bezier(.55,0,1,.45);
+  --m-dist:0px; --m-scale:1; --m-stagger:85ms; --m-start:200ms;
+  --m-slide-dur:760ms; --m-slide-out:760ms; --m-slide-x:0px; --m-slide-scale:1;
+  --m-morph-dur:760ms; --m-draw-dur:1100ms; --m-count-dur:1300ms;
+}
+/* teks: wipe dari bawah (mask), bukan geser */
+html.m-anim:not(.m-final) .slide [data-m]:is(h1,h2,h3,p,li,.kicker,.quote,.lead,.takeaway,.stat-big,.kpi-num,.kpi-lab){-webkit-mask-image:linear-gradient(#000,#000);mask-image:linear-gradient(#000,#000);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:0 100%;mask-position:0 100%;-webkit-mask-size:100% 100%;mask-size:100% 100%;transition-property:opacity,translate,-webkit-mask-size,mask-size}
+html.m-anim:not(.m-final) .slide:not(.m-on) [data-m]:is(h1,h2,h3,p,li,.kicker,.quote,.lead,.takeaway,.stat-big,.kpi-num,.kpi-lab){opacity:1;translate:0 .3em;-webkit-mask-size:100% 0%;mask-size:100% 0%}
+html.m-anim .slide.m-settled [data-m]{-webkit-mask-image:none;mask-image:none}
+/* slide: sapuan dari tepi kanan (maju) atau kiri (mundur); slide lama diam di bawahnya */
+@keyframes m-slide-in{from{clip-path:inset(0 calc(max(0,-1 * var(--m-dir,1)) * 100%) 0 calc(max(0,var(--m-dir,1)) * 100%))}to{clip-path:inset(0 0 0 0)}}
+@keyframes m-slide-out{to{opacity:1}}

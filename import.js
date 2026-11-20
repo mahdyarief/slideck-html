@@ -331,8 +331,16 @@ function semanticSlide(slide, env) {
     return true;
   });
 
+  /* animasi on-click di pptx → langkah slideck (data-step / data-steps per paragraf) */
+  const stepOf = (i) => (i.el && i.el.step) || 0;
+  const stepWrap = (i, html) => {
+    if (!html || !stepOf(i)) return html;
+    if (i.el.paraBuild && i.sub === "text") return /^<(ul|ol)\b[^>]*>[\s\S]*<\/\1>$/.test(html.trim()) ? html.trim().replace(/^<(ul|ol)\b/, "<$1 data-steps") : "<div data-steps>\n" + html + "\n</div>";
+    return "<div data-step=\"" + stepOf(i) + "\">\n" + html + "\n</div>";
+  };
   /* isi sebuah item sebagai HTML blok (untuk di dalam <ph>) */
-  const itemHtml = (i) => {
+  const itemHtml = (i) => stepWrap(i, itemHtmlRaw(i));
+  const itemHtmlRaw = (i) => {
     if (i.type === "smartart") return "<ul>" + i.texts.map((t) => "<li>" + t + "</li>").join("") + "</ul>";
     switch (i.sub) {
       case "text": return blocksHtml(i.el.text);
@@ -347,10 +355,15 @@ function semanticSlide(slide, env) {
       default: return "";
     }
   };
-  /* item bebas → elemen berposisi absolut di luar <ph> */
+  /* item bebas → elemen berposisi absolut di luar <ph>; langkahnya jadi atribut di elemen terluar */
   const freeAbs = (i) => {
+    const h = freeAbsRaw(i), s = stepOf(i);
+    if (!h || !s) return h;
+    return h.replace(/^<(\w+)/, "<$1 " + (i.el.paraBuild && i.sub === "text" ? "data-steps" : "data-step=\"" + s + "\""));
+  };
+  const freeAbsRaw = (i) => {
     const st = absStyle(i.box, env);
-    if (i.type === "smartart") return '<div class="small" style="' + st + '">' + itemHtml(i) + "</div>";
+    if (i.type === "smartart") return '<div class="small" style="' + st + '">' + itemHtmlRaw(i) + "</div>";
     switch (i.sub) {
       case "text": return '<div class="small" style="' + st + '">' + blocksHtml(i.el.text) + "</div>";
       case "pic": return imgTag(i.el, env, st);
@@ -360,7 +373,7 @@ function semanticSlide(slide, env) {
         if (tag) return '<div style="' + st + '">' + tag + "</div>";
         return skip("chart (tipe tidak didukung)"), "";
       }
-      default: return '<div style="' + st + '">' + itemHtml(i) + "</div>";
+      default: return '<div style="' + st + '">' + itemHtmlRaw(i) + "</div>";
     }
   };
   const byReading = (a, b) => (a.box.y - b.box.y) || (a.box.x - b.box.x);
@@ -464,6 +477,7 @@ function semanticSlide(slide, env) {
     env.stats.dilewati += nSkip;
     warn("slide " + no + ": " + nSkip + " objek dilewati (" + Object.entries(skipped).map(([k, v]) => k + " ×" + v).join(", ") + ")");
   }
+  if (slide.steps) warn("slide " + no + ": " + slide.steps + " langkah dari animasi on-click PowerPoint → data-step");
   if (continuations.length) warn("slide " + no + ": tabel > " + TABLE_MAX_ROWS + " baris — dipecah jadi " + (continuations.length + 1) + " slide");
 
   const attrs = (lay, withNotes) => '<slide layout="' + lay + '"' + (isDark(slide.background) ? " dark" : "") + (withNotes ? notesAttr("notes", slide.notes) : "") + ">";

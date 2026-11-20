@@ -1,0 +1,9 @@
+/* MOTION keynote — seperti Magic Move. Elemen bertanda data-morph yang sama di dua slide berurutan
+   meluncur ke posisi barunya; isi lain larut dan sedikit membesar; slide bergeser masuk lebih jauh. */
+:root{
+  --m-dur:560ms; --m-dur-out:220ms;
+  --m-ease:cubic-bezier(.32,.72,0,1); --m-ease-in:cubic-bezier(.4,0,1,1);
+  --m-dist:8px; --m-scale:.975; --m-stagger:60ms; --m-start:160ms;
+  --m-slide-dur:640ms; --m-slide-out:300ms; --m-slide-x:120px; --m-slide-scale:1;
+  --m-morph-dur:720ms; --m-draw-dur:1000ms; --m-count-dur:1300ms;
+}

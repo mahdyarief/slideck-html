@@ -13,7 +13,7 @@ Four things are kept separate. Pick each one independently:
 |---|---|---|---|
 | **design** | shape: spacing, cards, borders, type treatment | built-in `designs/` or the deck's `designs/` | `deck.json` `"design"` |
 | **theme** | colours and fonts | built-in `themes/` or the deck's `themes/` | `deck.json` `"theme"` |
-| **motion** | reveal animation timing | `motions/` | `deck.json` `"motion"` |
+| **motion** | slide transitions + content choreography | `motions/` | `deck.json` `"motion"` |
 | **content** | the slides | `<deck>/slides/*.html` | you write these |
 
 ## 0. Setup: where things are
@@ -80,7 +80,7 @@ Each design's `designs/<name>/design.json` has a `recommended` theme and motion.
 | `parchment-gold` | Inter / Libre Baskerville |
 | `campus-slide` | Carlito / Caladea, metric-compatible with Calibri / Cambria |
 
-**Motions:** `corporate` (default, 300 ms rise) · `cinematic` (1 s fade + scale) · `playful` (550 ms spring).
+**Motions** (how slides change and content enters; full reference `docs/motion.md`): `corporate` (default, short rise, slide glides in the direction you move) · `cinematic` (slow fade and settle, for keynotes and launches) · `editorial` (text lines wipe up, the slide wipes in from the edge) · `keynote` (crisp push between slides) · `static` (no animation; steps still work). Content enters in reading order automatically; going back shows a slide already finished. Print, PDF, PPTX and `check` always use the final state.
 
 **`deck.json` `"fonts"`:**
 - `"theme"` (default): only this theme's fonts, about 100 KB;
@@ -152,6 +152,11 @@ Revenue: 41 | 22 | 9
 - `.chips` (`.chips.cols2`): many short items as pills, one may be `.is-key`.
 - `.source`: small source line under a chart or table (`Sumber: …`).
 - `.push` on the last element of a `.card`: pins it to the card bottom so tags line up across a row.
+- `.people` > `.person`: team members in one row (`.people.cols3` / `.cols4` to wrap 5–8). Each: `<img src="foto.jpg" alt="Name">` or `<span class="avatar">AR</span>`, then `<h3>Name</h3><span class="role">Role</span><p class="small">…</p>`.
+- `.tiers` > `.card`: packages side by side, the recommended one `.is-key`. Inside: `.tag`, `<span class="price">Rp 4 jt <small>/ bulan</small></span>`, `ul.bul`.
+- `table.t` competition cells: `td.yes` (✓), `td.no` (—); `.is-key` on the `th` and `td`s of our column highlights it.
+- `ol.refs`: references with automatic `[1]`, `[2]`; `ol.refs.apa` for hanging-indent APA style without numbers.
+- `.logos`: logo wall, 4 columns (`.cols3` / `.cols5`); each child a `<div>` holding a name or an `<img alt>`.
 
 **Components** (rendered at build time as SVG, coloured by the theme):
 - **Chart:** `<chart type="bar|hbar|line|area|pie|doughnut" width height [title] [unit] [prefix] [stacked] [values="off"] [legend="off"] [center]>`, then one line per series: `labels: A, B` / `Series name: 1, 2`. Use `|` as the separator when values contain commas; the body may also be JSON. Size it to the placeholder: about 1720×600 for a full-width body, 820×560 for a two-content column.
@@ -162,30 +167,89 @@ Revenue: 41 | 22 | 9
   - `-->` `---` `-.->` `==>` `~~~`, `|label|`, `&`, `subgraph … end`.
 
   Flowcharts only; for concept diagrams use `<diagram>`.
-- **Diagram:** `<diagram type="venn|matrix|cycle|funnel|pyramid|scale" [width="1500"] [height] [key="2"]>`, then one `Title: short description` line per item (description optional; `key: 2` or `key="1,3"` highlights items):
+- **Diagram:** `<diagram type="venn|matrix|cycle|funnel|pyramid|scale|nested|positioning|gantt" [width="1500"] [height] [key="2"]>`, then one `Title: short description` line per item (description optional; `key: 2` or `key="1,3"` highlights items):
   - `venn` 2–3 sets, `overlap: text` for the centre;
   - `matrix` exactly 4 quadrants in order top-left, top-right, bottom-left, bottom-right; `x: axis title`, `y: axis title`;
   - `cycle` 3–6 steps clockwise from the top, `center: text`;
   - `funnel` 2–6 stages wide to narrow; `pyramid` 2–6 layers top to bottom (descriptions go to the right);
-  - `scale` 2–7 stops left to right with `from: Low` / `to: High`.
+  - `scale` 2–7 stops left to right with `from: Low` / `to: High`;
+  - `nested` 2–4 circles outer to inner (`TAM: Rp 120 T — all SMEs`); descriptions go to the right;
+  - `positioning` 2–12 points `Name: x y` (0–100); `x: Low price | High price` labels the ends (no `|` = axis title), same for `y`; `key` = us;
+  - `gantt` 1–10 rows `Task: 2-4` (periods 2 to 4) or `Milestone: 6`, then an optional note; `periods: Jan | Feb | Mar …`; `key` = critical path.
   Keep titles to 1–3 words and descriptions under 8 words; long text wraps but does not shrink.
 - **Icon:** `<icon name="target">` (48 px, accent colour) or `<icon name="target" badge [tone="accent2|navy|soft"] [size="44"]>` (icon in a filled circle). Names: check, check-circle, x, plus, minus, arrow-right, alert, info, help, star, heart, user, users, target, clock, calendar, chart, trend-up, trend-down, bulb, gear, shield, lock, book, school, flag, globe, mail, home, search, doc, money, cart, leaf, bolt, cloud, link, chat, award, layers, pin, eye, cycle, database, code, tools. An unknown name is a build warning listing them all.
+
+**Interactive and step-by-step** (full reference `docs/motion.md`; copy templates 13–18). Motion, chart drawing and reading-order entry are automatic; add interaction only where it carries meaning.
+
+*Step 1: decide how the deck is used, and set it in `deck.json`.* Ask the user if it is unclear.
+- `"interactive": "live"`: someone presents it on a screen with a clicker. Use **steps only**. The audience cannot hover, so never use peek, focus-group, hotspots or `data-hover`. Swaps and tabs need `data-step`, so → changes them.
+- `"interactive": "shared"`: it is sent as a link and read alone. Steps are optional; tabs, swap buttons, peek and hotspots are fine, because the reader explores.
+- Not set: treat it as `live`.
+
+*Step 2: pick the component from the content.* No interaction is the default.
+
+| content | use | template |
+|---|---|---|
+| an argument built point by point (3–4 points) | `data-steps="dim"` on the list + `<ph name="takeaway" data-step>` | 13 |
+| before → after, old → new, problem → fix | `.swap` (with `data-step` in a live deck) | 14 |
+| 2–4 views of one thing (scope / timeline / risks) | `.tabs` (shared), or separate slides / `.tabs data-step` (live) | 15 |
+| one key number explained on the next slide | `data-morph` on the card in both slides + `data-count` on the first | 16 + 17 |
+| summary cards whose detail the reader opens | `.peek` inside `.focus-group` (shared only) | 18 |
+| parts of a screenshot or diagram | `.hotspots` (shared only) | — |
+| 1–3 headline numbers | `data-count` | — |
+
+*Step 3: keep the dose.*
+- At most 4–6 steps per slide.
+- At most 1–3 `data-count` numbers per slide.
+- Interaction on at most ~40% of the slides of a live deck.
+- Put `data-morph` on a whole card or block, never on text inside a card.
+- Every state of a swap or tab must carry a `data-label` and make sense on its own: each state is printed as its own PDF/PPTX page.
+
+**Syntax:**
+- **Steps:** `data-step` on any element (or `<ph name="takeaway" data-step>`) hides it until → / click. `data-steps` on a container makes each child a step; `data-steps="dim"` also dims earlier steps. `data-step="2"` sets the order (same number = together). Shift+→ skips the steps.
+- **Swap:** `<div class="swap">` with two or more children, each with `data-label="Before"`…: one shows at a time, with segmented buttons above it. With `data-step` there are no buttons; → moves to the next state.
+- **Tabs:** `<div class="tabs">` with children carrying `data-label`: a tab bar is built above them. `data-hover` switches on hover; `data-step` makes → move through the tabs.
+- **Peek:** `<div class="card peek"><div>face</div><div>detail</div></div>`: the detail replaces the face on hover, focus or tap.
+- **Focus group:** `class="grid3 focus-group"`: hovering or focusing one child dims the others.
+- **Hotspots:** `<div class="hotspots"><img src="…" alt="…"><button class="hotspot" style="--x:30%;--y:40%">label text</button></div>`.
+- **Count-up:** `data-count` on a number (`<div class="kpi-num" data-count>86%</div>`) counts it up as the slide enters.
+- **Morph:** the same `data-morph="name"` on an element in two consecutive slides makes it glide and resize from one to the other.
+- **Printing:** PDF, PPTX and `check` show every step. Each extra state of a swap or tab set becomes its own page, right after the slide. `data-print="first"` or `"last"` on the component prints only that state.
+
+**Verify interaction** (you cannot watch the animation, so use these):
+- The build warns about misuse: too many steps, unlabelled states, hover in a live deck, a `data-morph` with no partner, `data-count` with no number.
+- `slideck check` prints a `~` summary line per interactive slide (e.g. `~ slide 4: 4 langkah · swap 2 keadaan`). Confirm it matches what you meant. State pages are checked for overflow like normal slides and are labelled `slide 5 · keadaan "After"`.
+- To look at a step, open `dist/<deck>.html#4.2`: slide 4 with 2 steps revealed. `#4` shows step 0, and `?final` shows everything.
 
 **Other syntax:**
 - `{{N}}` / `{{TOTAL}}` become slide numbers. `[Footer kiri]` comes from `deck.footer`.
 - A file starting with `_` is skipped by the build.
 - `slides/*.css` is appended as deck-local CSS. It uses tokens only, never hex.
-- **Templates (alternative):** copy `<tools>/templates/NN-*.html` into `slides/`, replace only the `[...]` text, and keep every class. Available templates:
-  - 01 cover-split-kpi · 02 title-cards-3 · 03 compare-2col · 04 table-detail;
-  - 05 mapping-2col · 06 scope-4box · 07 stat-full-navy · 08 rows-list;
-  - 09 blocker-2col · 10 quote-closing · 11 timeline · 12 checklist.
+- **Templates:** copy `<tools>/templates/NN-*.html` into `slides/`, replace every `[...]` text, and keep every class. All use the layout syntax, so the design and theme apply. The build warns about any `[text]` left in a slide (`placeholder belum diisi`). Also replace the sample numbers in charts and diagrams. A filled version of every template is in `<tools>/examples/templates/` (slide N = template N); copy from there when a worked example helps more than brackets.
+  - Opening and structure: 19 cover · 01 cover-split-kpi · 20 agenda · 21 section · 22 exec-summary (situation → complication → recommendation).
+  - Numbers and evidence: 02 title-cards-3 · 07 stat-full-navy · 24 insight-chart · 04 table-detail · 31 case-study.
+  - Comparing and deciding: 03 compare-2col · 23 problem-solution · 09 blocker-2col · 06 scope-4box · 25 swot · 27 competition-table · 28 positioning.
+  - Plans and process: 11 timeline · 33 gantt · 08 rows-list · 05 mapping-2col · 12 checklist · 34 methodology.
+  - Business: 26 market-size · 29 team · 30 pricing · 32 logo-wall.
+  - Research: 34 methodology · 36 limitations · 35 references.
+  - Closing: 37 closing-ask · 10 quote-closing · 38 qa-contact.
+  - Interactive: 13 steps-argument · 14 before-after · 15 tabs-3 · 16 kpi-morph-a + 17 kpi-morph-b (together, in order) · 18 explore-cards (shared decks only).
+
+  **Template order by deck type** (a starting point; drop what the story does not need):
+  | deck | order |
+  |---|---|
+  | report / review | 19 · 22 · 20 · 02 · 24 · 04 · 11 · 12 · 37 |
+  | startup pitch | 19 · 23 · 26 · 31 or 02 (traction) · 28 · 27 · 30 (business model) · 29 · 37 (the ask) |
+  | consulting proposal | 19 · 22 · 23 · 34 or 11 (approach) · 33 · 29 · 30 · 31 · 32 · 37 |
+  | thesis / research defence | 19 · 20 · 21 · 08 (background, gap) · 34 · 24 · 04 · 36 · 35 · 38 |
+  | lecture / training | 19 · 20 · 21 · 13 · 25 or 03 · 12 · 38 |
 
 ## 4. Worked example (a complete 4-slide deck)
 
 `deck.json`
 ```json
 { "title": "Q3 Sales Review", "footer": "Q3 Sales Review | Oct 2026", "output": "q3-review.html",
-  "design": "consulting", "theme": "slate-rust", "motion": "corporate" }
+  "design": "consulting", "theme": "slate-rust", "motion": "corporate", "interactive": "live" }
 ```
 
 `slides/01-cover.html`
@@ -224,19 +288,21 @@ labels: Jul | Aug | Sep
 </slide>
 ```
 
-`slides/04-next.html`
+`slides/04-next.html` (a live deck, so the argument is built with steps: each point appears on →, earlier ones dim, the conclusion comes last)
 ```html
-<slide layout="comparison">
+<slide layout="title-content">
 <ph name="kicker">Q4</ph>
-<ph name="title">Keep, change</ph>
-<ph name="left-head"><span class="tag">KEEP</span></ph>
-<ph name="left"><ul class="bul"><li>Enterprise outbound</li><li>Annual-plan discount</li></ul></ph>
-<ph name="right-head"><span class="tag">CHANGE</span></ph>
-<ph name="right"><ul class="bul"><li>Move SMB to self-serve</li><li>Cut paid social by 30%</li></ul></ph>
+<ph name="title">Three moves for Q4</ph>
+<ph name="body"><div class="rows" data-steps="dim">
+<div class="row"><span class="idx">01</span><div><h3>Keep enterprise outbound</h3><p class="small">It brought 60% of new accounts.</p></div></div>
+<div class="row"><span class="idx">02</span><div><h3>Move SMB to self-serve</h3><p class="small">Sales time per SMB deal is 3× its value.</p></div></div>
+<div class="row"><span class="idx">03</span><div><h3>Cut paid social by 30%</h3><p class="small">Lowest conversion of any channel.</p></div></div>
+</div></ph>
+<ph name="takeaway" data-step><b>Kesimpulan:</b> spend where the accounts come from.</ph>
 </slide>
 ```
 
-Then run `slideck build && slideck check --no-shot && slideck pdf`.
+Then run `slideck build && slideck check --no-shot && slideck pdf`. `check` should print `~ slide 4 [title-content]: 4 langkah`, and the PDF shows slide 4 complete.
 
 ## 5. Custom design or theme
 
@@ -274,7 +340,16 @@ Tool messages are in Indonesian. Line prefixes: `x` = error (must fix), `!` = wa
 | `deck.output tanpa .html` | `output` lacks `.html`; it was added | set `"output": "name.html"` |
 | `design … melanggar N aturan` | the custom design breaks rules D1–D9 | fix per `docs/custom-design.md` |
 | `frozen file berubah` | a framework file was edited | revert it; never edit framework files |
-| `halaman PDF=N` | PDF page count (should be slides + notes) | if it differs, rebuild and retry |
+| `placeholder belum diisi: [Judul …]` | template text still in the slide | replace every `[…]`, including chart and diagram labels |
+| `halaman PDF=N` | PDF page count (should be slides + notes + tab/swap state pages) | if it differs, rebuild and retry |
+| `~ slide N: 3 langkah · tabs 3 keadaan …` | summary of the slide's interaction | check it matches what you intended |
+| `slide N · keadaan "X"` | a tab/swap state printed as its own page | fix overflow there like on any slide |
+| `N langkah di satu slide` | too many steps | split the slide or merge points |
+| `anak tanpa data-label` / `butuh minimal 2 anak` | a swap/tabs state has no label, or there is only one state | add `data-label` to every child; give at least 2 |
+| `… di deck "live"` | hover-only component, or buttons with no `data-step`, in a presented deck | use steps (`data-step` / `data-steps`) |
+| `data-morph="x" tidak punya pasangan` | no element with the same name on the slide before or after | use the same name on both slides, or remove it |
+| `data-morph … di dalam kotak berlatar` | morph is on text inside a card | move `data-morph` to the card |
+| `slide interaktif (>40%)` | interaction on too many slides of a live deck | keep it for slides that build an argument |
 
 ## 7. Rules
 
@@ -305,5 +380,9 @@ Tool messages are in Indonesian. Line prefixes: `x` = error (must fix), `!` = wa
   - Titles, bullets, tables, pictures, notes, bar/line/pie charts and SmartArt text come across.
   - The pptx look is dropped; the slides take the deck's design and theme.
   - EMF/WMF pictures and scatter/radar/combo charts are skipped with a warning.
+  - On-click entrance animations become `data-step` (one click = one step). By-paragraph builds become `data-steps`.
 - **PPTX export:** `slideck pptx [--out file.pptx]` exports editable shapes, text, tables and pictures, with fonts embedded.
+  - Steps become on-click Fade animations, so the deck still builds step by step in PowerPoint.
+  - The motion becomes the slide transition: corporate and cinematic → Fade, editorial → Wipe, keynote → Push, static → none.
+  - Each tab/swap state becomes its own slide.
 - **PDF export:** `slideck pdf [--out file.pdf] [--html file.html]` prints through headless Chrome using the shell's print stylesheet. Each slide is one 1920×1080 page; a slide with notes gets an extra notes page after it.

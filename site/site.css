@@ -4,6 +4,10 @@
 .thumbs img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:8px;box-shadow:0 0 0 1px var(--line),0 6px 18px color-mix(in srgb,var(--ink) 12%,transparent)}
 .thumbs a:hover img{box-shadow:0 0 0 3px var(--teal)}
 .thumbs span{display:block;font-size:21px;font-weight:700;margin-top:10px;line-height:1.2}
+.thumbs.t6{grid-template-columns:repeat(6,minmax(0,1fr));gap:20px 18px}
+.thumbs.t6 span{font-size:18px;margin-top:8px}
+.m-rows{margin-top:30px;gap:10px 40px}
+.m-rows h3{font-size:28px}.m-rows .small{font-size:21px}
 .thumbs .more{display:flex;flex-direction:column;align-items:center;justify-content:center;aspect-ratio:16/9;border:2px dashed var(--accent-line);border-radius:8px;font-size:21px;font-weight:700;color:var(--teal-d);text-align:center;padding:12px;gap:6px}
 .thumbs .more code{font-size:18px;font-weight:600;color:var(--mut)}
 .lead{font-size:30px;line-height:1.45;color:var(--on-navy-mut);max-width:1300px}

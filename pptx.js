@@ -747,7 +747,9 @@ async function pageProbe() {
 
   /* ---------- emisi objek ---------- */
   let items = [], seq = 0;
-  const push = (it, L) => { it.L = L; it.seq = seq++; items.push(it); return it; };
+  /* motion v2: elemen data-step → nomor langkah (dari mesin langkah template), diwariskan ke semua item di dalamnya */
+  let STEPS = new Map(), CUR_STEP = 0;
+  const push = (it, L) => { it.L = L; it.seq = seq++; if (CUR_STEP) it.step = CUR_STEP; items.push(it); return it; };
   const r2 = (v) => Math.round(v * 100) / 100;
   const nameOf = (el) => {
     if (el.tagName === "SLIDECK-PX") { const h = el.parentElement; return ((h && h.classList[0]) || (h && h.tagName.toLowerCase()) || "") + el.getAttribute("data-px"); }
@@ -1107,6 +1109,13 @@ async function pageProbe() {
 
   const SKIP_TAG = { SCRIPT: 1, STYLE: 1, TEMPLATE: 1, NOSCRIPT: 1, LINK: 1, META: 1, HEAD: 1 };
   function walk(el, ctx, isRoot) {
+    const st = STEPS.get(el);
+    if (!st) return walkIn(el, ctx, isRoot);
+    const prev = CUR_STEP;
+    CUR_STEP = Math.max(prev, st);
+    try { walkIn(el, ctx, isRoot); } finally { CUR_STEP = prev; }
+  }
+  function walkIn(el, ctx, isRoot) {
     if (SKIP_TAG[el.tagName]) return;
     const cs = getComputedStyle(el);
     if (cs.display === "none") return;
@@ -1203,6 +1212,7 @@ async function pageProbe() {
     const stage = document.querySelector(".deck-stage");
     const stageBg = stage ? col(getComputedStyle(stage).backgroundColor) : { hex: "FFFFFF", a: 1 };
 
+    if (window.slideckFinal) window.slideckFinal(); /* motion v2: semua langkah terbuka, isi di keadaan akhir */
     const slides = [...document.querySelectorAll(".slide")];
     slides.forEach((s) => s.classList.remove("active", "visible"));
     for (const s of slides) {
@@ -1214,6 +1224,8 @@ async function pageProbe() {
       SR = { left: r.left, top: r.top, s: r.width / 1920 || 1 };
       items = [];
       seq = 0;
+      STEPS = new Map();
+      (s._steps || []).forEach((g, gi) => g.forEach((a) => { if (a.t === "v") STEPS.set(a.el, gi + 1); }));
       const bg = col(getComputedStyle(s).backgroundColor);
       const slide = { bg: bg.a > 0.5 ? bg.hex : stageBg.a > 0.5 ? stageBg.hex : "FFFFFF", notes: s.getAttribute("data-notes") || "", items };
       walk(s, { L: 0, locked: false }, true);
@@ -1226,6 +1238,7 @@ async function pageProbe() {
       sl.items.sort((a, b) => a.L - b.L || a.seq - b.seq);
     }
     out.scale = SR.s;
+    out.motion = document.documentElement.getAttribute("data-motion") || "";
   } catch (e) {
     out.error = String((e && e.stack) || e);
   }
@@ -1285,7 +1298,7 @@ function toModel(res, htmlPath, warn) {
   });
   let lang = (res.lang || "").trim();
   if (/^[a-z]{2}$/i.test(lang)) lang = { id: "id-ID", en: "en-US", ms: "ms-MY", ja: "ja-JP", de: "de-DE", fr: "fr-FR", es: "es-ES", nl: "nl-NL" }[lang.toLowerCase()] || "en-US";
-  return { model: { title: res.title || path.basename(htmlPath).replace(/\.html?$/i, ""), lang, creator: "slideck-html", theme, slides }, stats };
+  return { model: { title: res.title || path.basename(htmlPath).replace(/\.html?$/i, ""), lang, creator: "slideck-html", theme, slides, motion: res.motion || "" }, stats };
 }
 
 function main() {

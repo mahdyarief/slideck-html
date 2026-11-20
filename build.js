@@ -1,5 +1,5 @@
 /* slideck-html build.js — gabung slides/*.html → dist/<deck>.html. Zero dependency (node stdlib only). */
-/* Versi: 2.1.0 */
+/* Versi: 2.2.0 */
 const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
@@ -13,8 +13,9 @@ const { renderIcon } = require("./lib/icon");
 const { parseAttrs, unesc, esc, escAttr, deckRoot, outputName } = require("./lib/util");
 const { webFormat } = require("./lib/font");
 const { lintDesign, lintTheme } = require("./lib/design-lint");
+const { lintInteractive } = require("./lib/interactive-lint");
 
-const VERSION = "2.1.0";
+const VERSION = "2.2.0";
 const LOCK_FILE = "FROZEN.json";
 const relock = process.argv.includes("--lock");
 
@@ -92,9 +93,14 @@ if (isOwn(themePath)) lintReport(lintTheme(themePath), "theme");
 const themeCss = readIf(themePath);
 if (themeCss === null) warn("theme tidak ketemu: " + themeName + " — pakai token default dari components.css");
 else extra += "\n" + themeCss;
-const motionCss = readIf(own("motions", motionName + ".css"));
-if (motionCss === null) warn("motion tidak ketemu: " + motionName + " — pakai animasi default");
-else extra += "\n" + motionCss;
+/* motion v2: corporate · cinematic · editorial · keynote · static. "playful" (v1) sudah dihapus → corporate. */
+let motionCss = readIf(own("motions", motionName + ".css"));
+if (motionCss === null) {
+  warn(motionName === "playful" ? 'motion "playful" sudah tidak ada sejak 2.2 — pakai corporate (atau pilih cinematic, editorial, keynote, static)'
+    : "motion tidak ketemu: " + motionName + " — pakai corporate");
+  motionCss = readIf(path.join(DIR, "motions", "corporate.css"));
+}
+if (motionCss !== null) extra += "\n" + motionCss;
 /* core.css = komponen bersama semua design (layout placeholder, chart, shape, flow) — dimuat sebelum design */
 /* design berkanvas gelap (.slide berlatar --navy) → slide diberi kelas on-dark agar chart/shape/flow memakai varian terang.
    Bisa dipaksa lewat designs/<nama>/design.json: "canvas": "dark" | "light". */
@@ -379,6 +385,7 @@ if (!files.length) fail("slides/ kosong — copy dari templates/ dulu.");
 const total = files.length;
 const leftovers = [];
 const notesList = {};
+const rendered = []; /* HTML slide yang sudah dirender, untuk pemeriksaan interaktif */
 const slides = files.map((f, i) => {
   let s = fs.readFileSync(path.join(slidesDir, f), "utf8");
   try {
@@ -401,7 +408,10 @@ const slides = files.map((f, i) => {
   if (deck.footer !== undefined) s = s.split("[Footer kiri]").join(deck.footer);
   if (/\{\{[A-Z_]+\}\}/.test(s)) leftovers.push(f + ": {{...}} tersisa");
   if (s.includes("[Footer kiri]") && deck.footer === undefined) leftovers.push(f + ": [Footer kiri] (deck.footer kosong)");
-  if (/\[(KICKER|Judul|Isi|Detail|TAG|LABEL)[^\]]*\]/.test(s)) leftovers.push(f + ": placeholder [...] belum diisi");
+  /* placeholder template: [teks] di isi slide (juga teks chart/diagram; bukan di kode) yang memuat kata, mis. [Judul slide]. [1], [2–4] (sitasi) lolos. */
+  const bare = s.replace(/<!--[\s\S]*?-->/g, " ").replace(/<(pre|code|script|style|textarea)\b[\s\S]*?<\/\1>/gi, " ").replace(/<[^>]+>/g, " ");
+  const phs = (bare.match(/\[[^\]\n]{2,90}\]/g) || []).filter((m) => m !== "[Footer kiri]" && /\p{L}{2}/u.test(m) && !/^\[(sic|dst\.?|et al\.?|n\.d\.)\]$/i.test(m));
+  if (phs.length) leftovers.push(f + ": placeholder belum diisi: " + [...new Set(phs)].slice(0, 3).map((m) => (m.length > 44 ? m.slice(0, 42) + "…]" : m)).join(" ") + (new Set(phs).size > 3 ? " …" : ""));
   // === Aksesibilitas: landmark + label slide, dan peringatan <img> tanpa alt ===
   if (/<img\b(?![^>]*\balt=)/i.test(s)) leftovers.push(f + ": <img> tanpa alt (aksesibilitas)");
   s = s.replace(/<section\b(?![^>]*\baria-label=)/, '<section aria-roledescription="slide" aria-label="Slide ' + (i + 1) + ' dari ' + total + '"');
@@ -415,8 +425,14 @@ const slides = files.map((f, i) => {
       '<div class="slide-notes-h">Catatan — ' + (i + 1) + ' / ' + total + '</div>' +
       '<div class="slide-notes-b">' + esc(noteText) + '</div></div>';
   }
+  rendered.push({ f, html: s });
   return "<!-- " + f + " -->\n" + s + notesPage;
 }).join("\n");
+
+/* deck.json "interactive": "live" (dipresentasikan, penonton tidak bisa hover) | "shared" (dibaca sendiri lewat tautan) */
+const INTERACTIVE = ["live", "shared"].includes(deck.interactive) ? deck.interactive : "";
+if (deck.interactive !== undefined && !INTERACTIVE) warn('deck.interactive harus "live" atau "shared" — diabaikan');
+lintInteractive(rendered, INTERACTIVE).forEach((m) => leftovers.push(m));
 
 /* CSS milik deck (slides/*.css) dan design milik deck boleh merujuk gambar lokal → ikut di-inline */
 const deckCssInline = inlineCssUrls(deckCss, "slides/*.css", leftovers);
@@ -445,9 +461,9 @@ if (deck.image) {
 if (deck.icon) { const ic = inlineRef(String(deck.icon), "deck.icon", leftovers, SRC); head.push('<link rel="icon" href="' + escAttr(ic) + '">'); }
 const SCROLL = ["auto", "on", "off"].includes(deck.scroll) ? deck.scroll : "auto";
 if (deck.scroll !== undefined && deck.scroll !== SCROLL) warn('deck.scroll harus "auto", "on" atau "off" — dipakai "auto"');
-const slots = { TITLE: esc(deck.title || "Deck"), LANG: escAttr(LANG), SCROLL, HEAD: head.join("\n"), HINT: esc(UI.hint),
+const slots = { TITLE: esc(deck.title || "Deck"), LANG: escAttr(LANG), SCROLL, MOTION: escAttr(motionName), INTERACTIVE: INTERACTIVE || "auto", HEAD: head.join("\n"), HINT: esc(UI.hint),
   FONTS: fonts, COMPONENTS: componentsInline + allThemeCss + deckCssInline, SLIDES: slides };
-const SLOT_RE = /\{\{(TITLE|LANG|SCROLL|HEAD|HINT|FONTS|COMPONENTS|SLIDES)\}\}/g;
+const SLOT_RE = /\{\{(TITLE|LANG|SCROLL|MOTION|INTERACTIVE|HEAD|HINT|FONTS|COMPONENTS|SLIDES)\}\}/g;
 const filled = template.replace(SLOT_RE, (m, k) => slots[k]);
 const remaining = template.replace(SLOT_RE, "").match(/\{\{[A-Z_]+\}\}/g);
 if (remaining) warn("placeholder template tidak dikenal: " + [...new Set(remaining)].join(", "));

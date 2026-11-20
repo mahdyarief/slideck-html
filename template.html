@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{LANG}}" data-scroll="{{SCROLL}}">
+<html lang="{{LANG}}" data-scroll="{{SCROLL}}" data-motion="{{MOTION}}" data-interactive="{{INTERACTIVE}}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -68,22 +68,109 @@ function wantScroll(){const m=R.dataset.scroll||'auto';if(matchMedia('print').ma
 let cur=0;const slides=[...document.querySelectorAll('.slide')];const pg=document.getElementById('pg');const bar=document.getElementById('bar');
 function fit(){const st=document.getElementById('stage'),vp=st.parentNode,was=scrollMode;scrollMode=wantScroll();R.classList.toggle('scroll',scrollMode);
   if(scrollMode){const k=R.clientWidth/1920;st.style.transform='scale('+k+')';slides.forEach(x=>{x.classList.add('active','visible');x.setAttribute('aria-hidden','false')});vp.style.height=(st.offsetHeight*k)+'px';return}
-  vp.style.height='';if(was)go(cur);const s=Math.min(innerWidth/1920,innerHeight/1080);st.style.transform=`translate(${(innerWidth-1920*s)/2}px,${(innerHeight-1080*s)/2}px) scale(${s})`}
-function go(n){cur=Math.max(0,Math.min(slides.length-1,n));if(scrollMode){slides[cur].scrollIntoView();return}slides.forEach((s,i)=>{const on=i===cur;s.classList.toggle('active',on);s.classList.toggle('visible',on);s.setAttribute('aria-hidden',on?'false':'true')});pg.textContent=(cur+1)+' / '+slides.length;bar.style.width=((cur+1)/slides.length*100)+'%';try{history.replaceState(null,'','#'+(cur+1))}catch(e){}}
+  vp.style.height='';modes();if(was)go(cur,0);const s=Math.min(innerWidth/1920,innerHeight/1080);st.style.transform=`translate(${(innerWidth-1920*s)/2}px,${(innerHeight-1080*s)/2}px) scale(${s})`}
+/* ==== MOTION v2 + STEPS (frozen) — docs/motion.md ====
+   html.m-anim  : animasi isi + transisi slide aktif (motion v2 terpasang, durasi > 0, bukan reduced-motion/gulir/edit/final)
+   html.m-steps : data-step disembunyikan sampai dibuka dengan klik / → (bukan mode gulir / final)
+   html.m-final : semua tampil dalam keadaan akhir (?final, mode edit, alat check/pptx, print) */
+const RM=matchMedia('(prefers-reduced-motion: reduce)');let inited=false,finalLock=/[?&]final\b/.test(location.search);
+function tok(n,d){const v=getComputedStyle(R).getPropertyValue(n).trim();if(!v)return d;const x=parseFloat(v);return isNaN(x)?d:(/ms$/.test(v)?x:/s$/.test(v)?x*1000:x)}
+function modes(){const fin=finalLock||isEditing();R.classList.toggle('m-final',fin);R.classList.toggle('m-anim',!fin&&!scrollMode&&!RM.matches&&tok('--m-dur',0)>0);R.classList.toggle('m-steps',!fin&&!scrollMode)}
+const LIST='.grid2,.grid3,.grid4,.rows,.timeline,.chips,.bands,.checklist,.thumbs,.facts,.stack,.cta-row,.hero,.with-aside,.cols,ul,ol';
+function unitsOf(root,out,depth){if(!root.firstElementChild){out.push(root);return}for(const c of root.children){if(c.matches('script,style,br,.foot,svg.connector,.connector'))continue;if(c.hasAttribute('data-step')||c.hasAttribute('data-morph'))continue;
+  if(depth<2&&c.matches(LIST)&&c.children.length>1&&!c.hasAttribute('data-steps')){unitsOf(c,out,depth+1);continue}out.push(c)}}
+function chor(sl){const out=[],pad=sl.querySelector(':scope>.pad');
+  if(pad&&pad.classList.contains('lay')){for(const ph of pad.children){if(!ph.classList.contains('ph')||ph.hasAttribute('data-step'))continue;const w=ph.firstElementChild;if(w&&w.matches('.bul')&&ph.matches('.ph-body,.ph-left,.ph-right,.ph-caption,.ph-picture'))unitsOf(w,out,0);else unitsOf(ph,out,1)}}
+  else if(pad)unitsOf(pad,out,0);
+  for(const c of sl.children){if(c===pad||c.matches('.foot,script,style,svg.connector')||c.hasAttribute('data-step')||c.hasAttribute('data-morph'))continue;out.push(c)}
+  const n=out.length;sl.style.setProperty('--m-k',n>9?(9/n).toFixed(3):1);out.forEach((el,i)=>{el.setAttribute('data-m','');el.style.setProperty('--i',Math.min(i,16))});
+  sl.querySelectorAll('svg[data-chart]').forEach(sv=>{let b=0;sv.querySelectorAll('.bar,.slice,.dot,.vl').forEach(e=>e.style.setProperty('--bi',Math.min(b++,24)));let l=0;sv.querySelectorAll('.line').forEach(e=>{e.setAttribute('pathLength','1');e.style.setProperty('--bi',l++)})})}
+/* stack: .swap / .tabs — keadaan bertumpuk; kontrol dibuat dari data-label anak-anaknya */
+function stackOf(el){return el.classList.contains('tabs')?[...el.querySelector(':scope>.tab-panels').children]:[...el.children].filter(c=>!c.matches('.swap-ctl'))}
+function ctlOf(el){if(el.classList.contains('tabs'))return el.querySelector(':scope>.tab-list');const p=el.previousElementSibling;return p&&p.matches('.swap-ctl')?p:null}
+function setState(el,k){const st=stackOf(el);k=Math.max(0,Math.min(st.length-1,k));el._k=k;st.forEach((c,i)=>{c.classList.toggle('on',i===k);c.setAttribute('aria-hidden',i===k?'false':'true')});const ctl=ctlOf(el);if(ctl)[...ctl.children].forEach((b,i)=>{b.setAttribute(el.classList.contains('tabs')?'aria-selected':'aria-pressed',i===k?'true':'false');b.tabIndex=i===k?0:-1})}
+function buildStacks(){
+  document.querySelectorAll('.tabs').forEach((t,ti)=>{if(t.querySelector(':scope>.tab-list'))return;const panels=[...t.children];const list=document.createElement('div');list.className='tab-list';list.setAttribute('role','tablist');const wrap=document.createElement('div');wrap.className='tab-panels';
+    panels.forEach((p,i)=>{const b=document.createElement('button');b.type='button';b.setAttribute('role','tab');b.textContent=p.dataset.label||p.dataset.tab||String(i+1);const id='tp'+ti+'-'+i;p.id=p.id||id;p.setAttribute('role','tabpanel');b.setAttribute('aria-controls',p.id);
+      b.addEventListener('click',e=>{setState(t,i);if(e.detail)b.blur()});if(t.hasAttribute('data-hover'))b.addEventListener('mouseenter',()=>setState(t,i));list.appendChild(b);wrap.appendChild(p)});
+    t.append(list,wrap);setState(t,0)});
+  document.querySelectorAll('.swap').forEach(s=>{if(s._k!==undefined)return;const st=stackOf(s);if(!s.hasAttribute('data-step')){const ctl=document.createElement('div');ctl.className='swap-ctl';ctl.setAttribute('role','group');
+      st.forEach((c,i)=>{const b=document.createElement('button');b.type='button';b.textContent=c.dataset.label||String(i+1);b.addEventListener('click',e=>{setState(s,i);if(e.detail)b.blur()});if(s.hasAttribute('data-hover'))b.addEventListener('mouseenter',()=>setState(s,i));ctl.appendChild(b)});s.parentNode.insertBefore(ctl,s)}setState(s,0)});
+  document.querySelectorAll('.peek').forEach(p=>{p.tabIndex=0;p.setAttribute('role','button');p.addEventListener('click',()=>{if(!isEditing())p.classList.toggle('open')});p.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();p.classList.toggle('open')}})});
+  document.querySelectorAll('.focus-group>*').forEach(c=>{if(c.tabIndex<0&&!c.matches('a,button'))c.tabIndex=0});
+  document.querySelectorAll('.hotspot').forEach(h=>{if(h.querySelector('.hs-tip'))return;const tip=document.createElement('span');tip.className='hs-tip';while(h.firstChild)tip.appendChild(h.firstChild);h.appendChild(tip);h.tabIndex=0;h.setAttribute('role','button');h.setAttribute('aria-label',tip.textContent.trim());h.addEventListener('click',()=>h.classList.toggle('open'));h.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();h.classList.toggle('open')}})})}
+/* steps: langkah berurutan per slide. data-step="n" mengatur urutan (sama = bersamaan), data-steps pada wadah = tiap anak satu langkah,
+   data-steps="dim" meredupkan langkah sebelumnya. .swap/.tabs dengan data-step: tiap langkah pindah ke keadaan berikutnya. */
+function stepsOf(sl){if(sl._steps)return sl._steps;
+  sl.querySelectorAll('[data-steps]').forEach(c=>{const dim=c.dataset.steps==='dim';for(const ch of c.children){if(!ch.hasAttribute('data-step'))ch.setAttribute('data-step','');if(dim)ch.setAttribute('data-dim','')}});
+  const items=[];let last=0;sl.querySelectorAll('[data-step]').forEach(el=>{if(el.parentElement&&el.parentElement.closest('[data-step]:not(.swap):not(.tabs)')&&!el.closest('[data-steps]'))return;const v=parseFloat(el.dataset.step);let n=isNaN(v)?last+1:v;
+    if(el.matches('.swap,.tabs')){const k=stackOf(el).length;for(let j=1;j<k;j++)items.push({n:n+j-1,el,t:'s',k:j});last=Math.max(last,n+k-2)}else{items.push({n,el,t:'v'});last=Math.max(last,n)}});
+  const by=new Map();items.forEach(a=>{if(!by.has(a.n))by.set(a.n,[]);by.get(a.n).push(a)});sl._steps=[...by.keys()].sort((a,b)=>a-b).map(k=>by.get(k));sl._si=0;return sl._steps}
+function stepPaint(sl){const G=stepsOf(sl),si=sl._si;G.forEach((g,i)=>g.forEach(a=>{if(a.t==='v'){a.el.classList.toggle('step-hidden',i>=si);a.el.classList.toggle('step-past',a.el.hasAttribute('data-dim')&&i<si-1)}}));
+  const ks=new Map();G.forEach((g,i)=>g.forEach(a=>{if(a.t==='s'){if(!ks.has(a.el))ks.set(a.el,0);if(i<si)ks.set(a.el,a.k)}}));ks.forEach((k,el)=>setState(el,k))}
+function stepsReset(sl,all){const G=stepsOf(sl);if(!G.length)return;sl._si=all?G.length:0;stepPaint(sl)}
+function stepNext(){const sl=slides[cur],G=stepsOf(sl);if(!R.classList.contains('m-steps')||sl._si>=G.length)return false;sl._si++;stepPaint(sl);hashSync();return true}
+function stepPrev(){const sl=slides[cur],G=stepsOf(sl);if(!R.classList.contains('m-steps')||!G.length||sl._si<=0)return false;sl._si--;stepPaint(sl);hashSync();return true}
+/* alamat: #N = slide N, #N.k = slide N dengan k langkah terbuka (untuk berbagi tautan dan tangkapan layar per langkah) */
+function hashSync(){const sl=slides[cur],G=stepsOf(sl),k=G.length?sl._si:0;try{history.replaceState(null,'','#'+(cur+1)+(k>0?'.'+k:''))}catch(e){}}
+function parseHash(){const m=/^#(\d+)(?:\.(\d+))?$/.exec(location.hash);return m?{n:+m[1]-1,k:m[2]===undefined?null:+m[2]}:null}
+function goHash(h){if(!h)return;if(h.n!==cur||!inited)go(h.n,1);if(h.k!==null&&R.classList.contains('m-steps')){const sl=slides[cur],G=stepsOf(sl);sl._si=Math.max(0,Math.min(G.length,h.k));stepPaint(sl);hashSync()}}
+/* keadaan .swap/.tabs selain yang tampil → halaman salinan saat print/PDF/PPTX/check, agar isinya tidak hilang.
+   data-print="first" | "last" pada komponen: cukup satu keadaan itu, tanpa salinan. */
+function expandStates(){if(document.querySelector('.deck-stage>.slide.m-copy'))return;
+  slides.forEach((s,si)=>{const comps=[...s.querySelectorAll('.swap,.tabs')];let after=s;
+    comps.forEach((c,ci)=>{const mode=c.dataset.print||'all',st=stackOf(c);if(mode==='first'){setState(c,0);return}if(mode==='last'){setState(c,st.length-1);return}
+      const on=c._k||0;st.forEach((p,k)=>{if(k===on)return;const cp=s.cloneNode(true);cp.classList.add('m-copy');cp.classList.remove('active','visible');cp.removeAttribute('data-notes');cp.setAttribute('aria-hidden','true');
+        cp.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));cp.dataset.copyOf=si+1;cp.dataset.state=p.dataset.label||String(k+1);setState(cp.querySelectorAll('.swap,.tabs')[ci],k);after.after(cp);after=cp})})});
+  layoutAll()}
+function collapseStates(){document.querySelectorAll('.deck-stage>.slide.m-copy').forEach(e=>e.remove())}
+function next(skip){if(!skip&&stepNext())return;if(cur<slides.length-1)go(cur+1,1)}
+function prev(skip){if(!skip&&stepPrev())return;if(cur>0)go(cur-1,-1)}
+/* data-count: angka dihitung naik saat slide dimainkan maju (format mengikuti bahasa deck) */
+function countUp(sl,play){sl.querySelectorAll('[data-count]').forEach(el=>{const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);let tn;while((tn=w.nextNode())&&!/\d/.test(tn.nodeValue));if(!tn)return;if(tn._src===undefined)tn._src=tn.nodeValue;cancelAnimationFrame(el._raf);tn.nodeValue=tn._src;if(!play)return;
+  const src=tn._src,m=src.match(/\d[\d.,]*/);if(!m)return;const id=(R.lang||'id').slice(0,2)==='id',dec=id?',':'.',tho=id?'.':',',raw=m[0].replace(/[.,]$/,'');const parts=raw.split(dec),nd=parts.length>1?parts[1].length:0,target=parseFloat(parts[0].split(tho).join('')+(nd?'.'+parts[1]:''));if(!isFinite(target))return;
+  const fmt=new Intl.NumberFormat(id?'id-ID':'en-US',{minimumFractionDigits:nd,maximumFractionDigits:nd,useGrouping:raw.includes(tho)});const host=el.closest('[data-m]')||el,i=parseFloat(getComputedStyle(host).getPropertyValue('--i'))||0;
+  const delay=tok('--m-start',0)+i*tok('--m-stagger',0)*(parseFloat(getComputedStyle(sl).getPropertyValue('--m-k'))||1),dur=tok('--m-count-dur',1200),t0=performance.now()+delay;
+  const tick=t=>{const p=Math.min(1,Math.max(0,(t-t0)/dur)),e=p===1?1:1-Math.pow(2,-10*p);tn.nodeValue=src.replace(raw,fmt.format(target*e));if(p<1)el._raf=requestAnimationFrame(tick);else tn.nodeValue=src};tn.nodeValue=src.replace(raw,fmt.format(0));el._raf=requestAnimationFrame(tick)})}
+function settle(sl,ms){clearTimeout(sl._st);sl.classList.remove('m-settled');sl._st=setTimeout(()=>sl.classList.add('m-settled'),ms)}
+function swapSlides(from,to,dir,anim){document.getElementById('stage').style.setProperty('--m-dir',dir<0?-1:1);
+  slides.forEach(s=>{if(s!==to&&s!==from){s.classList.remove('active','visible','m-on','m-done','m-enter','m-leave')}});
+  if(from&&from!==to){from.classList.remove('active','visible','m-enter');from.setAttribute('aria-hidden','true');clearTimeout(from._lt);
+    if(anim){from.classList.add('m-leave');from._lt=setTimeout(()=>from.classList.remove('m-leave','m-on','m-done'),tok('--m-slide-out',240)+80)}else from.classList.remove('m-leave','m-on','m-done')}
+  to.classList.add('active','visible');to.setAttribute('aria-hidden','false');stepsReset(to,dir<0);clearTimeout(to._lt);to.classList.remove('m-leave');
+  const play=R.classList.contains('m-anim')&&dir>0;
+  if(play){to.classList.remove('m-on','m-done','m-settled');void to.offsetWidth;if(anim&&from!==to){to.classList.add('m-enter');clearTimeout(to._et);to._et=setTimeout(()=>to.classList.remove('m-enter'),tok('--m-slide-dur',520)+80)}
+    requestAnimationFrame(()=>requestAnimationFrame(()=>to.classList.add('m-on')));settle(to,tok('--m-start',0)+17*tok('--m-stagger',0)+Math.max(tok('--m-dur',0),tok('--m-draw-dur',0))+200)}
+  else{to.classList.add('m-on','m-done','m-settled');if(anim&&from!==to&&R.classList.contains('m-anim')){to.classList.add('m-enter');clearTimeout(to._et);to._et=setTimeout(()=>to.classList.remove('m-enter'),tok('--m-slide-dur',520)+80)}}
+  countUp(to,play)}
+function tryMorph(from,to,dir){if(!document.startViewTransition||!R.classList.contains('m-anim'))return false;const a=new Map();from.querySelectorAll('[data-morph]').forEach(e=>a.set(e.dataset.morph,e));
+  const pairs=[...to.querySelectorAll('[data-morph]')].filter(e=>a.has(e.dataset.morph)).map(e=>[a.get(e.dataset.morph),e]);if(!pairs.length)return false;
+  pairs.forEach(([o],i)=>o.style.viewTransitionName='m-morph-'+i);
+  const vt=document.startViewTransition(()=>{pairs.forEach(([o,nw],i)=>{o.style.viewTransitionName='';nw.style.viewTransitionName='m-morph-'+i});swapSlides(from,to,dir,false)});
+  vt.finished.finally(()=>pairs.forEach(([,nw])=>nw.style.viewTransitionName=''));return true}
+function go(n,dir){n=Math.max(0,Math.min(slides.length-1,n));const from=slides[cur];if(dir===undefined)dir=n>=cur?1:-1;cur=n;
+  if(scrollMode){slides[cur].scrollIntoView();return}
+  const to=slides[cur],anim=inited&&from!==to&&dir!==0&&R.classList.contains('m-anim');
+  if(!(anim&&tryMorph(from,to,dir)))swapSlides(from,to,dir===0?(to.classList.contains('m-on')?-1:1):dir,anim);
+  pg.textContent=(cur+1)+' / '+slides.length;bar.style.width=((cur+1)/slides.length*100)+'%';hashSync()}
+/* keadaan akhir untuk alat (check, pptx, PDF, thumbnail): semua langkah terbuka, swap/tabs di keadaan pertama (terakhir bila
+   digerakkan langkah), keadaan lainnya jadi halaman salinan (.m-copy, data-copy-of, data-state) */
+window.slideckFinal=function(){finalLock=true;modes();slides.forEach(s=>{stepsReset(s,true);s.querySelectorAll('.swap:not([data-step]),.tabs:not([data-step])').forEach(c=>setState(c,0));s.classList.add('m-on','m-done','m-settled')});expandStates()};
 function isEditing(){return document.body.classList.contains('editing')}
-function setEdit(on){document.body.classList.toggle('editing',on);document.body.contentEditable=on?'true':'false';document.getElementById('editflag').style.display=on?'inline':'none'}
+function setEdit(on){document.body.classList.toggle('editing',on);document.body.contentEditable=on?'true':'false';document.getElementById('editflag').style.display=on?'inline':'none';modes()}
 addEventListener('resize',fit);addEventListener('beforeprint',()=>{if(scrollMode){R.classList.remove('scroll');document.getElementById('stage').style.transform='none'}});addEventListener('afterprint',fit);
 addEventListener('keydown',e=>{
   if(isEditing()){if(e.key==='Escape'){e.preventDefault();setEdit(false)}return}
   if(scrollMode)return;
-  if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();go(cur+1)}
-  else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(cur-1)}
-  else if(e.key==='Home'){e.preventDefault();go(0)}
-  else if(e.key==='End'){e.preventDefault();go(slides.length-1)}
+  if(e.target.closest&&e.target.closest('.tab-list,.swap-ctl,.peek,.hotspot')&&(e.key===' '||e.key==='Enter'))return;
+  if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();next(e.shiftKey)}
+  else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();prev(e.shiftKey)}
+  else if(e.key==='Home'){e.preventDefault();go(0,1)}
+  else if(e.key==='End'){e.preventDefault();go(slides.length-1,-1)}
   else if(e.key.toLowerCase()==='e'){setEdit(true)}
 });
-slides.forEach(s=>s.addEventListener('click',(e)=>{if(isEditing()||scrollMode)return;if(e.target.closest('.deck-controls,a,button,.cmd,input,select'))return;const r=s.getBoundingClientRect();const leftSide=(e.clientX-r.left)/r.width<0.3;go(cur+(leftSide?-1:1))}));
-let sx=0;addEventListener('touchstart',e=>{sx=e.touches[0].clientX},{passive:true});addEventListener('touchend',e=>{if(scrollMode)return;const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40)go(cur+(dx<0?1:-1))},{passive:true});
+slides.forEach(s=>s.addEventListener('click',(e)=>{if(isEditing()||scrollMode)return;if(e.target.closest('.deck-controls,a,button,.cmd,input,select,.peek,.hotspot,.tab-list,.swap-ctl'))return;const r=s.getBoundingClientRect();const leftSide=(e.clientX-r.left)/r.width<0.3;if(leftSide)prev();else next()}));
+let sx=0;addEventListener('touchstart',e=>{sx=e.touches[0].clientX},{passive:true});addEventListener('touchend',e=>{if(scrollMode)return;const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40){if(dx<0)next();else prev()}},{passive:true});
 /* ==== COPY: klik .cmd menyalin teksnya (atau data-copy) ==== */
 document.addEventListener('click',e=>{const c=e.target.closest('.cmd');if(!c||isEditing())return;const t=c.dataset.copy||c.textContent.trim();if(!navigator.clipboard)return;navigator.clipboard.writeText(t).then(()=>{c.classList.add('copied');setTimeout(()=>c.classList.remove('copied'),1500)}).catch(()=>{})});
 /* ==== AUTOFIT (frozen): seperti "Shrink text on overflow" PowerPoint. Konten yang meluber dikecilkan dengan CSS zoom
@@ -125,11 +212,13 @@ function drawConnectors(sl){sl.querySelectorAll('svg.connector').forEach(sv=>{co
   let h='<path class="cn-l" d="'+d+'"/>'+(ae?head(b,1):'')+(as?head(a,-1):'');
   if(sv.dataset.label){const t=document.createElement('span');t.textContent=sv.dataset.label;h+='<text x="'+f((a[0]+b[0])/2)+'" y="'+f((a[1]+b[1])/2)+'">'+t.innerHTML+'</text>'}
   sv.innerHTML=h;sv.removeAttribute('data-missing')})}
-function layoutAll(){slides.forEach(fitSlide);slides.forEach(drawConnectors)}
+function layoutAll(){const all=document.querySelectorAll('.deck-stage>.slide');all.forEach(fitSlide);all.forEach(drawConnectors)}
 window.slideckFit=layoutAll;
 let fitTimer=0;addEventListener('input',()=>{clearTimeout(fitTimer);fitTimer=setTimeout(()=>{fitSlide(slides[cur]);drawConnectors(slides[cur])},250)});
-addEventListener('hashchange',()=>{const n=parseInt(location.hash.slice(1),10);if(n&&n-1!==cur)go(n-1)});
-fit();go((parseInt(location.hash.slice(1),10)||1)-1);layoutAll();
+addEventListener('hashchange',()=>goHash(parseHash()));
+buildStacks();slides.forEach(chor);modes();RM.addEventListener&&RM.addEventListener('change',modes);
+addEventListener('beforeprint',()=>{slides.forEach(s=>stepsReset(s,true));expandStates()});addEventListener('afterprint',()=>{if(!finalLock)collapseStates();slides.forEach((s,i)=>{if(i!==cur)stepsReset(s,false)})});
+fit();const H0=parseHash();cur=H0?Math.max(0,Math.min(slides.length-1,H0.n)):0;go(cur,1);inited=true;if(H0&&H0.k!==null)goHash(H0);if(finalLock)window.slideckFinal();layoutAll();
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(layoutAll);
 addEventListener('load',layoutAll);
 </script>

@@ -1,4 +1,10 @@
-/* MOTION corporate — default. Subtle fast 200-300ms, dari frontend-slides Professional/Corporate. */
-.reveal{opacity:0;transform:translateY(32px);transition:opacity .3s var(--ease),transform .3s var(--ease)}
-.visible .reveal{opacity:1;transform:none}
-.visible .reveal.d1{transition-delay:.06s}.visible .reveal.d2{transition-delay:.12s}.visible .reveal.d3{transition-delay:.18s}
+/* MOTION corporate (default) — tenang dan cepat. Isi masuk sesuai urutan baca (naik 14px, rapat),
+   slide berganti dengan geser halus searah navigasi. Cocok untuk laporan, rapat, dan pitch.
+   Token --m-* dipakai core.css; lihat docs/motion.md. */
+:root{
+  --m-dur:460ms; --m-dur-out:220ms;
+  --m-ease:cubic-bezier(.22,1,.36,1); --m-ease-in:cubic-bezier(.4,0,1,1);
+  --m-dist:14px; --m-scale:1; --m-stagger:55ms; --m-start:140ms;
+  --m-slide-dur:520ms; --m-slide-out:240ms; --m-slide-x:36px; --m-slide-scale:1;
+  --m-morph-dur:620ms; --m-draw-dur:900ms; --m-count-dur:1200ms;
+}

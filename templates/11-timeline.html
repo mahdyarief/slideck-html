@@ -1,11 +1,12 @@
-<!-- TEMPLATE 11 timeline: alur 3-5 tahap horizontal. -->
-<section class="slide"><div class="pad">
-<p class="kicker reveal">[KICKER]</p><h1 class="title reveal d1">[Judul alur]</h1>
-<div class="timeline reveal d2">
-<div class="step"><div class="dot"></div><h3 style="font-size:32px;color:var(--ink)">[Tahap 1]</h3><p class="small">[Detail]</p></div>
-<div class="step"><div class="dot"></div><h3 style="font-size:32px;color:var(--ink)">[Tahap 2]</h3><p class="small">[Detail]</p></div>
-<div class="step"><div class="dot"></div><h3 style="font-size:32px;color:var(--ink)">[Tahap 3]</h3><p class="small">[Detail]</p></div>
-<div class="step"><div class="dot"></div><h3 style="font-size:32px;color:var(--ink)">[Tahap 4]</h3><p class="small">[Detail]</p></div>
-</div>
-<p class="small reveal d3" style="margin-top:28px">[Catatan opsional]</p>
-</div><div class="foot"><span>[Footer kiri]</span><span>{{N}} / {{TOTAL}}</span></div></section>
+<!-- TEMPLATE 11 timeline: alur 3–5 tahap; tahap yang perlu perhatian disorot (is-key). Ganti teks dalam kurung siku saja, pertahankan class. -->
+<slide layout="title-content">
+<ph name="kicker">[KICKER]</ph>
+<ph name="title">[Judul: status alur ini]</ph>
+<ph name="body"><div class="timeline">
+<div class="step"><div class="dot"></div><h3>[Tahap 1]</h3><p class="small">[Status · waktu]</p></div>
+<div class="step"><div class="dot"></div><h3>[Tahap 2]</h3><p class="small">[Status · waktu]</p></div>
+<div class="step is-key"><div class="dot"></div><h3>[Tahap 3]</h3><p class="small">[Status · waktu]</p></div>
+<div class="step"><div class="dot"></div><h3>[Tahap 4]</h3><p class="small">[Status · waktu]</p></div>
+</div></ph>
+<ph name="takeaway"><b>Kesimpulan:</b> [Isi kesimpulan: apa yang harus diputuskan atau diingat]</ph>
+</slide>
