@@ -106,20 +106,26 @@ const components = "/* ==== CORE ==== */\n" + coreCss + "\n/* ==== DESIGN: " + d
 // === Theme switcher: inject semua theme CSS + switcher UI ke output ===
 const allThemes = [];
 let allThemeCss = "";
+const OPTIONAL_TOKENS = { "on-teal": "var(--surface)", accent2: "var(--teal-d)", "on-accent2": "var(--surface)", cover: "var(--navy)" };
 {
   for (const name of listNames("themes", ".css")) {
     const css = fs.readFileSync(own("themes", name + ".css"), "utf8");
     allThemes.push(name);
     // scope theme CSS agar bisa di-switch: :root → [data-theme="nama"]
-    const scoped = css.replace(/:root\s*\{/, `[data-theme="${name}"] {`);
+    /* token opsional yang tidak ditulis theme diisi default core.css di scope-nya sendiri; tanpa ini nilai dari
+       theme bawaan deck (:root) bocor ke theme yang dipilih lewat switcher */
+    const missing = Object.entries(OPTIONAL_TOKENS).filter(([k]) => !new RegExp("--" + k + "\\s*:").test(css)).map(([k, v]) => "--" + k + ":" + v + ";").join("");
+    let scoped = css.replace(/:root\s*\{/, `[data-theme="${name}"] {` + missing);
+    /* --accent-on-dark: warna aksen kicker di slide gelap (sampul, section), untuk theme yang aksennya mirip latar gelapnya */
+    if (/--accent-on-dark\s*:/.test(css)) { const s = `[data-theme="${name}"] `; scoped += `\n${s}.slide.dark :is(.kicker,.idx:not(.dot)),${s}.slide[style*="var(--navy)"] :is(.kicker,.idx:not(.dot)),${s}.slide .is-key :is(.idx:not(.dot),:not(.ico-badge)>.ico){color:var(--accent-on-dark)}`; }
     allThemeCss += "\n/* ==== THEME: " + name + " ==== */\n" + scoped;
   }
 }
-const themeOptions = allThemes.map((name) => {
-  const active = name === themeName ? " selected" : "";
-  return `    <option value="${name}"${active}>${name}</option>`;
-}).join("\n");
-
+/* menu theme custom (bukan <select>: daftar bawaan OS tidak bisa ditata). Swatch tiap opsi memakai token theme itu sendiri
+   lewat data-theme pada span, jadi tidak ada warna yang di-hardcode. */
+const swatch = (name) => `<span class="dts-sw" data-theme="${name}" aria-hidden="true"><i></i><i></i><i></i></span>`;
+const themeOptions = allThemes.map((name) =>
+  `    <li role="option" id="dts-${name}" data-v="${name}" aria-selected="${name === themeName}">${swatch(name)}<span>${name}</span></li>`).join("\n");
 /* bahasa deck (atribut lang + teks UI layar): deck.lang, default "id" */
 const LANG = String(deck.lang || "id");
 const UI = /^en\b/i.test(LANG)
@@ -128,18 +134,33 @@ const UI = /^en\b/i.test(LANG)
 const themeSwitcherHtml = `
 <style>
 /* ==== THEME SWITCHER CSS (inject oleh build.js) ==== */
-.deck-theme-switcher{position:fixed;top:20px;right:20px;z-index:1002;display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.55);padding:8px 14px;border-radius:10px;color:#fff;font-size:14px;font-family:system-ui,-apple-system,sans-serif;backdrop-filter:blur(8px)}
-.deck-theme-label{font-weight:600;white-space:nowrap}
-html.scroll .deck-theme-switcher{position:absolute;top:8px;right:8px;padding:5px 9px;font-size:12px;gap:6px}
-html.scroll .deck-theme-select{font-size:12px;padding:4px 22px 4px 8px}
-.deck-theme-select{appearance:none;background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:7px;padding:6px 32px 6px 10px;font-size:13px;cursor:pointer;outline:none;font-family:inherit}
-.deck-theme-select:hover{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.4)}
-.deck-theme-select option{background:#1a1a2e;color:#fff}
-.deck-theme-select option:hover{background:#2a2a4e}
-@media (prefers-reduced-motion:reduce){
-  .deck-theme-select{transition:none}
-}
-/* ==== SPEAKER NOTES (print-only, jadi halaman PDF) ==== */
+.deck-theme-switcher{position:fixed;top:20px;right:20px;z-index:1002;font:13px/1.2 system-ui,-apple-system,"Segoe UI",sans-serif;color:#fff}
+.dts-btn{display:flex;align-items:center;gap:10px;background:rgba(14,16,24,.62);color:inherit;border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:7px 12px 7px 14px;font:inherit;cursor:pointer;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 4px 18px rgba(0,0,0,.18);transition:background .15s,border-color .15s}
+.dts-btn:hover,.dts-btn[aria-expanded="true"]{background:rgba(14,16,24,.8);border-color:rgba(255,255,255,.3)}
+.dts-btn:focus-visible{outline:2px solid rgba(255,255,255,.7);outline-offset:2px}
+.dts-list:focus{outline:none}
+.dts-list li.on{box-shadow:inset 0 0 0 1px rgba(255,255,255,.28)}
+.dts-lab{opacity:.6;font-weight:500}
+.dts-name{font-weight:600}
+.dts-btn svg{width:12px;height:12px;opacity:.7;transition:transform .15s}
+.dts-btn[aria-expanded="true"] svg{transform:rotate(180deg)}
+.dts-sw{display:inline-flex;flex:none}
+.dts-sw i{width:14px;height:14px;border-radius:50%;box-shadow:0 0 0 1.5px rgba(14,16,24,.85)}
+.dts-sw i+i{margin-left:-5px}
+.dts-sw i:nth-child(1){background:var(--surface)}
+.dts-sw i:nth-child(2){background:var(--navy)}
+.dts-sw i:nth-child(3){background:var(--teal)}
+.dts-list{position:absolute;top:calc(100% + 8px);right:0;min-width:220px;max-height:min(70vh,460px);overflow:auto;margin:0;padding:6px;list-style:none;background:rgba(18,20,30,.94);border:1px solid rgba(255,255,255,.12);border-radius:14px;box-shadow:0 18px 50px rgba(0,0,0,.4);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transform-origin:top right;animation:dts-in .14s ease-out}
+.dts-list[hidden]{display:none}
+@keyframes dts-in{from{opacity:0;transform:translateY(-4px) scale(.98)}}
+.dts-list li{display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:9px;cursor:pointer;white-space:nowrap;outline-offset:-2px}
+.dts-list li:hover,.dts-list li.on{background:rgba(255,255,255,.08)}
+.dts-list li[aria-selected="true"]{background:rgba(255,255,255,.14);font-weight:600}
+.dts-list li[aria-selected="true"]::after{content:"";margin-left:auto;width:6px;height:11px;border:solid currentColor;border-width:0 2px 2px 0;transform:rotate(45deg) translate(-2px,-2px)}
+html.scroll .deck-theme-switcher{position:absolute;top:8px;right:8px;font-size:12px}
+html.scroll .dts-btn{padding:5px 9px 5px 10px;gap:7px}
+html.scroll .dts-lab{display:none}
+@media (prefers-reduced-motion:reduce){.dts-list{animation:none}.dts-btn,.dts-btn svg{transition:none}}/* ==== SPEAKER NOTES (print-only, jadi halaman PDF) ==== */
 .slide-notes{display:none}
 @media print{
   .deck-theme-switcher{display:none!important}
@@ -148,34 +169,69 @@ html.scroll .deck-theme-select{font-size:12px;padding:4px 22px 4px 8px}
   .slide-notes-b{font-size:44px;line-height:1.5;white-space:pre-wrap}
 }
 </style>
-<div class="deck-theme-switcher" role="group" aria-label="${UI.pick}">
-  <label for="theme-select" class="deck-theme-label">${UI.theme}:</label>
-  <select id="theme-select" class="deck-theme-select" aria-label="${UI.pick}">
+<div class="deck-theme-switcher">
+  <button type="button" class="dts-btn" id="theme-btn" aria-haspopup="listbox" aria-expanded="false" aria-controls="theme-list" aria-label="${UI.pick}"><span class="dts-lab">${UI.theme}</span>${swatch(themeName).replace('class="dts-sw"', 'class="dts-sw" id="theme-sw"')}<span class="dts-name" id="theme-name">${themeName}</span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5"/></svg></button>
+  <ul class="dts-list" id="theme-list" role="listbox" aria-label="${UI.pick}" tabindex="-1" hidden>
 ${themeOptions}
-  </select>
+  </ul>
 </div>`;
-
 const allThemesArr = JSON.stringify(allThemes);
 const themeSwitcherJs = `
 /* ==== THEME SWITCHER (inject oleh build.js) ==== */
 (function(){
-  var ts = document.getElementById('theme-select');
-  if(!ts) return;
-  var st = document.documentElement;
+  var btn = document.getElementById('theme-btn'), list = document.getElementById('theme-list');
+  if(!btn || !list) return;
+  var st = document.documentElement, items = [].slice.call(list.querySelectorAll('li'));
+  var sw = document.getElementById('theme-sw'), nm = document.getElementById('theme-name');
   var validThemes = ${allThemesArr};
   var deckTheme = ${JSON.stringify(themeName)};
-  function apply(t){
-    st.setAttribute('data-theme', t);
-    try{localStorage.setItem('slideck-theme', t)}catch(e){}
+  var hi = -1;
+  function apply(t, save){
+    st.setAttribute('data-theme', t); sw.setAttribute('data-theme', t); nm.textContent = t;
+    items.forEach(function(li){ li.setAttribute('aria-selected', li.dataset.v === t ? 'true' : 'false') });
+    if(save){ try{localStorage.setItem('slideck-theme', t)}catch(e){} }
     /* font theme bisa beda → hitung ulang autofit + connector */
     if(window.slideckFit) requestAnimationFrame(window.slideckFit);
   }
-  ts.addEventListener('change', function(){ apply(ts.value) });
+  function mark(i){
+    hi = (i + items.length) % items.length;
+    items.forEach(function(li, k){ li.classList.toggle('on', k === hi) });
+    list.setAttribute('aria-activedescendant', items[hi].id); items[hi].scrollIntoView({block:'nearest'});
+  }
+  function open(){
+    list.hidden = false; btn.setAttribute('aria-expanded', 'true'); list.focus({preventScroll:true});
+    mark(Math.max(0, items.findIndex(function(li){ return li.getAttribute('aria-selected') === 'true' })));
+  }
+  function close(focusBtn){
+    if(list.hidden) return;
+    list.hidden = true; btn.setAttribute('aria-expanded', 'false');
+    items.forEach(function(li){ li.classList.remove('on') });
+    if(focusBtn) btn.focus({preventScroll:true});
+  }
+  btn.addEventListener('click', function(e){ e.stopPropagation(); list.hidden ? open() : close(true) });
+  list.addEventListener('click', function(e){
+    e.stopPropagation(); var li = e.target.closest('li'); if(!li) return;
+    apply(li.dataset.v, true); close(true);
+  });
+  list.addEventListener('mousemove', function(e){ var li = e.target.closest('li'); if(li) mark(items.indexOf(li)) });
+  /* tombol di dalam menu tidak boleh sampai ke navigasi slide */
+  btn.parentNode.addEventListener('keydown', function(e){
+    e.stopPropagation();
+    if(list.hidden){
+      if(e.key === 'ArrowDown' || e.key === 'ArrowUp'){ e.preventDefault(); open() }
+      return;
+    }
+    if(e.key === 'ArrowDown'){ e.preventDefault(); mark(hi + 1) }
+    else if(e.key === 'ArrowUp'){ e.preventDefault(); mark(hi - 1) }
+    else if(e.key === 'Home'){ e.preventDefault(); mark(0) }
+    else if(e.key === 'End'){ e.preventDefault(); mark(items.length - 1) }
+    else if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); apply(items[hi].dataset.v, true); close(true) }
+    else if(e.key === 'Escape' || e.key === 'Tab'){ close(e.key === 'Escape') }
+  });
+  document.addEventListener('click', function(e){ if(!btn.parentNode.contains(e.target)) close(false) });
   var saved = null;
   try{ saved = localStorage.getItem('slideck-theme') }catch(e){}
-  if(saved && validThemes.indexOf(saved) >= 0){ ts.value = saved; st.setAttribute('data-theme', saved) }
-  else{ ts.value = deckTheme; st.setAttribute('data-theme', deckTheme) }
-})();`;
+  apply(saved && validThemes.indexOf(saved) >= 0 ? saved : deckTheme, false);})();`;
 
 /* ---------- 4. font @font-face (base64 inline) ---------- */
 let fonts = "";

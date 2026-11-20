@@ -47,13 +47,13 @@ A design styles everything through these custom properties. A theme must define 
 |---|---|---|
 | `--surface` | slide / page background | light in most themes |
 | `--ink` | main text (titles, body) on `--surface` / `--grey` / `--mint` | contrast ≥ 4.5 |
-| `--mut` | secondary text | contrast ≥ 3 on `--surface` |
+| `--mut` | secondary text (captions, footer, sources) | contrast ≥ 4.5 on `--surface` and `--grey` |
 | `--grey` | panel / card surface | |
 | `--navy` | the main **dark** surface (cover, stat panels, dark slides) | must be dark |
 | `--on-navy` | text on `--navy` and on `--cover` | contrast ≥ 4.5 |
-| `--on-navy-mut` | secondary text on `--navy` | contrast ≥ 3 |
-| `--teal` | accent fill: bars, dots, rules | |
-| `--teal-d` | accent used **as text** (kickers, tags, table heads) | contrast ≥ 3 on `--surface`, `--mint`, `--tag-bg` |
+| `--on-navy-mut` | secondary text on `--navy` and `--cover` | contrast ≥ 4.5 |
+| `--teal` | accent fill (bars, dots, rules) and large accent text (kickers, big numbers) | contrast ≥ 3 on `--surface`, `--grey`, `--navy`, `--cover` |
+| `--teal-d` | accent used **as small text** (tags, table heads, links) | contrast ≥ 4.5 on `--surface`, `--grey`, `--mint`, `--tag-bg` |
 | `--mint` | soft accent surface | |
 | `--accent-line` | border of an accented card | |
 | `--tag-bg` | background of the `.tag` pill | |
@@ -63,7 +63,7 @@ A design styles everything through these custom properties. A theme must define 
 | `--font-d` / `--font-s` | display (sans) / serif font stacks | end with a generic family |
 | `--ease` | easing curve | |
 
-`core.css` also provides `--c1`…`--c6` (chart series) and `--on-teal`, which are derived from the tokens above.
+`core.css` also provides `--c1`…`--c6` (chart series), derived from the tokens above. The minimums follow WCAG 2.x AA for how each token is used: 4.5:1 for normal text, 3:1 for large text (≥ 24px, or ≥ 18.66px bold) and for accent fills.
 
 Need another colour? Derive it from tokens. The theme then still controls it:
 
@@ -81,7 +81,7 @@ A rule marked **error** stops the build of a deck that uses the design. A **warn
 |---|---|---|---|
 | D1 | error | The folder has `components.css`. | |
 | D2 | error | `design.json` is valid JSON with `name` equal to the folder name (`a-z 0-9 -`), plus `label` and `description`. `canvas` is `"dark"` or `"light"` if set. `recommended.theme` / `.motion` must exist (a missing `recommended` only warns). | Name lookup, the design list, agent guidance |
-| D3 | error | No selectors for the shell UI (`.deck-controls`, `.deck-stage`, `.deck-viewport`, `.progress`, `.deck-theme-switcher`, `.slide-notes`, `#bar`, `#pg`, `#stage`, `#theme-select`, `.cn-h`, `.cn-l`). No `@page` or `@font-face`. On `html` / `body`, only `font-family` and `-webkit-font-smoothing`. | The shell owns navigation, print and fonts |
+| D3 | error | No selectors for the shell UI (`.deck-controls`, `.deck-stage`, `.deck-viewport`, `.progress`, `.deck-theme-switcher`, `.slide-notes`, `#bar`, `#pg`, `#stage`, `#theme-btn`, `#theme-list`, `.dts-*`, `.cn-h`, `.cn-l`). No `@page` or `@font-face`. On `html` / `body`, only `font-family` and `-webkit-font-smoothing`. | The shell owns navigation, print and fonts |
 | D4 | error | `.slide{…}` may not set its size or stacking: `width`, `height`, `position` (except `relative`), `inset`, `top/left/…`, `display`, `visibility`, `opacity`, `transform`, `z-index`, `transition`. `background` and `padding` are fine. | The stage is fixed at 1920×1080 and scaled by the shell |
 | D5 | error | No fixed colours: no hex, `rgb()`, `hsl()` or colour names in colour properties or custom properties. Exception: fallback values for **contract** tokens inside `:root`, which the theme always overrides. A plain black or white `rgba()` in a shadow only warns. | Any design × any theme |
 | D6 | error | Every `var(--x)` is a contract or core token, or a custom property the design defines itself. | A typo becomes a silent transparent / black |
@@ -95,7 +95,7 @@ A rule marked **error** stops the build of a deck that uses the design. A **warn
 |---|---|---|
 | T1 | error | The file is only `:root{…}`: no other selectors. |
 | T2 | error | Every required token is present. A missing `--accent2`, `--on-accent2` or `--cover` only warns. |
-| T3 | error / warn | Contrast pairs from the token table. Body-text pairs below 3:1 are errors, below 4.5:1 warnings. `--navy` must be dark. Colours must be hex or `rgb()` so they can be checked. |
+| T3 | error / warn | Contrast pairs from the token table (WCAG AA). Text pairs that need 4.5:1 but are below 3:1 are errors; other misses are warnings. `--navy` must be dark. Colours must be hex or `rgb()` so they can be checked. |
 | T4 | warn | `--font-d` ends with a generic family (`sans-serif`, `serif`, `system-ui`, …). |
 
 ## Classes a design styles

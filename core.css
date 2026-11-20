@@ -6,7 +6,9 @@
    Token kontrak 2.1 (theme lama tanpa token ini tetap jalan lewat default di bawah):
    --accent2     aksen kedua / sinyal (bar footer design report, status penting) — beda dari --teal
    --on-accent2  teks di atas --accent2
-   --cover       latar sampul (layout title); teksnya --on-navy, jadi WAJIB kontras dengan --on-navy */
+   --cover       latar sampul (layout title); teksnya --on-navy, jadi WAJIB kontras dengan --on-navy
+   --accent-on-dark  (opsional) warna kicker di slide gelap/sampul, untuk theme yang --teal-nya mirip --navy/--cover;
+                 build.js menambah aturan kicker khusus theme itu, theme lain tidak berubah */
 :root{--c1:var(--teal);--c2:var(--ink);--c3:color-mix(in srgb,var(--teal) 48%,var(--surface));--c4:var(--mut);--c5:var(--teal-d);--c6:color-mix(in srgb,var(--ink) 32%,var(--surface));--on-teal:var(--surface);--accent2:var(--teal-d);--on-accent2:var(--surface);--cover:var(--navy)}
 .slide.dark,.slide[style*="var(--navy)"],.on-dark{--c2:var(--on-navy);--c3:color-mix(in srgb,var(--teal) 48%,var(--navy));--c4:var(--on-navy-mut);--c5:color-mix(in srgb,var(--teal) 70%,var(--on-navy));--c6:color-mix(in srgb,var(--on-navy) 32%,var(--navy))}
 
@@ -182,6 +184,8 @@ pre.mermaid{font-family:ui-monospace,Consolas,monospace;font-size:20px;color:var
 .dg .td{font-size:22px;fill-opacity:.86}
 .dg .ax{font-size:22px;font-weight:700;fill-opacity:.75;letter-spacing:.5px}
 .dg text.on{fill:var(--on-teal);fill-opacity:1}
+/* deskripsi di bentuk sorotan dibuat tebal: 22px tebal = teks besar WCAG (3:1), aman di aksen terang/emas */
+.dg text.td.on{font-weight:700}
 .dg .q{fill:color-mix(in srgb,var(--teal) 13%,var(--dg-bg))}
 .dg .l1{fill:color-mix(in srgb,var(--teal) 46%,var(--dg-bg))}.dg .l2{fill:color-mix(in srgb,var(--teal) 36%,var(--dg-bg))}
 .dg .l3{fill:color-mix(in srgb,var(--teal) 27%,var(--dg-bg))}.dg .l4{fill:color-mix(in srgb,var(--teal) 19%,var(--dg-bg))}
@@ -229,7 +233,7 @@ pre.mermaid{font-family:ui-monospace,Consolas,monospace;font-size:20px;color:var
 .rows>.is-key:not(.card){padding-left:28px;padding-right:28px;border-radius:12px;border-bottom:0}
 .slide .is-key :is(h3,.bul,.kpi-num,.quote,.stat-big,b,strong){color:var(--on-navy)}
 .slide .is-key :is(p,.small,.kpi-lab){color:var(--on-navy-mut)}
-.slide .is-key .tag{color:var(--on-navy);background:color-mix(in srgb,var(--on-navy) 16%,transparent)}
+.slide .is-key .tag{color:var(--on-navy);background:transparent;box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--on-navy) 40%,transparent)}
 .slide .is-key :is(.idx:not(.dot),:not(.ico-badge)>.ico){color:var(--teal)}
 .slide.dark .card.is-key,.slide.dark .rows>.is-key,.on-dark .card.is-key,.on-dark .rows>.is-key{background:var(--teal);border-color:var(--teal);color:var(--on-teal)}
 .slide.dark .is-key :is(h3,.bul,.kpi-num,.quote,.stat-big,b,strong,p,.small,.kpi-lab,.idx:not(.dot),:not(.ico-badge)>.ico),.on-dark .is-key :is(h3,.bul,.kpi-num,.quote,.stat-big,b,strong,p,.small,.kpi-lab,.idx:not(.dot),:not(.ico-badge)>.ico){color:var(--on-teal)}
@@ -292,11 +296,13 @@ a.btn.ghost{color:var(--ink);background:transparent;box-shadow:inset 0 0 0 2px c
 .slide.dark a.btn.ghost,.slide[style*="var(--navy)"] a.btn.ghost,.on-dark a.btn.ghost{color:var(--on-navy)}
 .slide a.btn .ico{width:30px;height:30px;color:inherit}
 .cmd{display:inline-flex;align-items:center;gap:16px;max-width:100%;font-family:ui-monospace,"JetBrains Mono",Consolas,monospace;font-size:28px;line-height:1.3;color:var(--on-navy);background:var(--navy);padding:16px 28px;border-radius:12px;cursor:copy;white-space:nowrap;overflow:hidden}
-.slide.dark .cmd,.slide[style*="var(--navy)"] .cmd,.on-dark .cmd{background:color-mix(in srgb,var(--on-navy) 12%,transparent)}
+/* di latar gelap: garis tipis, bukan isian tipis (isian menurunkan kontras teks di bawah AA) */
+.slide.dark .cmd,.slide[style*="var(--navy)"] .cmd,.on-dark .cmd{background:transparent;box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--on-navy) 35%,transparent)}
 .cmd::after{content:"⧉";font-size:.8em;color:var(--on-navy-mut)}
 .cmd.copied::after{content:"✓";color:var(--teal)}
 pre.code{font-family:ui-monospace,"JetBrains Mono",Consolas,monospace;font-size:22px;line-height:1.5;color:var(--on-navy);background:var(--navy);padding:26px 30px;border-radius:12px;white-space:pre;overflow:hidden;tab-size:2;text-align:left}
-pre.code .k{color:var(--teal)}pre.code .m{color:var(--on-navy-mut)}
+/* sintaks: tebal + redup, bukan warna aksen (aksen di atas --navy tidak lolos AA di semua theme) */
+pre.code .k{color:var(--on-navy);font-weight:700}pre.code .m{color:color-mix(in srgb,var(--on-navy-mut) 70%,var(--on-navy))}
 .slide.dark pre.code,.slide[style*="var(--navy)"] pre.code,.on-dark pre.code{background:color-mix(in srgb,var(--on-navy) 10%,transparent)}
 .gallery>a,.gallery>figure>a{display:block;text-decoration:none;color:inherit}
 .gallery>a>img,.gallery>figure>a>img{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:12px}

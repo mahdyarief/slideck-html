@@ -33,7 +33,9 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#0b1116}
    Token kontrak 2.1 (theme lama tanpa token ini tetap jalan lewat default di bawah):
    --accent2     aksen kedua / sinyal (bar footer design report, status penting) — beda dari --teal
    --on-accent2  teks di atas --accent2
-   --cover       latar sampul (layout title); teksnya --on-navy, jadi WAJIB kontras dengan --on-navy */
+   --cover       latar sampul (layout title); teksnya --on-navy, jadi WAJIB kontras dengan --on-navy
+   --accent-on-dark  (opsional) warna kicker di slide gelap/sampul, untuk theme yang --teal-nya mirip --navy/--cover;
+                 build.js menambah aturan kicker khusus theme itu, theme lain tidak berubah */
 :root{--c1:var(--teal);--c2:var(--ink);--c3:color-mix(in srgb,var(--teal) 48%,var(--surface));--c4:var(--mut);--c5:var(--teal-d);--c6:color-mix(in srgb,var(--ink) 32%,var(--surface));--on-teal:var(--surface);--accent2:var(--teal-d);--on-accent2:var(--surface);--cover:var(--navy)}
 .slide.dark,.slide[style*="var(--navy)"],.on-dark{--c2:var(--on-navy);--c3:color-mix(in srgb,var(--teal) 48%,var(--navy));--c4:var(--on-navy-mut);--c5:color-mix(in srgb,var(--teal) 70%,var(--on-navy));--c6:color-mix(in srgb,var(--on-navy) 32%,var(--navy))}
 
@@ -209,6 +211,8 @@ pre.mermaid{font-family:ui-monospace,Consolas,monospace;font-size:20px;color:var
 .dg .td{font-size:22px;fill-opacity:.86}
 .dg .ax{font-size:22px;font-weight:700;fill-opacity:.75;letter-spacing:.5px}
 .dg text.on{fill:var(--on-teal);fill-opacity:1}
+/* deskripsi di bentuk sorotan dibuat tebal: 22px tebal = teks besar WCAG (3:1), aman di aksen terang/emas */
+.dg text.td.on{font-weight:700}
 .dg .q{fill:color-mix(in srgb,var(--teal) 13%,var(--dg-bg))}
 .dg .l1{fill:color-mix(in srgb,var(--teal) 46%,var(--dg-bg))}.dg .l2{fill:color-mix(in srgb,var(--teal) 36%,var(--dg-bg))}
 .dg .l3{fill:color-mix(in srgb,var(--teal) 27%,var(--dg-bg))}.dg .l4{fill:color-mix(in srgb,var(--teal) 19%,var(--dg-bg))}
@@ -256,7 +260,7 @@ pre.mermaid{font-family:ui-monospace,Consolas,monospace;font-size:20px;color:var
 .rows>.is-key:not(.card){padding-left:28px;padding-right:28px;border-radius:12px;border-bottom:0}
 .slide .is-key :is(h3,.bul,.kpi-num,.quote,.stat-big,b,strong){color:var(--on-navy)}
 .slide .is-key :is(p,.small,.kpi-lab){color:var(--on-navy-mut)}
-.slide .is-key .tag{color:var(--on-navy);background:color-mix(in srgb,var(--on-navy) 16%,transparent)}
+.slide .is-key .tag{color:var(--on-navy);background:transparent;box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--on-navy) 40%,transparent)}
 .slide .is-key :is(.idx:not(.dot),:not(.ico-badge)>.ico){color:var(--teal)}
 .slide.dark .card.is-key,.slide.dark .rows>.is-key,.on-dark .card.is-key,.on-dark .rows>.is-key{background:var(--teal);border-color:var(--teal);color:var(--on-teal)}
 .slide.dark .is-key :is(h3,.bul,.kpi-num,.quote,.stat-big,b,strong,p,.small,.kpi-lab,.idx:not(.dot),:not(.ico-badge)>.ico),.on-dark .is-key :is(h3,.bul,.kpi-num,.quote,.stat-big,b,strong,p,.small,.kpi-lab,.idx:not(.dot),:not(.ico-badge)>.ico){color:var(--on-teal)}
@@ -319,11 +323,13 @@ a.btn.ghost{color:var(--ink);background:transparent;box-shadow:inset 0 0 0 2px c
 .slide.dark a.btn.ghost,.slide[style*="var(--navy)"] a.btn.ghost,.on-dark a.btn.ghost{color:var(--on-navy)}
 .slide a.btn .ico{width:30px;height:30px;color:inherit}
 .cmd{display:inline-flex;align-items:center;gap:16px;max-width:100%;font-family:ui-monospace,"JetBrains Mono",Consolas,monospace;font-size:28px;line-height:1.3;color:var(--on-navy);background:var(--navy);padding:16px 28px;border-radius:12px;cursor:copy;white-space:nowrap;overflow:hidden}
-.slide.dark .cmd,.slide[style*="var(--navy)"] .cmd,.on-dark .cmd{background:color-mix(in srgb,var(--on-navy) 12%,transparent)}
+/* di latar gelap: garis tipis, bukan isian tipis (isian menurunkan kontras teks di bawah AA) */
+.slide.dark .cmd,.slide[style*="var(--navy)"] .cmd,.on-dark .cmd{background:transparent;box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--on-navy) 35%,transparent)}
 .cmd::after{content:"⧉";font-size:.8em;color:var(--on-navy-mut)}
 .cmd.copied::after{content:"✓";color:var(--teal)}
 pre.code{font-family:ui-monospace,"JetBrains Mono",Consolas,monospace;font-size:22px;line-height:1.5;color:var(--on-navy);background:var(--navy);padding:26px 30px;border-radius:12px;white-space:pre;overflow:hidden;tab-size:2;text-align:left}
-pre.code .k{color:var(--teal)}pre.code .m{color:var(--on-navy-mut)}
+/* sintaks: tebal + redup, bukan warna aksen (aksen di atas --navy tidak lolos AA di semua theme) */
+pre.code .k{color:var(--on-navy);font-weight:700}pre.code .m{color:color-mix(in srgb,var(--on-navy-mut) 70%,var(--on-navy))}
 .slide.dark pre.code,.slide[style*="var(--navy)"] pre.code,.on-dark pre.code{background:color-mix(in srgb,var(--on-navy) 10%,transparent)}
 .gallery>a,.gallery>figure>a{display:block;text-decoration:none;color:inherit}
 .gallery>a>img,.gallery>figure>a>img{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:12px}
@@ -473,7 +479,7 @@ table.t td.n{text-align:right;font-weight:800;color:var(--ink);white-space:nowra
 table.t tr:last-child td{border-bottom:2px solid var(--accent-line)}
 
 /* THEME paper — adaptasi Paper & Ink (frontend-slides #12). Terang editorial, aksen crimson, font sistem. */
-:root{--surface:#faf9f7;--navy:#1a1a1a;--on-navy:#f7f3ee;--on-navy-mut:#c9bfb5;--teal:#c41e3a;--teal-d:#8f1530;--grey:#f2ede6;--mut:#555555;--ink:#1a1a1a;--mint:#f7ecec;--accent-line:#e0c9cc;--tag-bg:#f4dcdf;--line:#e5ddd5;--accent2:#2B4C7E;--on-accent2:#FFFFFF;--cover:#1a1a1a;--font-d:Inter,ui-sans-serif,system-ui,'Segoe UI',Arial,sans-serif;--font-s:Gelasio,Georgia,'Times New Roman',serif;--ease:cubic-bezier(.16,1,.3,1)}
+:root{--surface:#faf9f7;--navy:#1a1a1a;--on-navy:#f7f3ee;--on-navy-mut:#c9bfb5;--teal:#C81F3B;--teal-d:#8f1530;--grey:#f2ede6;--mut:#555555;--ink:#1a1a1a;--mint:#f7ecec;--accent-line:#e0c9cc;--tag-bg:#f4dcdf;--line:#e5ddd5;--accent2:#2B4C7E;--on-accent2:#FFFFFF;--cover:#1a1a1a;--font-d:Inter,ui-sans-serif,system-ui,'Segoe UI',Arial,sans-serif;--font-s:Gelasio,Georgia,'Times New Roman',serif;--ease:cubic-bezier(.16,1,.3,1)}
 /* MOTION corporate — default. Subtle fast 200-300ms, dari frontend-slides Professional/Corporate. */
 .reveal{opacity:0;transform:translateY(32px);transition:opacity .3s var(--ease),transform .3s var(--ease)}
 .visible .reveal{opacity:1;transform:none}
@@ -481,36 +487,38 @@ table.t tr:last-child td{border-bottom:2px solid var(--accent-line)}
 
 /* ==== THEME: botanical ==== */
 /* THEME botanical — adaptasi Dark Botanical (frontend-slides #4). Premium gelap, aksen warm, font sistem. */
-[data-theme="botanical"] {--surface:#14140f;--navy:#1a1a18;--on-navy:#e8e4df;--on-navy-mut:#9a9590;--teal:#d4a574;--teal-d:#d9b489;--grey:#242220;--mut:#9a9590;--ink:#e8e4df;--mint:#242220;--accent-line:#4a4438;--tag-bg:#2f2c26;--line:#3a3835;--accent2:#8FB996;--on-accent2:#14140f;--cover:#1a1a18;--font-d:Jost,ui-sans-serif,system-ui,sans-serif;--font-s:'Crimson Pro','Palatino Linotype',Palatino,Georgia,serif;--ease:cubic-bezier(.16,1,.3,1)}
+[data-theme="botanical"] {--on-teal:var(--surface);--surface:#14140f;--navy:#1a1a18;--on-navy:#e8e4df;--on-navy-mut:#9a9590;--teal:#d4a574;--teal-d:#d9b489;--grey:#242220;--mut:#9a9590;--ink:#e8e4df;--mint:#242220;--accent-line:#4a4438;--tag-bg:#2f2c26;--line:#3a3835;--accent2:#8FB996;--on-accent2:#14140f;--cover:#1a1a18;--font-d:Jost,ui-sans-serif,system-ui,sans-serif;--font-s:'Crimson Pro','Palatino Linotype',Palatino,Georgia,serif;--ease:cubic-bezier(.16,1,.3,1)}
 /* ==== THEME: campus-slide ==== */
 /* THEME campus-slide — presentasi kampus / laporan akademik: kanvas putih, navy #1F3864, panel biru muda, periwinkle, bar merah, sampul abu. Font Calibri (fallback Carlito / Segoe UI). */
-[data-theme="campus-slide"] {--surface:#FFFFFF;--navy:#1F3864;--on-navy:#FFFFFF;--on-navy-mut:#A9B9E0;--teal:#2F5597;--teal-d:#1F3864;--grey:#EDF1FA;--mut:#595959;--ink:#262626;--mint:#F3F6FC;--accent-line:#C9D3EA;--tag-bg:#D9E2F3;--line:#D9E2F3;--accent2:#E00000;--on-accent2:#FFFFFF;--cover:#707070;--c1:#1F3864;--c2:#8FAADC;--c3:#2F5597;--c4:#A6A6A6;--c5:#C8102E;--c6:#D9E2F3;--font-d:Carlito,Calibri,'Segoe UI',Arial,sans-serif;--font-s:Caladea,Cambria,Georgia,serif;--ease:cubic-bezier(.16,1,.3,1)}
+[data-theme="campus-slide"] {--on-teal:var(--surface);--accent-on-dark:#9DB8F2;--surface:#FFFFFF;--navy:#1F3864;--on-navy:#FFFFFF;--on-navy-mut:#A9B9E0;--teal:#2F5597;--teal-d:#1F3864;--grey:#EDF1FA;--mut:#595959;--ink:#262626;--mint:#F3F6FC;--accent-line:#C9D3EA;--tag-bg:#D9E2F3;--line:#D9E2F3;--accent2:#E00000;--on-accent2:#FFFFFF;--cover:#484848;--c1:#1F3864;--c2:#8FAADC;--c3:#2F5597;--c4:#A6A6A6;--c5:#C8102E;--c6:#D9E2F3;--font-d:Carlito,Calibri,'Segoe UI',Arial,sans-serif;--font-s:Caladea,Cambria,Georgia,serif;--ease:cubic-bezier(.16,1,.3,1)}
 
+[data-theme="campus-slide"] .slide.dark :is(.kicker,.idx:not(.dot)),[data-theme="campus-slide"] .slide[style*="var(--navy)"] :is(.kicker,.idx:not(.dot)),[data-theme="campus-slide"] .slide .is-key :is(.idx:not(.dot),:not(.ico-badge)>.ico){color:var(--accent-on-dark)}
 /* ==== THEME: navy ==== */
 /* THEME navy — default house-style. Token lengkap sesuai kontrak di components.css. */
 /* Font Plus Jakarta Sans + Source Serif 4 di-inline base64 oleh build.js dari assets/fonts/fonts.json. */
-[data-theme="navy"] {--surface:#fff;--navy:#1C2833;--on-navy:#fff;--on-navy-mut:#AAB7B8;--teal:#5EA8A7;--teal-d:#2F7E7D;--grey:#F4F6F6;--mut:#5A6C7D;--ink:#2E4053;--mint:#EAF6F4;--accent-line:#BFDCD8;--tag-bg:#D9ECEA;--line:#E2E8EC;--accent2:#C0392B;--on-accent2:#FFFFFF;--cover:#1C2833;--font-d:'Plus Jakarta Sans',ui-sans-serif,system-ui,sans-serif;--font-s:'Source Serif 4',Georgia,serif;--ease:cubic-bezier(.16,1,.3,1)}
+[data-theme="navy"] {--on-teal:var(--navy);--surface:#fff;--navy:#1C2833;--on-navy:#fff;--on-navy-mut:#AAB7B8;--teal:#529897;--teal-d:#2A7170;--grey:#F4F6F6;--mut:#5A6C7D;--ink:#2E4053;--mint:#EAF6F4;--accent-line:#BFDCD8;--tag-bg:#D9ECEA;--line:#E2E8EC;--accent2:#C0392B;--on-accent2:#FFFFFF;--cover:#1C2833;--font-d:'Plus Jakarta Sans',ui-sans-serif,system-ui,sans-serif;--font-s:'Source Serif 4',Georgia,serif;--ease:cubic-bezier(.16,1,.3,1)}
 /* ==== THEME: neon ==== */
 /* THEME neon — adaptasi Neon Cyber (frontend-slides #9). Gelap techy, font sistem. Bukan untuk laporan formal. */
-[data-theme="neon"] {--surface:#0b1220;--navy:#0b1220;--on-navy:#e5e7eb;--on-navy-mut:#9ca3af;--teal:#00ffcc;--teal-d:#00ccaa;--grey:#111827;--mut:#9ca3af;--ink:#e5e7eb;--mint:#0f2733;--accent-line:#1f3a4d;--tag-bg:#0f2733;--line:#1f3a4d;--accent2:#FF3D7F;--on-accent2:#0b1220;--cover:#0b1220;--font-d:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;--font-s:'JetBrains Mono',ui-monospace,'Cascadia Mono',Consolas,monospace;--ease:cubic-bezier(.16,1,.3,1)}
+[data-theme="neon"] {--on-teal:var(--surface);--surface:#0b1220;--navy:#0b1220;--on-navy:#e5e7eb;--on-navy-mut:#9ca3af;--teal:#00ffcc;--teal-d:#00ccaa;--grey:#111827;--mut:#9ca3af;--ink:#e5e7eb;--mint:#0f2733;--accent-line:#1f3a4d;--tag-bg:#0f2733;--line:#1f3a4d;--accent2:#FF3D7F;--on-accent2:#0b1220;--cover:#0b1220;--font-d:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;--font-s:'JetBrains Mono',ui-monospace,'Cascadia Mono',Consolas,monospace;--ease:cubic-bezier(.16,1,.3,1)}
 /* ==== THEME: paper ==== */
 /* THEME paper — adaptasi Paper & Ink (frontend-slides #12). Terang editorial, aksen crimson, font sistem. */
-[data-theme="paper"] {--surface:#faf9f7;--navy:#1a1a1a;--on-navy:#f7f3ee;--on-navy-mut:#c9bfb5;--teal:#c41e3a;--teal-d:#8f1530;--grey:#f2ede6;--mut:#555555;--ink:#1a1a1a;--mint:#f7ecec;--accent-line:#e0c9cc;--tag-bg:#f4dcdf;--line:#e5ddd5;--accent2:#2B4C7E;--on-accent2:#FFFFFF;--cover:#1a1a1a;--font-d:Inter,ui-sans-serif,system-ui,'Segoe UI',Arial,sans-serif;--font-s:Gelasio,Georgia,'Times New Roman',serif;--ease:cubic-bezier(.16,1,.3,1)}
+[data-theme="paper"] {--on-teal:var(--surface);--surface:#faf9f7;--navy:#1a1a1a;--on-navy:#f7f3ee;--on-navy-mut:#c9bfb5;--teal:#C81F3B;--teal-d:#8f1530;--grey:#f2ede6;--mut:#555555;--ink:#1a1a1a;--mint:#f7ecec;--accent-line:#e0c9cc;--tag-bg:#f4dcdf;--line:#e5ddd5;--accent2:#2B4C7E;--on-accent2:#FFFFFF;--cover:#1a1a1a;--font-d:Inter,ui-sans-serif,system-ui,'Segoe UI',Arial,sans-serif;--font-s:Gelasio,Georgia,'Times New Roman',serif;--ease:cubic-bezier(.16,1,.3,1)}
 /* ==== THEME: parchment-gold ==== */
-[data-theme="parchment-gold"] {--surface:#F5F3EE;--navy:#1B2A4A;--on-navy:#F2EFE7;--on-navy-mut:#A9B2C7;--teal:#C9A961;--teal-d:#8A6D2C;--grey:#EAE6DA;--mut:#6E6A5E;--ink:#1B2A4A;--mint:#F0E9D6;--accent-line:#DFD3B4;--tag-bg:#EDE2C6;--line:#E0DACB;--accent2:#9B2C2C;--on-accent2:#F2EFE7;--cover:#1B2A4A;--font-d:Inter,ui-sans-serif,system-ui,'Segoe UI',Arial,sans-serif;--font-s:'Libre Baskerville',Georgia,'Times New Roman',serif;--ease:cubic-bezier(.16,1,.3,1)}
+[data-theme="parchment-gold"] {--on-teal:var(--navy);--surface:#F5F3EE;--navy:#1B2A4A;--on-navy:#F2EFE7;--on-navy-mut:#A9B2C7;--teal:#9E7E36;--teal-d:#7B6127;--grey:#EAE6DA;--mut:#6A665A;--ink:#1B2A4A;--mint:#F0E9D6;--accent-line:#DFD3B4;--tag-bg:#EDE2C6;--line:#E0DACB;--accent2:#9B2C2C;--on-accent2:#F2EFE7;--cover:#1B2A4A;--font-d:Inter,ui-sans-serif,system-ui,'Segoe UI',Arial,sans-serif;--font-s:'Libre Baskerville',Georgia,'Times New Roman',serif;--ease:cubic-bezier(.16,1,.3,1)}
 
 /* ==== THEME: petrol-gold ==== */
-[data-theme="petrol-gold"] {--surface:#fff;--navy:#143B38;--on-navy:#F4F1EA;--on-navy-mut:#9DB5AF;--teal:#E8A33D;--teal-d:#9A6418;--grey:#EEF1EF;--mut:#5C6B66;--ink:#143B38;--mint:#FBF1DF;--accent-line:#EAD9B8;--tag-bg:#F7E8CE;--line:#DCE4E1;--accent2:#B5432F;--on-accent2:#FFFFFF;--cover:#143B38;--font-d:'Public Sans',ui-sans-serif,system-ui,'Segoe UI',Arial,sans-serif;--font-s:Gelasio,Georgia,'Times New Roman',serif;--ease:cubic-bezier(.16,1,.3,1)}
+[data-theme="petrol-gold"] {--on-teal:var(--navy);--surface:#fff;--navy:#143B38;--on-navy:#F4F1EA;--on-navy-mut:#9DB5AF;--teal:#BD7A16;--teal-d:#8F5D16;--grey:#EEF1EF;--mut:#5C6B66;--ink:#143B38;--mint:#FBF1DF;--accent-line:#EAD9B8;--tag-bg:#F7E8CE;--line:#DCE4E1;--accent2:#B5432F;--on-accent2:#FFFFFF;--cover:#143B38;--font-d:'Public Sans',ui-sans-serif,system-ui,'Segoe UI',Arial,sans-serif;--font-s:Gelasio,Georgia,'Times New Roman',serif;--ease:cubic-bezier(.16,1,.3,1)}
 
 /* ==== THEME: slate-rust ==== */
-[data-theme="slate-rust"] {--surface:#fff;--navy:#1A2233;--on-navy:#F5F3F1;--on-navy-mut:#A8AFBD;--teal:#C1502E;--teal-d:#9A3D22;--grey:#F2F2F0;--mut:#6B6B66;--ink:#1A2233;--mint:#F7EDE8;--accent-line:#E7D5CC;--tag-bg:#F3E2DA;--line:#E4E2DE;--accent2:#2E6F8E;--on-accent2:#FFFFFF;--cover:#1A2233;--font-d:'IBM Plex Sans',ui-sans-serif,system-ui,'Segoe UI',Arial,sans-serif;--font-s:'IBM Plex Serif',Georgia,'Times New Roman',serif;--ease:cubic-bezier(.16,1,.3,1)}
+[data-theme="slate-rust"] {--on-teal:var(--surface);--surface:#fff;--navy:#1A2233;--on-navy:#F5F3F1;--on-navy-mut:#A8AFBD;--teal:#C1502E;--teal-d:#9A3D22;--grey:#F2F2F0;--mut:#6B6B66;--ink:#1A2233;--mint:#F7EDE8;--accent-line:#E7D5CC;--tag-bg:#F3E2DA;--line:#E4E2DE;--accent2:#2E6F8E;--on-accent2:#FFFFFF;--cover:#1A2233;--font-d:'IBM Plex Sans',ui-sans-serif,system-ui,'Segoe UI',Arial,sans-serif;--font-s:'IBM Plex Serif',Georgia,'Times New Roman',serif;--ease:cubic-bezier(.16,1,.3,1)}
 
 /* ==== THEME: swiss ==== */
 /* THEME swiss — adaptasi Swiss Modern (frontend-slides #11). Bersih presisi, aksen merah, font sistem. */
-[data-theme="swiss"] {--surface:#fff;--navy:#111111;--on-navy:#fff;--on-navy-mut:#bbbbbb;--teal:#ff3300;--teal-d:#cc2900;--grey:#f5f5f5;--mut:#666666;--ink:#111111;--mint:#fff1ec;--accent-line:#ffd6c9;--tag-bg:#ffe3d9;--line:#e8e8e8;--accent2:#0047AB;--on-accent2:#FFFFFF;--cover:#111111;--font-d:Inter,'Helvetica Neue',Helvetica,Arial,sans-serif;--font-s:Inter,'Helvetica Neue',Helvetica,Arial,sans-serif;--ease:cubic-bezier(.16,1,.3,1)}
+[data-theme="swiss"] {--on-teal:var(--navy);--surface:#fff;--navy:#111111;--on-navy:#fff;--on-navy-mut:#bbbbbb;--teal:#ff3300;--teal-d:#C72800;--grey:#f5f5f5;--mut:#666666;--ink:#111111;--mint:#fff1ec;--accent-line:#ffd6c9;--tag-bg:#ffe3d9;--line:#e8e8e8;--accent2:#0047AB;--on-accent2:#FFFFFF;--cover:#111111;--font-d:Inter,'Helvetica Neue',Helvetica,Arial,sans-serif;--font-s:Inter,'Helvetica Neue',Helvetica,Arial,sans-serif;--ease:cubic-bezier(.16,1,.3,1)}
 /* ==== THEME: terracotta ==== */
-[data-theme="terracotta"] {--surface:#F4F4F2;--navy:#B23F23;--on-navy:#FBF3EF;--on-navy-mut:#F5DCD2;--teal:#C1502E;--teal-d:#9C3D22;--grey:#EBEBE8;--mut:#6E6E6A;--ink:#2B2B2B;--mint:#F6E6E0;--accent-line:#E6CFC7;--tag-bg:#F2DDD5;--line:#DDDDD8;--accent2:#2F4858;--on-accent2:#FFFFFF;--cover:#B23F23;--font-d:'Work Sans',ui-sans-serif,system-ui,'Segoe UI',Arial,sans-serif;--font-s:'Work Sans',ui-sans-serif,system-ui,'Segoe UI',sans-serif;--ease:cubic-bezier(.16,1,.3,1)}
+[data-theme="terracotta"] {--on-teal:var(--surface);--accent-on-dark:#F5C6B3;--surface:#F4F4F2;--navy:#B23F23;--on-navy:#FBF3EF;--on-navy-mut:#F6E1D8;--teal:#C1502E;--teal-d:#9C3D22;--grey:#EBEBE8;--mut:#696965;--ink:#2B2B2B;--mint:#F6E6E0;--accent-line:#E6CFC7;--tag-bg:#F2DDD5;--line:#DDDDD8;--accent2:#2F4858;--on-accent2:#FFFFFF;--cover:#B23F23;--font-d:'Work Sans',ui-sans-serif,system-ui,'Segoe UI',Arial,sans-serif;--font-s:'Work Sans',ui-sans-serif,system-ui,'Segoe UI',sans-serif;--ease:cubic-bezier(.16,1,.3,1)}
 
+[data-theme="terracotta"] .slide.dark :is(.kicker,.idx:not(.dot)),[data-theme="terracotta"] .slide[style*="var(--navy)"] :is(.kicker,.idx:not(.dot)),[data-theme="terracotta"] .slide .is-key :is(.idx:not(.dot),:not(.ico-badge)>.ico){color:var(--accent-on-dark)}
 /* ==== CHROME (di luar stage) ==== */
 .deck-controls{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:1000;color:#fff;font-size:17px;background:rgba(0,0,0,.5);padding:10px 22px;border-radius:99px}
 .deck-controls #editflag{display:none;color:#5EA8A7;font-weight:800}
@@ -781,18 +789,33 @@ addEventListener('load',layoutAll);
 
 <style>
 /* ==== THEME SWITCHER CSS (inject oleh build.js) ==== */
-.deck-theme-switcher{position:fixed;top:20px;right:20px;z-index:1002;display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.55);padding:8px 14px;border-radius:10px;color:#fff;font-size:14px;font-family:system-ui,-apple-system,sans-serif;backdrop-filter:blur(8px)}
-.deck-theme-label{font-weight:600;white-space:nowrap}
-html.scroll .deck-theme-switcher{position:absolute;top:8px;right:8px;padding:5px 9px;font-size:12px;gap:6px}
-html.scroll .deck-theme-select{font-size:12px;padding:4px 22px 4px 8px}
-.deck-theme-select{appearance:none;background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:7px;padding:6px 32px 6px 10px;font-size:13px;cursor:pointer;outline:none;font-family:inherit}
-.deck-theme-select:hover{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.4)}
-.deck-theme-select option{background:#1a1a2e;color:#fff}
-.deck-theme-select option:hover{background:#2a2a4e}
-@media (prefers-reduced-motion:reduce){
-  .deck-theme-select{transition:none}
-}
-/* ==== SPEAKER NOTES (print-only, jadi halaman PDF) ==== */
+.deck-theme-switcher{position:fixed;top:20px;right:20px;z-index:1002;font:13px/1.2 system-ui,-apple-system,"Segoe UI",sans-serif;color:#fff}
+.dts-btn{display:flex;align-items:center;gap:10px;background:rgba(14,16,24,.62);color:inherit;border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:7px 12px 7px 14px;font:inherit;cursor:pointer;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 4px 18px rgba(0,0,0,.18);transition:background .15s,border-color .15s}
+.dts-btn:hover,.dts-btn[aria-expanded="true"]{background:rgba(14,16,24,.8);border-color:rgba(255,255,255,.3)}
+.dts-btn:focus-visible{outline:2px solid rgba(255,255,255,.7);outline-offset:2px}
+.dts-list:focus{outline:none}
+.dts-list li.on{box-shadow:inset 0 0 0 1px rgba(255,255,255,.28)}
+.dts-lab{opacity:.6;font-weight:500}
+.dts-name{font-weight:600}
+.dts-btn svg{width:12px;height:12px;opacity:.7;transition:transform .15s}
+.dts-btn[aria-expanded="true"] svg{transform:rotate(180deg)}
+.dts-sw{display:inline-flex;flex:none}
+.dts-sw i{width:14px;height:14px;border-radius:50%;box-shadow:0 0 0 1.5px rgba(14,16,24,.85)}
+.dts-sw i+i{margin-left:-5px}
+.dts-sw i:nth-child(1){background:var(--surface)}
+.dts-sw i:nth-child(2){background:var(--navy)}
+.dts-sw i:nth-child(3){background:var(--teal)}
+.dts-list{position:absolute;top:calc(100% + 8px);right:0;min-width:220px;max-height:min(70vh,460px);overflow:auto;margin:0;padding:6px;list-style:none;background:rgba(18,20,30,.94);border:1px solid rgba(255,255,255,.12);border-radius:14px;box-shadow:0 18px 50px rgba(0,0,0,.4);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transform-origin:top right;animation:dts-in .14s ease-out}
+.dts-list[hidden]{display:none}
+@keyframes dts-in{from{opacity:0;transform:translateY(-4px) scale(.98)}}
+.dts-list li{display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:9px;cursor:pointer;white-space:nowrap;outline-offset:-2px}
+.dts-list li:hover,.dts-list li.on{background:rgba(255,255,255,.08)}
+.dts-list li[aria-selected="true"]{background:rgba(255,255,255,.14);font-weight:600}
+.dts-list li[aria-selected="true"]::after{content:"";margin-left:auto;width:6px;height:11px;border:solid currentColor;border-width:0 2px 2px 0;transform:rotate(45deg) translate(-2px,-2px)}
+html.scroll .deck-theme-switcher{position:absolute;top:8px;right:8px;font-size:12px}
+html.scroll .dts-btn{padding:5px 9px 5px 10px;gap:7px}
+html.scroll .dts-lab{display:none}
+@media (prefers-reduced-motion:reduce){.dts-list{animation:none}.dts-btn,.dts-btn svg{transition:none}}/* ==== SPEAKER NOTES (print-only, jadi halaman PDF) ==== */
 .slide-notes{display:none}
 @media print{
   .deck-theme-switcher{display:none!important}
@@ -801,41 +824,77 @@ html.scroll .deck-theme-select{font-size:12px;padding:4px 22px 4px 8px}
   .slide-notes-b{font-size:44px;line-height:1.5;white-space:pre-wrap}
 }
 </style>
-<div class="deck-theme-switcher" role="group" aria-label="Pilih tema">
-  <label for="theme-select" class="deck-theme-label">Tema:</label>
-  <select id="theme-select" class="deck-theme-select" aria-label="Pilih tema">
-    <option value="botanical">botanical</option>
-    <option value="campus-slide">campus-slide</option>
-    <option value="navy">navy</option>
-    <option value="neon">neon</option>
-    <option value="paper" selected>paper</option>
-    <option value="parchment-gold">parchment-gold</option>
-    <option value="petrol-gold">petrol-gold</option>
-    <option value="slate-rust">slate-rust</option>
-    <option value="swiss">swiss</option>
-    <option value="terracotta">terracotta</option>
-  </select>
+<div class="deck-theme-switcher">
+  <button type="button" class="dts-btn" id="theme-btn" aria-haspopup="listbox" aria-expanded="false" aria-controls="theme-list" aria-label="Pilih tema"><span class="dts-lab">Tema</span><span class="dts-sw" id="theme-sw" data-theme="paper" aria-hidden="true"><i></i><i></i><i></i></span><span class="dts-name" id="theme-name">paper</span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5"/></svg></button>
+  <ul class="dts-list" id="theme-list" role="listbox" aria-label="Pilih tema" tabindex="-1" hidden>
+    <li role="option" id="dts-botanical" data-v="botanical" aria-selected="false"><span class="dts-sw" data-theme="botanical" aria-hidden="true"><i></i><i></i><i></i></span><span>botanical</span></li>
+    <li role="option" id="dts-campus-slide" data-v="campus-slide" aria-selected="false"><span class="dts-sw" data-theme="campus-slide" aria-hidden="true"><i></i><i></i><i></i></span><span>campus-slide</span></li>
+    <li role="option" id="dts-navy" data-v="navy" aria-selected="false"><span class="dts-sw" data-theme="navy" aria-hidden="true"><i></i><i></i><i></i></span><span>navy</span></li>
+    <li role="option" id="dts-neon" data-v="neon" aria-selected="false"><span class="dts-sw" data-theme="neon" aria-hidden="true"><i></i><i></i><i></i></span><span>neon</span></li>
+    <li role="option" id="dts-paper" data-v="paper" aria-selected="true"><span class="dts-sw" data-theme="paper" aria-hidden="true"><i></i><i></i><i></i></span><span>paper</span></li>
+    <li role="option" id="dts-parchment-gold" data-v="parchment-gold" aria-selected="false"><span class="dts-sw" data-theme="parchment-gold" aria-hidden="true"><i></i><i></i><i></i></span><span>parchment-gold</span></li>
+    <li role="option" id="dts-petrol-gold" data-v="petrol-gold" aria-selected="false"><span class="dts-sw" data-theme="petrol-gold" aria-hidden="true"><i></i><i></i><i></i></span><span>petrol-gold</span></li>
+    <li role="option" id="dts-slate-rust" data-v="slate-rust" aria-selected="false"><span class="dts-sw" data-theme="slate-rust" aria-hidden="true"><i></i><i></i><i></i></span><span>slate-rust</span></li>
+    <li role="option" id="dts-swiss" data-v="swiss" aria-selected="false"><span class="dts-sw" data-theme="swiss" aria-hidden="true"><i></i><i></i><i></i></span><span>swiss</span></li>
+    <li role="option" id="dts-terracotta" data-v="terracotta" aria-selected="false"><span class="dts-sw" data-theme="terracotta" aria-hidden="true"><i></i><i></i><i></i></span><span>terracotta</span></li>
+  </ul>
 </div>
 <script>
 /* ==== THEME SWITCHER (inject oleh build.js) ==== */
 (function(){
-  var ts = document.getElementById('theme-select');
-  if(!ts) return;
-  var st = document.documentElement;
+  var btn = document.getElementById('theme-btn'), list = document.getElementById('theme-list');
+  if(!btn || !list) return;
+  var st = document.documentElement, items = [].slice.call(list.querySelectorAll('li'));
+  var sw = document.getElementById('theme-sw'), nm = document.getElementById('theme-name');
   var validThemes = ["botanical","campus-slide","navy","neon","paper","parchment-gold","petrol-gold","slate-rust","swiss","terracotta"];
   var deckTheme = "paper";
-  function apply(t){
-    st.setAttribute('data-theme', t);
-    try{localStorage.setItem('slideck-theme', t)}catch(e){}
+  var hi = -1;
+  function apply(t, save){
+    st.setAttribute('data-theme', t); sw.setAttribute('data-theme', t); nm.textContent = t;
+    items.forEach(function(li){ li.setAttribute('aria-selected', li.dataset.v === t ? 'true' : 'false') });
+    if(save){ try{localStorage.setItem('slideck-theme', t)}catch(e){} }
     /* font theme bisa beda → hitung ulang autofit + connector */
     if(window.slideckFit) requestAnimationFrame(window.slideckFit);
   }
-  ts.addEventListener('change', function(){ apply(ts.value) });
+  function mark(i){
+    hi = (i + items.length) % items.length;
+    items.forEach(function(li, k){ li.classList.toggle('on', k === hi) });
+    list.setAttribute('aria-activedescendant', items[hi].id); items[hi].scrollIntoView({block:'nearest'});
+  }
+  function open(){
+    list.hidden = false; btn.setAttribute('aria-expanded', 'true'); list.focus({preventScroll:true});
+    mark(Math.max(0, items.findIndex(function(li){ return li.getAttribute('aria-selected') === 'true' })));
+  }
+  function close(focusBtn){
+    if(list.hidden) return;
+    list.hidden = true; btn.setAttribute('aria-expanded', 'false');
+    items.forEach(function(li){ li.classList.remove('on') });
+    if(focusBtn) btn.focus({preventScroll:true});
+  }
+  btn.addEventListener('click', function(e){ e.stopPropagation(); list.hidden ? open() : close(true) });
+  list.addEventListener('click', function(e){
+    e.stopPropagation(); var li = e.target.closest('li'); if(!li) return;
+    apply(li.dataset.v, true); close(true);
+  });
+  list.addEventListener('mousemove', function(e){ var li = e.target.closest('li'); if(li) mark(items.indexOf(li)) });
+  /* tombol di dalam menu tidak boleh sampai ke navigasi slide */
+  btn.parentNode.addEventListener('keydown', function(e){
+    e.stopPropagation();
+    if(list.hidden){
+      if(e.key === 'ArrowDown' || e.key === 'ArrowUp'){ e.preventDefault(); open() }
+      return;
+    }
+    if(e.key === 'ArrowDown'){ e.preventDefault(); mark(hi + 1) }
+    else if(e.key === 'ArrowUp'){ e.preventDefault(); mark(hi - 1) }
+    else if(e.key === 'Home'){ e.preventDefault(); mark(0) }
+    else if(e.key === 'End'){ e.preventDefault(); mark(items.length - 1) }
+    else if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); apply(items[hi].dataset.v, true); close(true) }
+    else if(e.key === 'Escape' || e.key === 'Tab'){ close(e.key === 'Escape') }
+  });
+  document.addEventListener('click', function(e){ if(!btn.parentNode.contains(e.target)) close(false) });
   var saved = null;
   try{ saved = localStorage.getItem('slideck-theme') }catch(e){}
-  if(saved && validThemes.indexOf(saved) >= 0){ ts.value = saved; st.setAttribute('data-theme', saved) }
-  else{ ts.value = deckTheme; st.setAttribute('data-theme', deckTheme) }
-})();</script>
+  apply(saved && validThemes.indexOf(saved) >= 0 ? saved : deckTheme, false);})();</script>
 <script>window.__slideckNotes={};</script>
 </body>
 </html>
