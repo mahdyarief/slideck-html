@@ -267,11 +267,15 @@ pre.mermaid{font-family:ui-monospace,Consolas,monospace;font-size:20px;color:var
 .slide.dark .is-key .ico-badge:not([class*="t-"]),.on-dark .is-key .ico-badge:not([class*="t-"]){background:var(--on-teal);color:var(--teal)}
 .timeline .step.is-key .dot{background:var(--accent2);box-shadow:0 0 0 8px color-mix(in srgb,var(--accent2) 22%,transparent)}
 .slide .timeline .step.is-key h3{color:var(--teal-d)}
+/* langkah sorotan bukan kartu gelap: teks kecilnya tetap warna teks biasa */
+.slide .timeline .step.is-key :is(p,.small){color:inherit}
 .slide.dark .timeline .step.is-key h3,.on-dark .timeline .step.is-key h3{color:var(--teal)}
 
 /* ==== SIDE PANEL: isi utama + panel gelap (layout content-aside, atau <div class="with-aside">) ==== */
 .pad.lay-content-aside{grid-template-columns:minmax(0,1fr) minmax(0,.52fr);column-gap:56px;grid-template-rows:auto auto minmax(0,1fr) auto;grid-template-areas:"kicker kicker" "title title" "body aside" "takeaway aside"}
 .ph-aside{grid-area:aside;padding-top:40px}
+/* panel samping selalu berlatar: beri ruang dalam meski design membuat kartunya tanpa padding samping */
+.ph-aside>.card,.with-aside>.card:last-child{padding:40px 44px}
 .ph-aside>.card,.with-aside>.card:last-child{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;justify-content:flex-start}
 .with-aside{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.52fr);column-gap:56px;align-items:stretch}
 .slide :is(.ph-aside,.with-aside)>.card h3{font-size:34px;line-height:1.2;margin-bottom:14px}
@@ -398,6 +402,21 @@ table.t td.n{text-align:right;font-weight:800;color:var(--ink);white-space:nowra
 .checklist{list-style:none;margin-top:24px}
 .checklist li{font-size:29px;color:var(--ink);padding:14px 0 14px 64px;position:relative;line-height:1.4}
 .checklist li::before{content:"✓";position:absolute;left:0;top:12px;width:44px;height:44px;border-radius:50%;background:var(--mint);color:var(--teal-d);font-weight:800;text-align:center;line-height:44px;font-size:24px}
+/* ==== SIGNATURE default: korporat bersih — sampul putih, bilah aksen tebal di tepi kiri, judul besar rata kiri ==== */
+.slide:has(>.pad.lay-title){background:var(--surface)!important;color:var(--ink)!important;box-shadow:inset 36px 0 0 var(--teal)}
+.slide.dark:has(>.pad.lay-title) .ph-kicker .kicker{color:var(--teal-d)}
+.slide:has(>.pad.lay-title) .ph-title h1.title{color:var(--ink);font-size:124px;letter-spacing:-2.5px;line-height:1}
+.slide:has(>.pad.lay-title) .ph-subtitle .bul{color:var(--mut);font-size:32px;max-width:1200px}
+.slide:has(>.pad.lay-title) .foot{color:var(--mut)}
+.pad.lay-title{padding-left:180px}
+.lay-title .rule{width:180px;height:8px;margin-top:36px}
+/* section: panel abu-abu, bilah aksen sama, judul besar */
+.slide:has(>.pad.lay-section){background:var(--grey);box-shadow:inset 36px 0 0 var(--teal)}
+.pad.lay-section{padding-left:180px}
+.lay-section .ph-title h1.title{font-size:96px;letter-spacing:-2px}
+/* isi: garis aksen tipis di tepi kiri setiap slide terang */
+.slide:not(.dark):not(:has(>.pad.lay-title)){box-shadow:inset 10px 0 0 var(--teal)}
+
 /* THEME navy — default house-style. Token lengkap sesuai kontrak di components.css. */
 /* Font Plus Jakarta Sans + Source Serif 4 di-inline base64 oleh build.js dari assets/fonts/fonts.json. */
 :root{--on-teal:var(--navy);--surface:#fff;--navy:#1C2833;--on-navy:#fff;--on-navy-mut:#AAB7B8;--teal:#529897;--teal-d:#2A7170;--grey:#F4F6F6;--mut:#5A6C7D;--ink:#2E4053;--mint:#EAF6F4;--accent-line:#BFDCD8;--tag-bg:#D9ECEA;--line:#E2E8EC;--accent2:#C0392B;--on-accent2:#FFFFFF;--cover:#1C2833;--font-d:'Plus Jakarta Sans',ui-sans-serif,system-ui,sans-serif;--font-s:'Source Serif 4',Georgia,serif;--ease:cubic-bezier(.16,1,.3,1)}

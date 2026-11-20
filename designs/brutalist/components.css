@@ -42,3 +42,21 @@ table.t td.n{text-align:right;font-weight:800;color:var(--ink);white-space:nowra
 .checklist{list-style:none;margin-top:26px}
 .checklist li{font-size:28px;color:var(--ink);padding:18px 22px;border:3px solid var(--ink);margin-bottom:16px;position:relative;line-height:1.4;background:var(--grey)}
 .checklist li::before{display:none}
+
+/* ==== SIGNATURE brutalist: mentah — blok aksen penuh, bingkai tebal, huruf kapital, bayangan keras ==== */
+.slide:has(>.pad.lay-title){background:var(--teal)!important;color:var(--on-teal)!important}
+.pad.lay-title{padding:120px 140px 150px}
+.lay-title .ph-title{border:10px solid var(--ink);background:var(--surface);padding:44px 54px 50px;box-shadow:24px 24px 0 var(--ink);margin:18px 0 10px;justify-self:start;max-width:1500px}
+.slide:has(>.pad.lay-title) .ph-title h1.title{color:var(--ink);font-size:132px;line-height:.95;text-transform:uppercase;letter-spacing:-3px;font-family:var(--font-d)}
+.lay-title .rule{display:none}
+.slide.dark:has(>.pad.lay-title) .ph-kicker .kicker{display:inline-block;background:var(--ink);color:var(--surface);padding:10px 18px;letter-spacing:4px}
+.slide:has(>.pad.lay-title) .ph-subtitle .bul{color:var(--on-teal);font-weight:700;font-size:32px;margin-top:40px;text-transform:uppercase;letter-spacing:1px}
+.slide:has(>.pad.lay-title) .foot{color:var(--on-teal);font-weight:700}
+/* section: pita hitam tebal di atas, judul kapital raksasa */
+.slide:has(>.pad.lay-section){box-shadow:inset 0 56px 0 var(--ink),inset 0 -24px 0 var(--teal)}
+.lay-section .ph-title h1.title{font-size:120px;text-transform:uppercase;letter-spacing:-3px;line-height:.95}
+.lay-section .rule{width:100%;height:10px;border-radius:0;background:var(--ink)}
+/* isi: judul dalam blok hitam */
+.lay-title-content .ph-title h1.title,.lay-two-content .ph-title h1.title,.lay-comparison .ph-title h1.title,.lay-content-aside .ph-title h1.title{display:inline;background:var(--ink);color:var(--surface);padding:4px 18px;box-decoration-break:clone;-webkit-box-decoration-break:clone;line-height:1.35}
+.ph-takeaway{border:6px solid var(--ink);box-shadow:10px 10px 0 var(--ink)}
+.lay-title .ph-kicker{justify-self:start}

@@ -266,11 +266,15 @@ pre.mermaid{font-family:ui-monospace,Consolas,monospace;font-size:20px;color:var
 .slide.dark .is-key .ico-badge:not([class*="t-"]),.on-dark .is-key .ico-badge:not([class*="t-"]){background:var(--on-teal);color:var(--teal)}
 .timeline .step.is-key .dot{background:var(--accent2);box-shadow:0 0 0 8px color-mix(in srgb,var(--accent2) 22%,transparent)}
 .slide .timeline .step.is-key h3{color:var(--teal-d)}
+/* langkah sorotan bukan kartu gelap: teks kecilnya tetap warna teks biasa */
+.slide .timeline .step.is-key :is(p,.small){color:inherit}
 .slide.dark .timeline .step.is-key h3,.on-dark .timeline .step.is-key h3{color:var(--teal)}
 
 /* ==== SIDE PANEL: isi utama + panel gelap (layout content-aside, atau <div class="with-aside">) ==== */
 .pad.lay-content-aside{grid-template-columns:minmax(0,1fr) minmax(0,.52fr);column-gap:56px;grid-template-rows:auto auto minmax(0,1fr) auto;grid-template-areas:"kicker kicker" "title title" "body aside" "takeaway aside"}
 .ph-aside{grid-area:aside;padding-top:40px}
+/* panel samping selalu berlatar: beri ruang dalam meski design membuat kartunya tanpa padding samping */
+.ph-aside>.card,.with-aside>.card:last-child{padding:40px 44px}
 .ph-aside>.card,.with-aside>.card:last-child{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;justify-content:flex-start}
 .with-aside{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.52fr);column-gap:56px;align-items:stretch}
 .slide :is(.ph-aside,.with-aside)>.card h3{font-size:34px;line-height:1.2;margin-bottom:14px}

@@ -67,3 +67,18 @@ table.t td.n{text-align:right;font-weight:800;color:var(--ink);white-space:nowra
 .checklist li{position:relative;font-size:29px;color:var(--ink);line-height:1.4;padding:20px 24px 20px 88px;border-bottom:1px solid var(--line);counter-increment:platenum}
 .checklist li:last-child{border-bottom:0}
 .checklist li::before{content:counter(platenum,decimal-leading-zero);position:absolute;left:0;top:18px;width:56px;height:56px;background:var(--ink);color:var(--surface);font-weight:800;font-size:22px;display:flex;align-items:center;justify-content:center}
+
+/* ==== SIGNATURE plate: pelat cetak — sampul terang terpusat dalam bingkai ganda, label pelat, keterangan seperti pelat museum ==== */
+.slide:has(>.pad.lay-title){background:var(--surface)!important;color:var(--ink)!important}
+.slide:has(>.pad.lay-title)::before{inset:36px;border:2px solid var(--ink);box-shadow:inset 0 0 0 14px var(--surface),inset 0 0 0 15px var(--ink)}
+.pad.lay-title,.pad.lay-section{justify-items:center;text-align:center}
+.slide.dark:has(>.pad.lay-title) .ph-kicker .kicker{color:var(--ink);border:2px solid var(--ink);padding:10px 26px;letter-spacing:6px}
+.slide:has(>.pad.lay-title) .ph-title h1.title{color:var(--ink);font-family:var(--font-s);font-size:118px;letter-spacing:-2px;line-height:1.02;margin-top:44px}
+.lay-title .rule,.lay-section .rule{margin:34px auto 0;width:64px;height:64px;border-radius:50%;background:transparent;border:2px solid var(--teal);box-shadow:inset 0 0 0 10px var(--surface),inset 0 0 0 32px var(--teal)}
+.slide:has(>.pad.lay-title) .ph-subtitle .bul{color:var(--mut);font-family:var(--font-s);font-style:italic;font-size:32px;margin-top:30px}
+.slide:has(>.pad.lay-title) .foot{color:var(--mut)}
+.lay-section .ph-kicker .kicker{border:2px solid var(--ink);padding:10px 26px}
+.lay-section .ph-title h1.title{font-family:var(--font-s);font-size:100px;margin-top:40px}
+/* kartu: label pelat di bawah (keterangan bergaris atas) */
+.card{background:var(--surface);border:2px solid var(--ink);border-radius:0;box-shadow:inset 0 0 0 8px var(--surface),inset 0 0 0 9px var(--line)}
+.card .kpi-lab{border-top:1px solid var(--ink);padding-top:10px;margin-top:16px;letter-spacing:3px;text-transform:uppercase;font-size:18px}

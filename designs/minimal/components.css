@@ -83,3 +83,22 @@ table.t td.n{text-align:right;font-weight:600;color:var(--ink);white-space:nowra
 .slide[style*="var(--navy)"] .foot{color:var(--on-navy-mut)}
 .slide[style*="var(--navy)"] .checklist li{color:var(--on-navy);border-bottom-color:var(--on-navy-mut)}
 .slide[style*="var(--navy)"] .timeline .step::before{background:var(--on-navy-mut)}
+
+/* ==== SIGNATURE minimal: banyak ruang kosong, teks kecil, satu titik aksen ==== */
+.slide:has(>.pad.lay-title),.slide:has(>.pad.lay-section){background:var(--surface)!important;color:var(--ink)!important}
+.pad.lay-title,.pad.lay-section{align-content:end;padding:120px 160px 200px}
+.slide:has(>.pad.lay-title)::after,.slide:has(>.pad.lay-section)::after{content:"";position:absolute;width:28px;height:28px;border-radius:50%;background:var(--teal);top:140px;right:160px}
+.slide.dark:has(>.pad.lay-title) .ph-kicker .kicker{color:var(--mut)}
+.lay-title .kicker,.lay-section .kicker{font-weight:400;letter-spacing:4px;font-size:18px}
+.slide:has(>.pad.lay-title) .ph-title h1.title{color:var(--ink);font-size:64px;font-weight:300;letter-spacing:-1px;line-height:1.15;max-width:1000px}
+.lay-section .ph-title h1.title{font-size:56px;font-weight:300}
+.lay-title .rule,.lay-section .rule{display:none}
+.slide:has(>.pad.lay-title) .ph-subtitle .bul,.lay-section .ph-subtitle .bul{color:var(--mut);font-size:22px;margin-top:22px;max-width:760px}
+.slide:has(>.pad.lay-title) .foot{color:var(--mut)}
+/* isi: judul lebih kecil, takeaway tanpa latar */
+.lay-title-content h1.title,.lay-two-content h1.title,.lay-comparison h1.title,.lay-content-aside h1.title{font-size:56px}
+.ph-takeaway>*,.ph-takeaway .takeaway{background:transparent!important;border:0!important;padding-left:40px;position:relative}
+.ph-takeaway>*::before{content:"";position:absolute;left:0;top:.55em;width:14px;height:14px;border-radius:50%;background:var(--teal)}
+.card.is-key{background:transparent;color:var(--ink);border-top:2px solid var(--teal)}
+.card.is-key :is(.kpi-num,h3){color:var(--teal-d)}
+.card.is-key :is(.kpi-lab,.small,p){color:var(--mut)}

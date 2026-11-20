@@ -266,11 +266,15 @@ pre.mermaid{font-family:ui-monospace,Consolas,monospace;font-size:20px;color:var
 .slide.dark .is-key .ico-badge:not([class*="t-"]),.on-dark .is-key .ico-badge:not([class*="t-"]){background:var(--on-teal);color:var(--teal)}
 .timeline .step.is-key .dot{background:var(--accent2);box-shadow:0 0 0 8px color-mix(in srgb,var(--accent2) 22%,transparent)}
 .slide .timeline .step.is-key h3{color:var(--teal-d)}
+/* langkah sorotan bukan kartu gelap: teks kecilnya tetap warna teks biasa */
+.slide .timeline .step.is-key :is(p,.small){color:inherit}
 .slide.dark .timeline .step.is-key h3,.on-dark .timeline .step.is-key h3{color:var(--teal)}
 
 /* ==== SIDE PANEL: isi utama + panel gelap (layout content-aside, atau <div class="with-aside">) ==== */
 .pad.lay-content-aside{grid-template-columns:minmax(0,1fr) minmax(0,.52fr);column-gap:56px;grid-template-rows:auto auto minmax(0,1fr) auto;grid-template-areas:"kicker kicker" "title title" "body aside" "takeaway aside"}
 .ph-aside{grid-area:aside;padding-top:40px}
+/* panel samping selalu berlatar: beri ruang dalam meski design membuat kartunya tanpa padding samping */
+.ph-aside>.card,.with-aside>.card:last-child{padding:40px 44px}
 .ph-aside>.card,.with-aside>.card:last-child{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;justify-content:flex-start}
 .with-aside{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.52fr);column-gap:56px;align-items:stretch}
 .slide :is(.ph-aside,.with-aside)>.card h3{font-size:34px;line-height:1.2;margin-bottom:14px}
@@ -438,6 +442,23 @@ table.t td.n{text-align:right;font-weight:800;color:var(--ink);white-space:nowra
 .slide[style*="var(--navy)"] .foot{color:var(--on-navy-mut)}
 .slide[style*="var(--navy)"] .timeline .step::before{background:var(--on-navy-mut)}
 .slide[style*="var(--navy)"] .checklist li{color:var(--on-navy)}
+
+/* ==== SIGNATURE consulting: laporan konsultan — tracker di kanan atas, judul aksi bergaris, kotak "so what", sampul tegas ==== */
+.slide:has(>.pad.lay-title){box-shadow:inset 0 14px 0 var(--teal)}
+.slide:has(>.pad.lay-title)::after{content:"";position:absolute;left:104px;bottom:120px;width:120px;height:120px;background:var(--teal)}
+.pad.lay-title{align-content:center;padding-top:60px}
+.slide:has(>.pad.lay-title) .ph-title h1.title{font-size:116px;letter-spacing:-3px;line-height:1}
+/* tracker: kicker isi pindah ke kanan atas sebagai penanda bagian */
+.lay-title-content .ph-kicker,.lay-two-content .ph-kicker,.lay-comparison .ph-kicker,.lay-content-aside .ph-kicker,.lay-title-only .ph-kicker{position:absolute;grid-area:auto;top:40px;right:104px}
+.lay-title-content .kicker,.lay-two-content .kicker,.lay-comparison .kicker,.lay-content-aside .kicker,.lay-title-only .kicker{font-size:18px;letter-spacing:3px;color:var(--teal-d);border:1.5px solid var(--teal-d);padding:7px 14px;margin:0}
+.lay-title-content .ph-title,.lay-two-content .ph-title,.lay-comparison .ph-title,.lay-content-aside .ph-title,.lay-title-only .ph-title{border-bottom:2px solid var(--ink);padding-bottom:24px;margin-bottom:12px}
+.ph-takeaway .takeaway,.ph-takeaway>*{border-radius:0}
+/* section: nomor bagian besar + garis tegak */
+.pad.lay-section{grid-template-columns:auto minmax(0,1fr);grid-template-areas:"kicker title" "kicker subtitle";column-gap:60px;align-items:center}
+.lay-section .ph-kicker{border-right:4px solid var(--teal);padding-right:60px;align-self:stretch;display:flex;align-items:center}
+.lay-section .ph-kicker .kicker{font-size:30px;letter-spacing:6px}
+.lay-section .ph-title h1.title{font-size:92px}
+.lay-section .rule{display:none}
 
 :root{--surface:#fff;--navy:#1A2233;--on-navy:#F5F3F1;--on-navy-mut:#A8AFBD;--teal:#C1502E;--teal-d:#9A3D22;--grey:#F2F2F0;--mut:#6B6B66;--ink:#1A2233;--mint:#F7EDE8;--accent-line:#E7D5CC;--tag-bg:#F3E2DA;--line:#E4E2DE;--accent2:#2E6F8E;--on-accent2:#FFFFFF;--cover:#1A2233;--font-d:'IBM Plex Sans',ui-sans-serif,system-ui,'Segoe UI',Arial,sans-serif;--font-s:'IBM Plex Serif',Georgia,'Times New Roman',serif;--ease:cubic-bezier(.16,1,.3,1)}
 

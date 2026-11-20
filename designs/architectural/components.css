@@ -65,3 +65,24 @@ table.t td.n{text-align:right;font-weight:800;color:var(--ink);white-space:nowra
 .checklist li{font-size:29px;color:var(--ink);line-height:1.5;padding:16px 0;border-bottom:1px solid var(--line)}
 .checklist li:last-child{border-bottom:0}
 .checklist li::before{content:"✓";display:inline-block;margin-right:16px;color:var(--teal-d);font-weight:800}
+/* ==== SIGNATURE architectural: cetak biru — kisi garis, garis teknis tipis, tanda ukur dan tanda potong ==== */
+.slide:has(>.pad.lay-title),.slide:has(>.pad.lay-section){background-image:linear-gradient(color-mix(in srgb,var(--on-navy) 9%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--on-navy) 9%,transparent) 1px,transparent 1px)!important;background-size:60px 60px!important}
+.slide:has(>.pad.lay-section){background-color:var(--navy);color:var(--on-navy)}
+.slide:has(>.pad.lay-section) h1.title{color:var(--on-navy)}
+.slide:has(>.pad.lay-section) .kicker{color:var(--teal)}
+.slide:has(>.pad.lay-section) .ph-subtitle .bul{color:var(--on-navy-mut)}
+.slide:has(>.pad.lay-section) .foot{color:var(--on-navy-mut)}
+.pad.lay-title,.pad.lay-section{text-align:center;justify-items:center}
+.lay-title .ph-title,.lay-section .ph-title{position:relative;padding:50px 80px;border:1px solid color-mix(in srgb,var(--on-navy) 45%,transparent)}
+.lay-title .ph-title::before,.lay-section .ph-title::before{content:"";position:absolute;left:-30px;right:-30px;top:-30px;bottom:-30px;background:linear-gradient(var(--teal),var(--teal)) 0 0/40px 3px,linear-gradient(var(--teal),var(--teal)) 0 0/3px 40px,linear-gradient(var(--teal),var(--teal)) 100% 100%/40px 3px,linear-gradient(var(--teal),var(--teal)) 100% 100%/3px 40px;background-repeat:no-repeat}
+.slide:has(>.pad.lay-title) .ph-title h1.title{font-size:104px;letter-spacing:-1px;font-weight:300}
+.lay-title .rule,.lay-section .rule{display:none}
+.lay-title .ph-subtitle,.lay-section .ph-subtitle{margin-top:48px;font-family:ui-monospace,Consolas,monospace}
+.lay-title .ph-subtitle .bul,.lay-section .ph-subtitle .bul{font-size:24px;letter-spacing:1px}
+.lay-title .ph-kicker,.lay-section .ph-kicker{margin-bottom:46px}
+.lay-title .kicker,.lay-section .kicker{font-family:ui-monospace,Consolas,monospace;letter-spacing:6px}
+/* isi: kisi halus di latar, judul dengan garis ukur bertitik ujung */
+.slide:not(.dark):not(:has(>.pad.lay-section)){background-image:linear-gradient(color-mix(in srgb,var(--line) 60%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--line) 60%,transparent) 1px,transparent 1px);background-size:60px 60px}
+.lay-title-content .ph-title,.lay-two-content .ph-title,.lay-comparison .ph-title,.lay-content-aside .ph-title{position:relative;padding-bottom:22px;margin-bottom:10px}
+.lay-title-content .ph-title::after,.lay-two-content .ph-title::after,.lay-comparison .ph-title::after,.lay-content-aside .ph-title::after{content:"";position:absolute;left:0;right:0;bottom:0;height:13px;background:linear-gradient(var(--ink),var(--ink)) 0 50%/100% 1px no-repeat,linear-gradient(var(--ink),var(--ink)) 0 0/1px 100% no-repeat,linear-gradient(var(--ink),var(--ink)) 100% 0/1px 100% no-repeat}
+.card{border:1px solid var(--ink);border-radius:0;background:var(--surface)}

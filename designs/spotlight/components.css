@@ -147,3 +147,19 @@ table.t td.n{text-align:right;font-weight:800;color:var(--ink);white-space:nowra
 /* KPI: big number centered */
 .kpi-num{font-size:80px;font-weight:800;color:var(--ink);line-height:1;letter-spacing:-2px;text-align:center}
 .kpi-lab{font-size:22px;color:var(--teal-d);margin-bottom:6px;font-weight:800;letter-spacing:2px;text-transform:uppercase;text-align:center}
+
+/* ==== SIGNATURE spotlight: panggung gelap dengan sorot cahaya dari atas, semua terpusat ==== */
+.slide:has(>.pad.lay-title),.slide:has(>.pad.lay-section){background:var(--navy)!important;color:var(--on-navy)!important}
+.slide:has(>.pad.lay-title)::before,.slide:has(>.pad.lay-section)::before{background:radial-gradient(ellipse 900px 760px at 50% -8%,color-mix(in srgb,var(--on-navy) 30%,transparent) 0%,color-mix(in srgb,var(--on-navy) 10%,transparent) 45%,transparent 72%)}
+.slide:has(>.pad.lay-title)::after,.slide:has(>.pad.lay-section)::after{background:radial-gradient(ellipse 520px 60px at 50% 86%,color-mix(in srgb,var(--teal) 55%,transparent),transparent 70%);opacity:1}
+.pad.lay-title,.pad.lay-section{justify-items:center;text-align:center}
+.slide:has(>.pad.lay-title) .ph-title h1.title,.slide:has(>.pad.lay-section) .ph-title h1.title{color:var(--on-navy);font-size:132px;letter-spacing:-4px;line-height:.98}
+.slide:has(>.pad.lay-section) .ph-title h1.title{font-size:100px}
+.lay-title .rule,.lay-section .rule{margin:30px auto 0}
+.slide:has(>.pad.lay-title) .ph-subtitle .bul,.slide:has(>.pad.lay-section) .ph-subtitle .bul{color:var(--on-navy-mut);font-size:32px}
+.slide:has(>.pad.lay-section) .kicker{color:var(--teal)}
+.slide:has(>.pad.lay-title) .foot,.slide:has(>.pad.lay-section) .foot{color:var(--on-navy-mut)}
+.slide:has(>.pad.lay-section) h1.title::after{background:var(--teal)}
+/* timeline mendatar (dulu disediakan gaya inline templat) */
+.timeline{display:flex;gap:28px;margin-top:44px}
+.timeline>.step{flex:1 1 0;min-width:0}

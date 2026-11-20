@@ -44,3 +44,30 @@ table.t td.n{text-align:right;font-weight:800;color:var(--ink);white-space:nowra
 .checklist{list-style:none;margin-top:26px}
 .checklist li{font-size:29px;color:var(--ink);padding:17px 0;border-bottom:1px solid var(--line);position:relative;line-height:1.45}
 .checklist li::before{display:none}
+
+/* ==== SIGNATURE editorial: majalah — serif raksasa, garis tipis atas-bawah, judul di kolom kiri, isi di kanan ==== */
+.slide:has(>.pad.lay-title){background:var(--surface)!important;color:var(--ink)!important}
+.pad.lay-title{align-content:end;padding:150px 120px 170px;grid-template-areas:"kicker" "title" "subtitle"}
+.slide:has(>.pad.lay-title)::before{content:"";position:absolute;left:120px;right:120px;top:96px;border-top:3px solid var(--ink);border-bottom:1px solid var(--ink);height:8px}
+.slide:has(>.pad.lay-title)::after{content:"";position:absolute;left:120px;right:120px;bottom:120px;border-top:1px solid var(--ink)}
+.slide.dark:has(>.pad.lay-title) .ph-kicker .kicker{color:var(--ink);font-family:var(--font-s);font-style:italic;font-weight:400;letter-spacing:1px;text-transform:none;font-size:28px}
+.slide:has(>.pad.lay-title) .ph-title h1.title{font-family:var(--font-s);color:var(--ink);font-size:176px;line-height:.92;letter-spacing:-5px;font-weight:700}
+.lay-title .rule{display:none}
+.slide:has(>.pad.lay-title) .ph-subtitle .bul{color:var(--mut);font-family:var(--font-s);font-style:italic;font-size:34px;margin-top:34px;max-width:1100px}
+.slide:has(>.pad.lay-title) .foot{color:var(--mut)}
+/* section: angka bab raksasa di kiri, judul serif di kanan */
+.pad.lay-section{grid-template-columns:420px minmax(0,1fr);grid-template-areas:"kicker title" "kicker subtitle";column-gap:70px;align-content:center}
+.lay-section .ph-kicker{align-self:center;border-right:1px solid var(--ink);padding-right:40px}
+.lay-section .ph-kicker .kicker{font-family:var(--font-s);font-size:44px;letter-spacing:2px;color:var(--teal-d);text-transform:none;font-style:italic}
+.lay-section .ph-title h1.title{font-family:var(--font-s);font-size:104px;letter-spacing:-2.5px}
+.lay-section .rule{display:none}
+/* isi: judul di kolom kiri (serif), isi di kolom kanan, garis rambut di antaranya */
+.pad.lay-title-content{grid-template-columns:500px minmax(0,1fr);grid-template-rows:auto auto minmax(0,1fr) auto;grid-template-areas:"kicker body" "title body" ". body" "takeaway takeaway";column-gap:72px}
+.lay-title-content .ph-title h1.title{font-family:var(--font-s);font-size:60px;line-height:1.08;letter-spacing:-1px}
+.lay-title-content .ph-body{border-left:1px solid var(--ink);padding-left:72px;align-self:stretch;display:flex;flex-direction:column;justify-content:center}
+.lay-title-content .ph-body .grid3{grid-template-columns:1fr;gap:0}
+.lay-title-content .ph-body .grid3>.card{background:transparent;border:0;border-top:1px solid var(--ink);border-radius:0;padding:22px 0;display:grid;grid-template-columns:300px 1fr;align-items:baseline;column-gap:30px}
+.lay-title-content .ph-body .grid3>.card .kpi-num{font-family:var(--font-s);grid-row:span 2}
+.lay-title-content .ph-body .grid3>.card.is-key{background:transparent;color:var(--ink)}
+.lay-title-content .ph-body .grid3>.card.is-key .kpi-num{color:var(--teal-d)}
+.lay-title-content .ph-body .grid3>.card.is-key :is(.kpi-lab,.small){color:var(--mut)}

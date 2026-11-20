@@ -64,3 +64,23 @@ table.t td.n{text-align:right;font-weight:800;color:var(--on-navy);white-space:n
 .checklist li{position:relative;font-size:30px;color:var(--on-navy);line-height:1.4;padding:18px 24px 18px 78px;border-bottom:1px solid var(--on-navy-mut)}
 .checklist li:last-child{border-bottom:0}
 .checklist li::before{content:"";position:absolute;left:0;top:20px;width:52px;height:52px;background:var(--teal)}
+
+/* ==== SIGNATURE keynote: panggung — gelap penuh, huruf raksasa di tengah, hampir tanpa ornamen ==== */
+.slide::before{display:none}
+.slide::after{display:none}
+.pad{padding:110px 140px 130px}
+.foot{height:auto;bottom:44px;left:140px;right:140px;color:var(--on-navy-mut);font-weight:600;letter-spacing:4px}
+.slide .foot,.slide[style*="var(--navy)"] .foot{color:var(--on-navy-mut)!important}
+.foot>span:first-child{visibility:hidden}
+.pad.lay-title,.pad.lay-section{justify-items:center;text-align:center}
+.slide:has(>.pad.lay-title) .ph-title h1.title{font-size:168px;line-height:.92;letter-spacing:-6px;font-weight:800;font-family:var(--font-d)}
+.lay-title .rule,.lay-section .rule{display:none}
+.lay-title .ph-kicker .kicker{letter-spacing:10px;margin-bottom:30px}
+.lay-title .ph-subtitle .bul{font-size:34px;margin-top:40px}
+.lay-section .ph-kicker .kicker{font-size:150px;letter-spacing:-4px;line-height:1;color:var(--teal);opacity:1}
+.lay-section .ph-title h1.title{font-size:92px;letter-spacing:-3px;color:var(--on-navy)}
+/* isi: judul terpusat, tanpa garis */
+.lay-title-content .ph-kicker,.lay-title-content .ph-title,.lay-title-only .ph-kicker,.lay-title-only .ph-title{text-align:center}
+.lay-title-content .ph-title h1.title{margin-left:auto;margin-right:auto}
+.slide .card.is-key{background:var(--teal);border-color:var(--teal)}
+.slide .card.is-key :is(.kpi-num,h3,.kpi-lab,.small,p,b){color:var(--on-teal)}

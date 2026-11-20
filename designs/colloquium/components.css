@@ -62,3 +62,19 @@ table.t td.n{text-align:right;font-family:var(--font-d);font-weight:700;color:va
 .checklist li{position:relative;font-family:var(--font-s);font-size:29px;color:var(--ink);line-height:1.5;padding:20px 0 20px 62px;border-top:1px solid var(--line)}
 .checklist li:first-child{border-top:0}
 .checklist li::before{content:"";position:absolute;left:0;top:1.4em;width:32px;height:2px;background:var(--ink)}
+
+/* ==== SIGNATURE colloquium: seminar — pita tegak lebar di kiri, kicker vertikal, judul serif, gaya agenda ==== */
+.slide:has(>.pad.lay-title)::before,.slide:has(>.pad.lay-section)::before{left:0;top:0;bottom:0;width:400px;background:var(--teal-d)}
+.slide:has(>.pad.lay-section)::before{background:var(--grey);border-right:1px solid var(--line)}
+.slide:has(>.pad.lay-title)::after{left:400px;right:0;top:auto;bottom:0;height:14px;background:var(--teal)}
+.pad.lay-title,.pad.lay-section{padding-left:520px;padding-right:150px}
+.lay-title .ph-kicker .kicker,.lay-section .ph-kicker .kicker{font-size:24px;letter-spacing:8px;margin-bottom:22px}
+.slide.dark:has(>.pad.lay-title) .ph-kicker .kicker{color:var(--on-navy)}
+.slide:has(>.pad.lay-title) .ph-title h1.title{font-family:var(--font-s);font-size:112px;line-height:1.02;letter-spacing:-2px;font-weight:700}
+.lay-title .rule,.lay-section .rule{width:100%;max-width:900px;height:1px;border-radius:0;background:currentColor;opacity:.5;margin-top:36px}
+.slide:has(>.pad.lay-title) .ph-subtitle .bul{font-family:var(--font-s);font-style:italic;font-size:32px;margin-top:28px}
+.lay-section .ph-kicker .kicker{color:var(--teal-d)}
+.lay-section .ph-title h1.title{font-family:var(--font-s);font-size:96px}
+.slide:has(>.pad.lay-title) .foot,.slide:has(>.pad.lay-section) .foot{left:520px}
+/* isi: penanda agenda — kicker diberi nomor bulat di kiri */
+.lay-title-content .ph-kicker .kicker,.lay-two-content .ph-kicker .kicker,.lay-comparison .ph-kicker .kicker,.lay-content-aside .ph-kicker .kicker{padding-left:22px;border-left:6px solid var(--teal)}

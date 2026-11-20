@@ -64,3 +64,17 @@ table.t td.n{text-align:right;font-weight:800;color:var(--ink);white-space:nowra
 .checklist li{position:relative;font-size:29px;color:var(--ink);line-height:1.4;background:var(--grey);padding:18px 22px 18px 74px;margin-bottom:12px}
 .checklist li:last-child{margin-bottom:0}
 .checklist li::before{content:"✓";position:absolute;left:0;top:0;bottom:0;width:54px;background:var(--ink);color:var(--surface);font-weight:800;font-size:24px;display:flex;align-items:center;justify-content:center}
+
+/* ==== SIGNATURE geometric: bentuk — lingkaran aksen raksasa di sampul, segitiga di section, kartu sudut terpotong ==== */
+.slide:has(>.pad.lay-title)::before{content:"";position:absolute;width:980px;height:980px;border-radius:50%;background:var(--teal);right:-260px;top:-180px;left:auto;bottom:auto}
+.slide:has(>.pad.lay-title)::after{content:"";position:absolute;width:300px;height:300px;border-radius:50%;border:14px solid var(--on-navy);right:560px;bottom:-110px;left:auto;top:auto;opacity:.9}
+.pad.lay-title{padding-right:900px}
+.slide:has(>.pad.lay-title) .ph-title h1.title{font-size:120px;line-height:.95;letter-spacing:-3px;text-transform:uppercase}
+.lay-title .rule{width:90px;height:90px;border-radius:0;background:transparent;border-left:45px solid transparent;border-right:45px solid transparent;border-bottom:78px solid var(--teal);width:0;margin-top:40px}
+/* section: segitiga aksen besar di kanan */
+.slide:has(>.pad.lay-section)::before{content:"";position:absolute;right:0;top:0;left:auto;bottom:auto;width:620px;height:100%;background:var(--teal);clip-path:polygon(100% 0,100% 100%,0 100%)}
+.lay-section .ph-title h1.title{font-size:104px;text-transform:uppercase;letter-spacing:-2px;max-width:1000px}
+.lay-section .rule{width:0;height:0;border-radius:0;background:transparent;border-left:30px solid transparent;border-right:30px solid transparent;border-bottom:52px solid var(--teal)}
+/* kartu: sudut kanan atas terpotong */
+.card{clip-path:polygon(0 0,calc(100% - 44px) 0,100% 44px,100% 100%,0 100%);border-radius:0}
+.ico-badge,.idx.dot{border-radius:0;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}

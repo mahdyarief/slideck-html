@@ -65,3 +65,19 @@ table.t td.n{text-align:right;font-weight:800;color:var(--on-navy);white-space:n
 .checklist li::before{content:"✓";position:absolute;left:0;top:14px;width:48px;height:48px;background:var(--mint);color:var(--teal-d);font-weight:800;font-size:24px;display:flex;align-items:center;justify-content:center}
 
 .pad>p[style*="var(--ink)"]{color:var(--on-navy)!important}
+
+/* ==== SIGNATURE ribbon: pita diagonal di sampul + section, label pita di kartu ==== */
+.slide:has(>.pad.lay-title)::before,.slide:has(>.pad.lay-section)::before{content:"";position:absolute;left:-200px;right:-200px;top:62%;height:150px;background:var(--teal);transform:rotate(-8deg);box-shadow:0 -26px 0 0 color-mix(in srgb,var(--teal) 35%,transparent),0 26px 0 0 color-mix(in srgb,var(--teal) 35%,transparent)}
+.pad.lay-title{align-content:start;padding-top:170px}
+.slide:has(>.pad.lay-title) .ph-title h1.title{font-size:128px;letter-spacing:-4px;line-height:.95}
+.lay-title .ph-subtitle{margin-top:40px;max-width:900px}
+.slide:has(>.pad.lay-title) .ph-subtitle .bul{color:var(--on-navy)}
+.lay-section .ph-subtitle{margin-top:24px;max-width:900px}
+.pad.lay-section{align-content:start;padding-top:190px}
+/* kartu terang di kanvas gelap: teksnya warna gelap */
+.slide .card:not(.is-key) :is(.kpi-num,h3,b,strong){color:var(--ink)}
+.slide .card:not(.is-key) :is(.kpi-lab,.small,p){color:var(--mut)}
+/* label pita: kicker jadi pita berujung takik */
+.kicker{display:inline-block;background:var(--teal);color:var(--on-teal);padding:8px 40px 8px 20px;clip-path:polygon(0 0,100% 0,calc(100% - 18px) 50%,100% 100%,0 100%);justify-self:start}
+.ph-kicker{justify-self:start}
+.card{border-top:8px solid var(--teal)}

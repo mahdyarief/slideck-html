@@ -57,3 +57,17 @@ table.t td.n{text-align:right;font-weight:800;color:var(--ink);white-space:nowra
 .checklist{list-style:none;margin-top:24px}
 .checklist li{font-size:29px;color:var(--ink);padding:14px 0 14px 64px;position:relative;line-height:1.4}
 .checklist li::before{content:"✓";position:absolute;left:0;top:12px;width:44px;height:44px;border-radius:50%;background:var(--mint);color:var(--teal-d);font-weight:800;text-align:center;line-height:44px;font-size:24px}
+/* ==== SIGNATURE default: korporat bersih — sampul putih, bilah aksen tebal di tepi kiri, judul besar rata kiri ==== */
+.slide:has(>.pad.lay-title){background:var(--surface)!important;color:var(--ink)!important;box-shadow:inset 36px 0 0 var(--teal)}
+.slide.dark:has(>.pad.lay-title) .ph-kicker .kicker{color:var(--teal-d)}
+.slide:has(>.pad.lay-title) .ph-title h1.title{color:var(--ink);font-size:124px;letter-spacing:-2.5px;line-height:1}
+.slide:has(>.pad.lay-title) .ph-subtitle .bul{color:var(--mut);font-size:32px;max-width:1200px}
+.slide:has(>.pad.lay-title) .foot{color:var(--mut)}
+.pad.lay-title{padding-left:180px}
+.lay-title .rule{width:180px;height:8px;margin-top:36px}
+/* section: panel abu-abu, bilah aksen sama, judul besar */
+.slide:has(>.pad.lay-section){background:var(--grey);box-shadow:inset 36px 0 0 var(--teal)}
+.pad.lay-section{padding-left:180px}
+.lay-section .ph-title h1.title{font-size:96px;letter-spacing:-2px}
+/* isi: garis aksen tipis di tepi kiri setiap slide terang */
+.slide:not(.dark):not(:has(>.pad.lay-title)){box-shadow:inset 10px 0 0 var(--teal)}

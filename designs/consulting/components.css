@@ -98,3 +98,20 @@ table.t td.n{text-align:right;font-weight:800;color:var(--ink);white-space:nowra
 .slide[style*="var(--navy)"] .foot{color:var(--on-navy-mut)}
 .slide[style*="var(--navy)"] .timeline .step::before{background:var(--on-navy-mut)}
 .slide[style*="var(--navy)"] .checklist li{color:var(--on-navy)}
+
+/* ==== SIGNATURE consulting: laporan konsultan — tracker di kanan atas, judul aksi bergaris, kotak "so what", sampul tegas ==== */
+.slide:has(>.pad.lay-title){box-shadow:inset 0 14px 0 var(--teal)}
+.slide:has(>.pad.lay-title)::after{content:"";position:absolute;left:104px;bottom:120px;width:120px;height:120px;background:var(--teal)}
+.pad.lay-title{align-content:center;padding-top:60px}
+.slide:has(>.pad.lay-title) .ph-title h1.title{font-size:116px;letter-spacing:-3px;line-height:1}
+/* tracker: kicker isi pindah ke kanan atas sebagai penanda bagian */
+.lay-title-content .ph-kicker,.lay-two-content .ph-kicker,.lay-comparison .ph-kicker,.lay-content-aside .ph-kicker,.lay-title-only .ph-kicker{position:absolute;grid-area:auto;top:40px;right:104px}
+.lay-title-content .kicker,.lay-two-content .kicker,.lay-comparison .kicker,.lay-content-aside .kicker,.lay-title-only .kicker{font-size:18px;letter-spacing:3px;color:var(--teal-d);border:1.5px solid var(--teal-d);padding:7px 14px;margin:0}
+.lay-title-content .ph-title,.lay-two-content .ph-title,.lay-comparison .ph-title,.lay-content-aside .ph-title,.lay-title-only .ph-title{border-bottom:2px solid var(--ink);padding-bottom:24px;margin-bottom:12px}
+.ph-takeaway .takeaway,.ph-takeaway>*{border-radius:0}
+/* section: nomor bagian besar + garis tegak */
+.pad.lay-section{grid-template-columns:auto minmax(0,1fr);grid-template-areas:"kicker title" "kicker subtitle";column-gap:60px;align-items:center}
+.lay-section .ph-kicker{border-right:4px solid var(--teal);padding-right:60px;align-self:stretch;display:flex;align-items:center}
+.lay-section .ph-kicker .kicker{font-size:30px;letter-spacing:6px}
+.lay-section .ph-title h1.title{font-size:92px}
+.lay-section .rule{display:none}

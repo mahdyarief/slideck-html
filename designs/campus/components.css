@@ -63,3 +63,27 @@ table.t td.n{text-align:right;font-weight:800;color:var(--ink);white-space:nowra
 .checklist li{position:relative;font-size:29px;color:var(--ink);line-height:1.45;padding:20px 24px 20px 86px;border-bottom:1px dashed var(--line)}
 .checklist li:last-child{border-bottom:0}
 .checklist li::before{content:"";position:absolute;left:0;top:20px;width:50px;height:50px;border:3px solid var(--teal);border-radius:10px;background:var(--surface)}
+
+/* ==== SIGNATURE campus: akademik — pita kepala institusi di atas, sampul terpusat, aksen atas di kartu ==== */
+.slide::before{inset:0 0 auto 0;height:22px;background:var(--accent2);background-image:none}
+.slide::after{left:0;right:0;top:22px;bottom:auto;width:auto;height:6px;background:var(--teal)}
+.pad{padding:100px 120px 140px}
+.foot{left:120px;right:120px}
+.slide:has(>.pad.lay-title){background:var(--surface)!important;color:var(--ink)!important}
+.slide:has(>.pad.lay-title)::before{height:150px}
+.slide:has(>.pad.lay-title)::after{top:150px;height:10px}
+.pad.lay-title{justify-items:center;text-align:center;padding-top:200px}
+.slide.dark:has(>.pad.lay-title) .ph-kicker .kicker{color:var(--teal-d);letter-spacing:8px}
+.slide:has(>.pad.lay-title) .ph-title h1.title{color:var(--ink);font-family:var(--font-s);font-size:108px;line-height:1.05;letter-spacing:-1px}
+.lay-title .rule{margin:30px auto 0;width:300px;height:3px;border-radius:0;background:var(--ink)}
+.slide:has(>.pad.lay-title) .ph-subtitle .bul{color:var(--mut);font-size:30px;margin-top:26px}
+.slide:has(>.pad.lay-title) .foot{color:var(--mut);justify-content:center;gap:40px}
+/* section: pita kepala tinggi, judul terpusat */
+.slide:has(>.pad.lay-section)::before{height:100%;background:var(--grey)}
+.slide:has(>.pad.lay-section)::after{top:0;height:22px;background:var(--accent2)}
+.pad.lay-section{justify-items:center;text-align:center}
+.lay-section .ph-title h1.title{font-family:var(--font-s);font-size:96px}
+.lay-section .rule{margin:28px auto 0;width:200px;height:3px;border-radius:0;background:var(--ink)}
+/* kartu: garis aksen tebal di atas */
+.card{border:1px solid var(--line);border-top:8px solid var(--accent2);border-radius:4px;background:var(--surface)}
+h1.title{font-family:var(--font-s)}
