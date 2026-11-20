@@ -203,7 +203,7 @@ import.js          TOOL: .pptx → slides/*.html in slideck layouts
 check.js           TOOL: overflow report + pixel regression against a baseline
 designs/           FROZEN: default · editorial · brutalist · geometric · architectural · ribbon · plate ·
                    campus · keynote · colloquium · lesson · spotlight · dark-academia ·
-                   consulting · scholar · organic · minimal · campus-slide   (components.css + design.json each)
+                   consulting · scholar · organic · minimal · campus-slide · lineart   (components.css + design.json each)
 deck.json          EDIT: title, footer, output, design, theme, motion, fonts
 themes/            navy (default) · paper · botanical · swiss · neon · slate-rust ·
                    petrol-gold · terracotta · parchment-gold · campus-slide   (:root color+font only)
@@ -252,6 +252,7 @@ LICENSE            MIT
 | `organic` | imagery-led cover, soft blob/wave decorations, 01/02/03 list markers, pill cards with circular icons | shared 12 |
 | `minimal` | thin large display type, single hairline accent rule under title, booktabs tables, low density | shared 12 |
 | `campus-slide` | academic report: letter-spaced kicker, bold accent title, flat panels, dark-header zebra tables, dark Kesimpulan band, full-width accent footer bar, grey cover | shared 12 |
+| `lineart` | blueprint line art: 2px outline boxes with sharp corners, hairline column dividers, bold title over a full-width hairline, one accent offset plate per slide, bottom-anchored cover with an accent rule from the left edge | shared 12 |
 
 | Theme | Look | Font |
 |---|---|---|
@@ -315,7 +316,7 @@ cp templates/04-table-detail.html slides/03-progress.html
 
 Techniques borrowed from how PowerPoint (and the PPTX2HTML converter) work, kept zero-dependency. See `examples/features/` for a deck that uses all of them.
 
-**Placeholder layouts.** Instead of copying a template, a slide can name one of nine layouts in `layouts/` and fill its placeholders by name. Empty placeholders are dropped, and margins come from the active design:
+**Placeholder layouts.** Instead of copying a template, a slide can name one of ten layouts in `layouts/` and fill its placeholders by name. Empty placeholders are dropped, and margins come from the active design:
 
 ```html
 <slide layout="two-content" notes="speaker notes">
@@ -326,7 +327,7 @@ Techniques borrowed from how PowerPoint (and the PPTX2HTML converter) work, kept
 </slide>
 ```
 
-Layouts: `title`, `section`, `title-content`, `two-content`, `comparison`, `title-only`, `content-caption`, `picture-caption`, `blank`.
+Layouts: `title`, `section`, `title-content`, `two-content`, `comparison`, `title-only`, `content-caption`, `picture-caption`, `content-aside` (main content + dark panel for the decision), `blank`.
 
 - Add `dark` to the `<slide>` tag for a navy slide.
 - `<ph … x y w h>` moves a placeholder to an absolute position.
@@ -359,6 +360,23 @@ Options: `stacked`, `title`, `prefix`, `unit`, `values="off"`, `legend="off"`, `
 
 Other Mermaid diagram types are left as text with a build warning.
 
+**Concept diagrams.** `<diagram type="venn|matrix|cycle|funnel|pyramid|scale">` draws the diagrams Mermaid can't, as SVG at build time, one `Title: description` line per item. `key="N"` highlights the item that matters:
+
+```html
+<diagram type="matrix" key="2">
+Big bets: high impact, high effort
+Quick wins: high impact, low effort
+Fill-ins: low impact, low effort
+Avoid: low impact, high effort
+x: Effort
+y: Impact
+</diagram>
+```
+
+**Icons.** `<icon name="target">` or `<icon name="shield" badge tone="navy">` inlines one of 46 built-in line icons (drawn for slideck, no icon font, no network), coloured by the theme.
+
+**Layout blocks** that work in every design: `.rows` (numbered or icon rows), `.is-key` (highlight one card, row, step or chip), `.bands` (before/after), `.hero` (giant number + list), `.with-aside` / layout `content-aside` (content + dark decision panel), `.callout` / `.callout.warn`, `.boxed` (label on the border), `.chips`, `.source`. Syntax in [SKILL.md](skills/slideck-html/SKILL.md) §3, recipes in [docs/slide-craft.md](docs/slide-craft.md) §4, and a live deck in `examples/components/`.
+
 **Dark canvases.** Designs whose slides are navy (keynote, ribbon, dark-academia) are detected automatically, and charts, shapes and diagrams switch to their light-on-dark variants. A design can force this with `"canvas": "dark"|"light"` in `design.json`.
 
 ### Import and export PowerPoint
@@ -380,7 +398,7 @@ node pptx.js --root my-deck                          # built deck → editable d
   - speaker notes;
   - a theme built from the deck's colour and font tokens.
 
-  Charts, flowcharts and connectors become pictures, with a vector SVG copy for current PowerPoint. Every export re-reads its own package and exits 1 if anything is malformed.
+  Charts, diagrams, icons, flowcharts and connectors become pictures, with a vector SVG copy for current PowerPoint. Every export re-reads its own package and exits 1 if anything is malformed.
   - The deck's fonts are embedded in the .pptx (`ppt/fonts/*.fntdata`, EOT), taken from the HTML's own `@font-face`, so the file opens with the theme fonts on machines that lack them. `--no-embed-fonts` turns this off. Weight 800 maps to the real ExtraBold face (e.g. "Inter ExtraBold"), not synthetic bold.
   - Fonts are embedded whole and uncompressed (PowerPoint itself writes subset, MicroType-compressed fonts), so each family adds ~30–100 KB.
   - Long paragraphs can wrap one word differently.

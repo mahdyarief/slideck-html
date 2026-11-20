@@ -1,6 +1,6 @@
 # Custom designs and themes
 
-slideck-html ships 18 designs and 10 themes. You can add your own **inside your deck folder** without touching the package. They are picked up by `build.js`, checked against the rules below on every build, and travel with your deck.
+slideck-html ships 19 designs and 10 themes. You can add your own **inside your deck folder** without touching the package. They are picked up by `build.js`, checked against the rules below on every build, and travel with your deck.
 
 ```
 my-deck/
@@ -108,6 +108,8 @@ Copy the full list from `designs/default/components.css`. That file is the refer
 - **Diagrams:** `.map` / `.mapcol` / `.arrow`, `.timeline .step .dot`, `.checklist li`.
 - **Table:** `table.t th`, `table.t td`, `td.n` (right-aligned numbers).
 - **Dark slides:** `<slide dark>` and design canvases on `--navy` get `.slide.dark` / `.on-dark`. `core.css` already switches the common text to `--on-navy`. Add overrides for anything of your own that sits on dark.
+
+**Shared blocks you get for free.** `core.css` also styles `.rows`, `.idx`, `.is-key`, `.bands`, `.hero`, `.with-aside`, `.callout`, `.boxed`, `.chips`, `.source`, icons (`.ico`, `.ico-badge`) and `<diagram>` SVGs (`.dg`) from tokens, and builds them on top of your `.card`, `.tag` and `h3`, so they already match your design. You may restyle them (e.g. `border-radius:0` for a sharp design, an outline instead of a fill on `.card.is-key`); keep the structure (grid columns, which child is the marker) intact. See `designs/lineart/components.css` for an example.
 
 Don't redefine the placeholder grid (`.pad.lay-*`, `.ph-*`). It lives in `core.css`, and `pptx.js` / `check.js` rely on it. Adjust spacing through `.pad` padding and the type scale instead.
 

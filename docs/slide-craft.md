@@ -95,6 +95,22 @@ If content exceeds the mode, **split the slide; never shrink it**. `check` flags
 | a status list / done–todo | `ul.checklist` | plain bullets |
 | a strong quote / principle | `.quote` on a `section` or `title-only` slide | quote buried in bullets |
 | a photo / screenshot | `picture-caption` layout | an image squeezed into a card |
+| 3–8 steps or rules in order | `.rows` with `.idx` numbers, the critical one `.is-key` | a numbered paragraph |
+| evidence + what to decide | `content-aside` layout: chart or table left, dark panel with the decision right | the decision as a footnote |
+| before / after a change | `.bands` (stacked, label left) | two paragraphs |
+| one striking number + its reasons | `.hero` (`.stat-big` left, `.rows` card right) | a big number alone with reasons on the next slide |
+| a warning, caveat or note | `.callout.warn` / `.callout` with an icon | red text in a bullet |
+| many short items (systems, tags, skills) | `.chips` | a 12-line bullet list |
+| overlap of 2–3 ideas | `<diagram type="venn">` | three bullet lists |
+| prioritising (impact × effort, risk × likelihood) | `<diagram type="matrix">` with `x:` / `y:` axes and `key` on the winning quadrant | a ranked list |
+| a repeating loop | `<diagram type="cycle">` | a timeline that ends |
+| drop-off between stages | `<diagram type="funnel">` with the counts, `key` on the leakiest stage | a bar chart of stages |
+| layers / hierarchy / foundations | `<diagram type="pyramid">` | nested bullets |
+| a maturity level / spectrum, "where we are" | `<diagram type="scale">` with `key` on the current stop | a sentence |
+
+**Highlight one thing.** Every slide with several equal items (cards, rows, steps, chips, quadrants) should mark the one that matters: `.is-key` on HTML items, `key` on a `<diagram>`. One per slide; two is already noise.
+
+**Icons** support a label, they never replace it. Use one icon per card or row, the same tone across a row, and skip icons rather than pick one that doesn't fit the meaning.
 
 **Charts:** the title states the insight (not "Chart of sales"); keep one series dominant; label values (default on); no legend for a single series (`legend="off"`); size to the placeholder (≈1720×600 full width, ≈820×560 in a column).
 
@@ -310,6 +326,93 @@ labels: Jul | Aug | Sep
 <ph name="subtitle">Owner: Sales Ops · Budget: $220k · First review: 15 Nov</ph>
 </slide>
 ```
+
+**Numbered steps, one highlighted** (`.rows`)
+```html
+<slide layout="title-content">
+<ph name="kicker">ONBOARDING</ph>
+<ph name="title">Four onboarding steps; the data import decides retention</ph>
+<ph name="body"><div class="rows">
+<div class="card"><span class="idx">01</span><h3>Create account</h3><p class="small">Short form, email verified in 2 minutes.</p></div>
+<div class="card"><span class="idx">02</span><h3>Choose a plan</h3><p class="small">Three plans compared on one screen.</p></div>
+<div class="card is-key"><span class="idx">03</span><h3>Import first data</h3><p class="small">62% of users who finish this stay past month one.</p></div>
+<div class="card"><span class="idx">04</span><h3>Invite the team</h3><p class="small">3 invites per new account on average.</p></div>
+</div></ph>
+</slide>
+```
+Swap `<span class="idx">` for `<icon name="target" badge/>` to make icon rows; add `class="rows cols2"` for 6–8 short items.
+
+**Evidence + decision panel** (`content-aside`)
+```html
+<slide layout="content-aside">
+<ph name="kicker">FINDING</ph>
+<ph name="title">Shipping costs rose 14%, mostly on routes outside Java</ph>
+<ph name="body"><chart type="bar" height="460">
+labels: Jan, Feb, Mar, Apr, May, Jun
+Java: 100, 102, 101, 104, 103, 105
+Outside Java: 100, 106, 109, 113, 116, 121
+</chart></ph>
+<ph name="aside"><icon name="bulb"/><h3>To decide</h3><ul><li>Consolidate the Makassar warehouse</li><li>Renegotiate 3 courier contracts</li></ul></ph>
+<ph name="takeaway"><b>Kesimpulan:</b> outside-Java routes explain 80% of the increase.</ph>
+</slide>
+```
+
+**Before / after** (`.bands`)
+```html
+<ph name="body"><div class="bands">
+<div class="card"><span class="tag">BEFORE</span><h3>Requester → Manager → Finance → Director → Archive</h3><p class="small">5 steps, 6 working days, 2 on paper.</p></div>
+<div class="card accent"><span class="tag">AFTER</span><h3>Requester → Manager → Finance (auto-approved under $700)</h3><p class="small">3 steps, 1.5 working days, all digital.</p></div>
+</div><p class="source">Source: approval system logs, Jan–Jun 2026.</p></ph>
+```
+
+**Hero number + reasons** (`.hero`)
+```html
+<ph name="body"><div class="hero">
+<div><span class="stat-big">3×</span><h3>more complaints about response time</h3><p class="small">than about price, across 1,240 tickets.</p></div>
+<div class="card"><div class="rows">
+<div><span class="idx">01</span><h3>Slow responses</h3><p class="small">Median 19 h against a 4 h target.</p></div>
+<div><span class="idx">02</span><h3>Limited export</h3><p class="small">Requested by 312 customers.</p></div>
+</div></div>
+</div></ph>
+```
+
+**Warning, note, labelled box, chips**
+```html
+<div class="callout warn"><icon name="alert" badge tone="accent2" size="32"/><div><b>Warning:</b> full backup before 22:00; the migration cannot be undone after step 3.</div></div>
+<div class="callout"><icon name="info" badge size="32"/><div><b>Note:</b> read-only mode for 40 minutes.</div></div>
+<div class="boxed"><span class="box-label">Emergency contact</span><p class="small">Infrastructure on call 24 h during the window.</p></div>
+<div class="chips"><span>Billing</span><span>Reports</span><span class="is-key">Payments</span><span>CRM</span></div>
+```
+
+**Concept diagrams** (`<diagram>`; sizes default to the full body width)
+```html
+<diagram type="matrix" key="2">
+Big bets: high impact, high effort
+Quick wins: high impact, low effort; do now
+Fill-ins: low impact, low effort
+Avoid: low impact, high effort
+x: Effort
+y: Impact
+</diagram>
+
+<diagram type="funnel" key="3">
+Visitors 48,000: from ads and search
+Sign-ups 6,200: 12.9% of visitors
+Active trial 1,900: only 31% try the core feature
+Paid 610: 32% of trials
+</diagram>
+
+<diagram type="scale" key="3">
+Initial: undocumented
+Repeatable: depends on people
+Defined: written and used
+Measured: metrics per step
+Optimised: continuous improvement
+from: Low
+to: High
+</diagram>
+```
+`venn` (2–3 sets + `overlap:`), `cycle` (3–6 steps + `center:`) and `pyramid` (2–6 layers, top first) use the same line format. A working deck with every block and diagram is in `examples/components/`.
 
 ---
 

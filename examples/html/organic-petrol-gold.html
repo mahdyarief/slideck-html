@@ -198,6 +198,120 @@ body.editing [data-fit-fail]{outline:4px solid var(--teal);outline-offset:-4px}
 .flow .fl-sg text{font-size:20px;font-weight:800;fill:var(--teal-d);letter-spacing:1px}
 pre.mermaid{font-family:ui-monospace,Consolas,monospace;font-size:20px;color:var(--mut);white-space:pre-wrap}
 
+/* ==== DIAGRAM konsep (lib/diagram.js): venn, matrix, cycle, funnel, pyramid, scale ==== */
+.dg{display:block;color:var(--ink);overflow:visible;max-width:100%;flex:0 1 auto;--dg-bg:var(--surface)}
+.slide.dark .dg,.slide[style*="var(--navy)"] .dg,.on-dark .dg{color:var(--on-navy);--dg-bg:var(--navy)}
+.dg text{font-family:var(--font-d);fill:currentColor}
+.dg .tt{font-size:26px;font-weight:800}
+.dg .td{font-size:22px;fill-opacity:.86}
+.dg .ax{font-size:22px;font-weight:700;fill-opacity:.75;letter-spacing:.5px}
+.dg text.on{fill:var(--on-teal);fill-opacity:1}
+.dg .q{fill:color-mix(in srgb,var(--teal) 13%,var(--dg-bg))}
+.dg .l1{fill:color-mix(in srgb,var(--teal) 46%,var(--dg-bg))}.dg .l2{fill:color-mix(in srgb,var(--teal) 36%,var(--dg-bg))}
+.dg .l3{fill:color-mix(in srgb,var(--teal) 27%,var(--dg-bg))}.dg .l4{fill:color-mix(in srgb,var(--teal) 19%,var(--dg-bg))}
+.dg .l5{fill:color-mix(in srgb,var(--teal) 12%,var(--dg-bg))}
+.dg .k{fill:var(--teal)}
+.dg .v{fill-opacity:.15;stroke-width:4}
+.dg .v1{fill:var(--teal);stroke:var(--teal)}.dg .v2{fill:var(--c2);stroke:var(--c2)}.dg .v3{fill:var(--accent2);stroke:var(--accent2)}
+.dg .ln{fill:none;stroke:currentColor;stroke-opacity:.45;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+.dg .ln.thin{stroke-width:2;stroke-dasharray:2 8}
+.dg .ah{fill:currentColor;fill-opacity:.45}
+.dg .dot{fill:var(--dg-bg);stroke:var(--teal-d);stroke-width:5}
+.dg .dot.k{fill:var(--accent2);stroke:var(--dg-bg)}
+
+/* ==== IKON (lib/icon.js): <icon name> polos atau <icon name badge> di lingkaran ==== */
+.ico{display:inline-block;flex:0 0 auto;vertical-align:middle;color:var(--teal-d);overflow:visible}
+.slide.dark .ico,.slide[style*="var(--navy)"] .ico,.on-dark .ico{color:var(--teal)}
+.ico-badge{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;border-radius:50%;background:var(--teal);color:var(--on-teal);vertical-align:middle}
+.ico-badge.t-accent2{background:var(--accent2);color:var(--on-accent2)}
+.ico-badge.t-navy{background:var(--navy);color:var(--on-navy)}
+.ico-badge.t-soft{background:var(--mint);color:var(--teal-d)}
+.slide.dark .ico-badge.t-navy,.slide[style*="var(--navy)"] .ico-badge.t-navy,.on-dark .ico-badge.t-navy{background:var(--on-navy);color:var(--navy)}
+.slide.dark .ico-badge.t-soft,.slide[style*="var(--navy)"] .ico-badge.t-soft,.on-dark .ico-badge.t-soft{background:color-mix(in srgb,var(--on-navy) 14%,transparent);color:var(--teal)}
+.slide .ico-badge>.ico{color:inherit}
+.card>.ico-badge,.card>.ico{margin-bottom:20px}
+
+/* ==== NOMOR baris: <span class="idx">01</span>, .idx.dot = lingkaran ==== */
+.idx{display:inline-block;font-family:var(--font-d);font-size:48px;font-weight:800;line-height:1;color:var(--teal-d);min-width:1.4em;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.idx.dot{display:inline-flex;align-items:center;justify-content:center;width:72px;height:72px;min-width:0;border-radius:50%;background:var(--teal);color:var(--on-teal);font-size:30px;letter-spacing:0}
+.slide.dark .idx:not(.dot),.slide[style*="var(--navy)"] .idx:not(.dot),.on-dark .idx:not(.dot){color:var(--teal)}
+
+/* ==== ROWS: daftar baris penuh, penanda (idx / ikon / angka) di kolom kiri ==== */
+.rows{display:flex;flex-direction:column;gap:18px}
+.rows.cols2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 32px}
+.rows>*{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:32px;row-gap:0;align-items:center;align-content:center}
+.rows>.card{padding-top:22px;padding-bottom:22px}
+.rows>*>:is(.idx,.ico-badge,.ico,.kpi-num,.stat-big){grid-column:1;grid-row:1 / span 6;margin:0}
+.rows>*>:not(.idx,.ico-badge,.ico,.kpi-num,.stat-big){grid-column:2;margin:0}
+.rows>*>:not(.idx,.ico-badge,.ico,.kpi-num,.stat-big)+:not(.idx,.ico-badge,.ico,.kpi-num,.stat-big){margin-top:6px}
+.rows>*:not(:has(>.idx,>.ico-badge,>.ico,>.kpi-num,>.stat-big)){display:block}
+.rows>:not(.card){padding:16px 0;border-bottom:1px solid var(--line)}
+.rows>:not(.card):last-child{border-bottom:0}
+
+/* ==== IS-KEY: satu item ditonjolkan (kartu, baris, chip, langkah timeline) ==== */
+.card.is-key,.rows>.is-key{background:var(--navy);border-color:var(--navy);color:var(--on-navy)}
+.rows>.is-key:not(.card){padding-left:28px;padding-right:28px;border-radius:12px;border-bottom:0}
+.slide .is-key :is(h3,.bul,.kpi-num,.quote,.stat-big,b,strong){color:var(--on-navy)}
+.slide .is-key :is(p,.small,.kpi-lab){color:var(--on-navy-mut)}
+.slide .is-key .tag{color:var(--on-navy);background:color-mix(in srgb,var(--on-navy) 16%,transparent)}
+.slide .is-key :is(.idx:not(.dot),:not(.ico-badge)>.ico){color:var(--teal)}
+.slide.dark .card.is-key,.slide.dark .rows>.is-key,.on-dark .card.is-key,.on-dark .rows>.is-key{background:var(--teal);border-color:var(--teal);color:var(--on-teal)}
+.slide.dark .is-key :is(h3,.bul,.kpi-num,.quote,.stat-big,b,strong,p,.small,.kpi-lab,.idx:not(.dot),:not(.ico-badge)>.ico),.on-dark .is-key :is(h3,.bul,.kpi-num,.quote,.stat-big,b,strong,p,.small,.kpi-lab,.idx:not(.dot),:not(.ico-badge)>.ico){color:var(--on-teal)}
+.slide.dark .is-key .ico-badge:not([class*="t-"]),.on-dark .is-key .ico-badge:not([class*="t-"]){background:var(--on-teal);color:var(--teal)}
+.timeline .step.is-key .dot{background:var(--accent2);box-shadow:0 0 0 8px color-mix(in srgb,var(--accent2) 22%,transparent)}
+.slide .timeline .step.is-key h3{color:var(--teal-d)}
+.slide.dark .timeline .step.is-key h3,.on-dark .timeline .step.is-key h3{color:var(--teal)}
+
+/* ==== SIDE PANEL: isi utama + panel gelap (layout content-aside, atau <div class="with-aside">) ==== */
+.pad.lay-content-aside{grid-template-columns:minmax(0,1fr) minmax(0,.52fr);column-gap:56px;grid-template-rows:auto auto minmax(0,1fr) auto;grid-template-areas:"kicker kicker" "title title" "body aside" "takeaway aside"}
+.ph-aside{grid-area:aside;padding-top:40px}
+.ph-aside>.card,.with-aside>.card:last-child{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;justify-content:flex-start}
+.with-aside{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.52fr);column-gap:56px;align-items:stretch}
+.slide :is(.ph-aside,.with-aside)>.card h3{font-size:34px;line-height:1.2;margin-bottom:14px}
+.slide :is(.ph-aside,.with-aside)>.card :is(p,li){font-size:26px;line-height:1.45}
+.slide :is(.ph-aside,.with-aside)>.card :is(ul,ol){padding-left:1.1em;margin:0}
+.slide :is(.ph-aside,.with-aside)>.card li+li{margin-top:12px}
+.slide :is(.ph-aside,.with-aside)>.card .stat-big{font-size:120px;color:var(--teal);margin-bottom:10px}
+
+/* ==== BANDS: sebelum/sesudah ditumpuk, label di kiri ==== */
+.bands{display:flex;flex-direction:column;gap:20px}
+.bands>*{display:grid;grid-template-columns:minmax(200px,.24fr) minmax(0,1fr);column-gap:40px;row-gap:0;align-items:center}
+.bands>*>.tag{grid-column:1;grid-row:1 / span 6;margin:0;justify-self:start}
+.bands>*>:not(.tag){grid-column:2;margin:0}
+.bands>*>:not(.tag)+:not(.tag){margin-top:8px}
+
+/* ==== HERO: angka / akronim raksasa + daftar ==== */
+.hero{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);column-gap:64px;align-items:center}
+.hero .stat-big{font-size:200px;color:var(--teal-d);margin-bottom:18px}
+.slide.dark .hero .stat-big,.slide[style*="var(--navy)"] .hero .stat-big,.on-dark .hero .stat-big{color:var(--teal)}
+
+/* ==== CALLOUT: catatan / peringatan dengan ikon; .boxed = kotak berlabel di garis tepi ==== */
+.callout{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:26px;align-items:center;padding:22px 30px;border-radius:12px;border-left:6px solid var(--teal);background:var(--mint);color:var(--ink);font-size:24px;line-height:1.45}
+.callout:not(:has(>.ico-badge,>.ico)){display:block}
+.callout>.ico-badge,.callout>.ico{grid-row:1 / span 6}
+.callout>:not(.ico-badge,.ico){grid-column:2;margin:0}
+.callout.warn{border-left-color:var(--accent2);background:color-mix(in srgb,var(--accent2) 11%,var(--surface))}
+.callout.warn>div>b:first-child,.callout.warn>p>b:first-child{color:var(--accent2)}
+.slide.dark .callout,.slide[style*="var(--navy)"] .callout,.on-dark .callout{color:var(--on-navy);background:color-mix(in srgb,var(--on-navy) 10%,transparent)}
+.boxed{position:relative;border:2px solid var(--accent-line);border-radius:12px;padding:44px 32px 28px;margin-top:22px}
+.boxed>.box-label{position:absolute;left:26px;top:0;transform:translateY(-50%);background:var(--surface);border-radius:6px;padding:4px 14px;font-size:20px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--teal-d);line-height:1.3}
+.slide.dark .boxed,.slide[style*="var(--navy)"] .boxed,.on-dark .boxed{border-color:color-mix(in srgb,var(--on-navy) 35%,transparent)}
+.slide.dark .boxed>.box-label,.slide[style*="var(--navy)"] .boxed>.box-label,.on-dark .boxed>.box-label{background:var(--navy);color:var(--teal)}
+
+/* ==== CHIPS: banyak item pendek ==== */
+.chips{display:flex;flex-wrap:wrap;gap:14px 16px}
+.chips.cols2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+.chips>*{display:inline-flex;align-items:center;gap:12px;font-size:24px;line-height:1.3;color:var(--ink);background:var(--tag-bg);border-radius:999px;padding:12px 26px}
+.chips>.is-key{background:var(--teal);color:var(--on-teal)}
+.slide.dark .chips>:not(.is-key),.slide[style*="var(--navy)"] .chips>:not(.is-key),.on-dark .chips>:not(.is-key){color:var(--on-navy);background:color-mix(in srgb,var(--on-navy) 13%,transparent)}
+.chips .ico{width:30px;height:30px;color:inherit}
+
+/* ==== SUMBER data + isi kartu rata bawah ==== */
+.source{display:block;font-size:18px;line-height:1.4;color:var(--mut);margin-top:16px}
+.slide.dark .source,.slide[style*="var(--navy)"] .source,.on-dark .source{color:var(--on-navy-mut)}
+.card:has(>.push){display:flex;flex-direction:column}
+.card>.push{margin-top:auto}
+
 
 /* ==== DESIGN: organic ==== */
 /* slideck-html components.css — FROZEN. Jangan edit per deck. Struktur + kontrak token. */

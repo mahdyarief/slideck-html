@@ -1,0 +1,9 @@
+{
+  "title": "Contoh Deck — lineart / parchment-gold",
+  "footer": "Contoh Deck | 21 SEP 2026",
+  "output": "contoh-lineart-parchment-gold.html",
+  "slides": "../slides",
+  "design": "lineart",
+  "theme": "parchment-gold",
+  "motion": "corporate"
+}

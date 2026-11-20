@@ -1,6 +1,6 @@
 ---
 name: slideck-html
-description: Use when the user wants slides, a deck or a presentation (weekly report, internal update, lecture, seminar, pitch) as a single offline HTML file, or exported to PDF or editable PowerPoint (.pptx); when importing a .pptx into editable slides; or when making a custom slide design or brand theme. Frozen 1920x1080 template, 18 designs, 10 themes, placeholder layouts, autofit, SVG charts, shapes, Mermaid flowcharts, zero dependency.
+description: Use when the user wants slides, a deck or a presentation (weekly report, internal update, lecture, seminar, pitch) as a single offline HTML file, or exported to PDF or editable PowerPoint (.pptx); when importing a .pptx into editable slides; or when making a custom slide design or brand theme. Frozen 1920x1080 template, 19 designs, 10 themes, placeholder layouts, autofit, SVG charts, concept diagrams, icons, shapes, Mermaid flowcharts, zero dependency.
 ---
 
 # slideck-html
@@ -58,11 +58,12 @@ Never claim "passed" or "looks good" without having run the command and seen it.
 | conference keynote, launch | `keynote`, `ribbon`, `spotlight` | `navy`, `neon` |
 | product / marketing pitch | `organic`, `ribbon` | `petrol-gold`, `botanical` |
 | technical, audit, engineering | `plate`, `architectural`, `brutalist` | `navy`, `swiss` |
+| frameworks, concepts, diagram-heavy lecture | `lineart`, `minimal` | `parchment-gold`, `navy` |
 | bold poster style | `geometric`, `brutalist` | `swiss`, `navy` |
 
 Each design's `designs/<name>/design.json` has a `recommended` theme and motion. Any design works with any theme. `slideck list` shows everything available, including the deck's own.
 
-**Designs:** default · editorial · brutalist · geometric · architectural · ribbon · plate · campus · keynote · colloquium · lesson · spotlight · dark-academia · consulting · scholar · organic · minimal · campus-slide.
+**Designs:** default · editorial · brutalist · geometric · architectural · ribbon · plate · campus · keynote · colloquium · lesson · spotlight · dark-academia · consulting · scholar · organic · minimal · campus-slide · lineart.
 
 **Themes** (fonts are bundled and embedded):
 
@@ -111,6 +112,7 @@ Revenue: 41 | 22 | 9
 | `title-only` | kicker, title, takeaway; free shapes and charts go outside `<ph>` |
 | `content-caption` | title, caption, body, takeaway |
 | `picture-caption` | picture, title, caption |
+| `content-aside` | kicker, title, body, aside, takeaway; `aside` is a dark panel on the right third for the key message or decision |
 | `blank` | none |
 
 - **`<slide>` attributes:** `dark` (dark background), `notes="…"`, `class`, `fit="off"`.
@@ -126,6 +128,18 @@ Revenue: 41 | 22 | 9
 - `table.t` (`td.n` for right-aligned numbers);
 - `.timeline > .step > .dot`, `ul.checklist`, `.map > .mapcol` with `.arrow`.
 
+**Layout blocks** (work in every design; wrap text in `<h3>` / `<p>` / `<div>`, never loose text next to an icon or number):
+- `.rows` (`.rows.cols2` for 2 columns): full-width rows. Put a marker first (`<span class="idx">01</span>`, `.idx.dot` for a circle, an `<icon … badge>`, or a `.kpi-num`), then `<h3>` + `<p class="small">`. Children can be `.card` or plain `<div>` (hairline rows).
+- `.is-key` on one `.card`, `.rows` child, `.timeline .step` or chip: the one highlighted item (dark fill or accent). Use once per slide.
+- `.bands`: before/after stacked full width; each child starts with a `.tag` label (`SEBELUM`, `SESUDAH`). Make the second `.card.accent`.
+- `.hero`: left a `.stat-big` number or acronym + `<h3>` + `.small`; right a `.card` holding a `.rows` list.
+- `.with-aside`: main block + a `.card.is-key` panel at a third of the width (same as the `content-aside` layout, for template-style slides).
+- `.callout` (`.callout.warn` for a warning): `<icon name="alert" badge tone="accent2" size="32"/><div><b>Perhatian:</b> …</div>`.
+- `.boxed` with `<span class="box-label">LABEL</span>` first: a box with its label on the border.
+- `.chips` (`.chips.cols2`): many short items as pills, one may be `.is-key`.
+- `.source`: small source line under a chart or table (`Sumber: …`).
+- `.push` on the last element of a `.card`: pins it to the card bottom so tags line up across a row.
+
 **Components** (rendered at build time as SVG, coloured by the theme):
 - **Chart:** `<chart type="bar|hbar|line|area|pie|doughnut" width height [title] [unit] [prefix] [stacked] [values="off"] [legend="off"] [center]>`, then one line per series: `labels: A, B` / `Series name: 1, 2`. Use `|` as the separator when values contain commas; the body may also be JSON. Size it to the placeholder: about 1720×600 for a full-width body, 820×560 for a two-content column.
 - **Shape:** `<shape type="rect|round|pill|ellipse|diamond|hexagon|chevron|pentagon|arrow|arrow-left|arrow-up|arrow-down|arrow-both|triangle|parallelogram|trapezoid|callout|cylinder|star|plus" w h [x y] [fill="teal|navy|grey|mint|surface|ink|none"] [line="none|teal|ink|navy|line"] [size] [rot] [id]>Text</shape>`. Wrap a row in `<div class="shapes tight">` to butt chevrons together.
@@ -134,7 +148,15 @@ Revenue: 41 | 22 | 9
   - TD / LR / BT / RL and every node shape;
   - `-->` `---` `-.->` `==>` `~~~`, `|label|`, `&`, `subgraph … end`.
 
-  Flowcharts only; no other diagram types.
+  Flowcharts only; for concept diagrams use `<diagram>`.
+- **Diagram:** `<diagram type="venn|matrix|cycle|funnel|pyramid|scale" [width="1500"] [height] [key="2"]>`, then one `Title: short description` line per item (description optional; `key: 2` or `key="1,3"` highlights items):
+  - `venn` 2–3 sets, `overlap: text` for the centre;
+  - `matrix` exactly 4 quadrants in order top-left, top-right, bottom-left, bottom-right; `x: axis title`, `y: axis title`;
+  - `cycle` 3–6 steps clockwise from the top, `center: text`;
+  - `funnel` 2–6 stages wide to narrow; `pyramid` 2–6 layers top to bottom (descriptions go to the right);
+  - `scale` 2–7 stops left to right with `from: Low` / `to: High`.
+  Keep titles to 1–3 words and descriptions under 8 words; long text wraps but does not shrink.
+- **Icon:** `<icon name="target">` (48 px, accent colour) or `<icon name="target" badge [tone="accent2|navy|soft"] [size="44"]>` (icon in a filled circle). Names: check, check-circle, x, plus, minus, arrow-right, alert, info, help, star, heart, user, users, target, clock, calendar, chart, trend-up, trend-down, bulb, gear, shield, lock, book, school, flag, globe, mail, home, search, doc, money, cart, leaf, bolt, cloud, link, chat, award, layers, pin, eye, cycle, database, code, tools. An unknown name is a build warning listing them all.
 
 **Other syntax:**
 - `{{N}}` / `{{TOTAL}}` become slide numbers. `[Footer kiri]` comes from `deck.footer`.

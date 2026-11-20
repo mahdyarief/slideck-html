@@ -1,0 +1,101 @@
+/* DESIGN lineart — blueprint garis: kotak outline 2px bersudut tajam tanpa isian, kolom dipisah garis rambut,
+   judul tebal dengan garis rambut penuh di bawahnya, satu sorotan aksen per slide (pelat bayangan offset).
+   Sampul: judul di bawah dengan garis aksen yang masuk dari tepi kiri. */
+/* Warna HANYA lewat token theme (lihat kontrak di designs/default/components.css). Tidak ada hex mentah. */
+:root{--surface:#fff;--navy:#1C2833;--on-navy:#fff;--on-navy-mut:#AAB7B8;--teal:#5EA8A7;--teal-d:#2F7E7D;--grey:#F4F6F6;--mut:#5A6C7D;--ink:#2E4053;--mint:#EAF6F4;--accent-line:#BFDCD8;--tag-bg:#D9ECEA;--line:#E2E8EC;--font-d:'Plus Jakarta Sans',sans-serif;--font-s:'Source Serif 4',serif;--ease:cubic-bezier(.16,1,.3,1)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-d);-webkit-font-smoothing:antialiased}
+
+.slide{background:var(--surface);overflow:hidden}
+.slide>*{position:relative;z-index:1}
+.pad{padding:92px 112px 136px}
+
+/* kicker: penanda kotak aksen + huruf renggang */
+.kicker{display:block;font-size:19px;font-weight:800;letter-spacing:4.5px;text-transform:uppercase;color:var(--ink);margin-bottom:6px}
+.kicker::before{content:"";display:inline-block;width:14px;height:14px;background:var(--accent2);margin-right:16px;vertical-align:-1px}
+.slide[style*="var(--navy)"] .kicker,.slide.dark .kicker{color:var(--on-navy-mut)}
+
+/* judul tebal + garis rambut penuh lebar */
+h1.title{font-size:72px;font-weight:800;color:var(--ink);line-height:1.08;letter-spacing:-1.8px;margin-top:12px;padding:0 220px 26px 0;border-bottom:1px solid var(--ink);text-wrap:balance}
+h1.serif{font-family:var(--font-s);letter-spacing:-.8px}
+.slide.dark h1.title,.slide[style*="var(--navy)"] h1.title{border-bottom-color:var(--on-navy-mut)}
+.rule{display:none}
+
+/* sampul: judul turun ke bawah, garis aksen masuk dari tepi kiri */
+.pad.lay-title{align-content:end;padding-bottom:210px}
+.lay-title h1.title{border-bottom:0;padding-bottom:0}
+.lay-title .ph-title{position:relative}
+.lay-title .ph-title::after{content:"";position:absolute;left:-112px;right:12%;bottom:-34px;height:6px;background:var(--accent2)}
+.lay-title .ph-subtitle{padding-top:64px}
+.lay-section h1.title{border-bottom:0;padding-bottom:0}
+.lay-section .ph-title::after{content:"";display:block;width:120px;height:6px;background:var(--accent2);margin-top:30px}
+
+/* kolom dipisah garis rambut tegak, bukan kartu */
+.lay-two-content .ph-right,.lay-comparison .ph-right,.lay-comparison .ph-right-head{border-left:1px solid var(--line);padding-left:48px}
+.pad.lay-two-content,.pad.lay-comparison{column-gap:48px}
+.ph-head{border-bottom:2px solid var(--ink)}
+
+/* kotak outline: tanpa isian, sudut tajam */
+.card{background:transparent;border:2px solid var(--ink);border-radius:0;padding:32px 34px;box-shadow:none}
+.card.accent{border-color:var(--accent2);box-shadow:8px 8px 0 0 color-mix(in srgb,var(--accent2) 30%,transparent)}
+.card.is-key{box-shadow:10px 10px 0 0 var(--accent2)}
+.slide[style*="var(--navy)"] .card,.slide.dark .card{border-color:var(--on-navy-mut)}
+.card h3{font-size:32px;color:var(--ink);line-height:1.2;margin-bottom:8px}
+.rows>.card{border-width:0 0 0 4px;border-color:var(--ink);padding-left:30px}
+.rows>.card.is-key{border-color:var(--accent2);box-shadow:none}
+
+.kpi-num{font-size:96px;font-weight:800;color:var(--ink);line-height:1;letter-spacing:-3px}
+.kpi-lab{font-size:20px;color:var(--mut);margin-top:12px;letter-spacing:2px;text-transform:uppercase}
+.bul{font-size:29px;color:var(--ink);line-height:1.55}
+.small{font-size:24px;color:var(--mut);line-height:1.55}
+.quote{font-size:56px;font-weight:800;color:var(--ink);line-height:1.22;letter-spacing:-1.2px;max-width:1500px}
+.stat-big{font-size:168px;font-weight:800;line-height:.95;letter-spacing:-5px}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+
+.tag{display:inline-block;font-size:18px;font-weight:800;letter-spacing:2.4px;text-transform:uppercase;color:var(--ink);background:transparent;border:2px solid var(--ink);border-radius:0;padding:5px 12px;margin-bottom:16px}
+.card.is-key .tag{border-color:var(--on-navy-mut)}
+
+.map{display:flex;align-items:stretch;gap:28px;margin-top:40px}
+.mapcol{flex:1;background:transparent;border:2px solid var(--ink);border-radius:0;padding:32px 30px}
+.mapcol h3{font-size:31px;margin-bottom:8px;color:var(--ink)}
+.mapcol ul{list-style:none;margin-top:16px}
+.mapcol li{position:relative;font-size:25px;line-height:1.55;color:var(--ink);padding-left:24px;margin-bottom:8px}
+.mapcol li::before{content:"";position:absolute;left:0;top:.6em;width:10px;height:2px;background:var(--accent2)}
+.mapcol li b{color:var(--ink)}
+.arrow{align-self:center;font-size:44px;font-weight:800;color:var(--accent2);line-height:1}
+
+table.t{width:100%;border-collapse:collapse;margin-top:34px;font-size:25px;border:2px solid var(--ink)}
+table.t th{text-align:left;font-size:18px;font-weight:800;letter-spacing:2.4px;text-transform:uppercase;color:var(--ink);padding:14px 18px;border-bottom:2px solid var(--ink)}
+table.t td{padding:14px 18px;border-bottom:1px solid var(--line);color:var(--ink)}
+table.t tr:last-child td{border-bottom:0}
+table.t td.n{text-align:right;font-weight:800;white-space:nowrap}
+
+.foot{position:absolute;bottom:52px;left:112px;right:112px;display:flex;justify-content:space-between;align-items:center;font-size:18px;color:var(--mut);letter-spacing:2px;text-transform:uppercase}
+.slide[style*="var(--navy)"] .foot{color:var(--on-navy-mut)}
+
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.visible .reveal{opacity:1;transform:none}
+.visible .reveal.d1{transition-delay:.08s}.visible .reveal.d2{transition-delay:.16s}.visible .reveal.d3{transition-delay:.24s}
+
+.timeline{display:flex;gap:0;margin-top:48px}
+.timeline .step{flex:1;position:relative;padding:52px 28px 0 0;min-width:0}
+.timeline .dot{position:absolute;top:8px;left:0;width:26px;height:26px;border:3px solid var(--ink);background:var(--surface);border-radius:0}
+.timeline .step::before{content:"";position:absolute;top:20px;left:0;right:0;height:2px;background:var(--ink);z-index:-1}
+.timeline .step:last-child::before{right:100%}
+.timeline .step h3{font-size:30px;color:var(--ink);margin-bottom:6px}
+.timeline .step.is-key .dot{background:var(--accent2);border-color:var(--accent2);box-shadow:none}
+
+.checklist{list-style:none;margin-top:30px}
+.checklist li{position:relative;font-size:28px;color:var(--ink);line-height:1.45;padding:16px 0 16px 56px;border-bottom:1px solid var(--line)}
+.checklist li:last-child{border-bottom:0}
+.checklist li::before{content:"";position:absolute;left:4px;top:24px;width:20px;height:20px;border:2px solid var(--ink)}
+
+/* diagram & panel ikut gaya garis */
+.dg .q,.dg .l1,.dg .l2,.dg .l3,.dg .l4,.dg .l5{stroke:var(--ink);stroke-width:2}
+.slide.dark .dg .q,.slide.dark .dg .l1,.slide.dark .dg .l2,.slide.dark .dg .l3,.slide.dark .dg .l4,.slide.dark .dg .l5{stroke:var(--on-navy-mut)}
+.callout,.boxed,.chips>*,.ico-badge{border-radius:0}
+.boxed{border-color:var(--ink)}
+.idx.dot{border-radius:0}

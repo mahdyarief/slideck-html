@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "slideck-html",
-  "description": "slideck-html: build and edit stable single-file HTML slide decks (frozen 1920x1080 template, 18 designs, 10 themes, embedded fonts, placeholder layouts, charts, shapes, Mermaid flowcharts, PPTX import/export, PDF export, zero dependency).",
+  "description": "slideck-html: build and edit stable single-file HTML slide decks (frozen 1920x1080 template, 19 designs, 10 themes, embedded fonts, placeholder layouts, charts, concept diagrams, icons, shapes, Mermaid flowcharts, PPTX import/export, PDF export, zero dependency).",
   "owner": {
     "name": "mahdyarief"
   },
@@ -9,7 +9,7 @@
     {
       "name": "slideck-html",
       "source": "./",
-      "description": "Build and edit stable single-file HTML slide decks with the frozen slideck-html template system. Provides the slideck-html skill (designs, themes, motions, placeholder layouts, autofit, SVG charts, shapes, Mermaid flowcharts, PPTX import/export, HTML to PDF, node build.js, node check.js).",
+      "description": "Build and edit stable single-file HTML slide decks with the frozen slideck-html template system. Provides the slideck-html skill (designs, themes, motions, placeholder layouts, autofit, SVG charts, concept diagrams, icons, shapes, Mermaid flowcharts, PPTX import/export, HTML to PDF, node build.js, node check.js).",
       "category": "design"
     }
   ]

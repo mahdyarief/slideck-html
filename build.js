@@ -8,6 +8,8 @@ const { expandSlide } = require("./lib/layout");
 const { renderChart } = require("./lib/chart");
 const { renderShape, renderConnector } = require("./lib/shape");
 const { renderFlow } = require("./lib/flow");
+const { renderDiagram } = require("./lib/diagram");
+const { renderIcon } = require("./lib/icon");
 const { parseAttrs, unesc, esc, deckRoot, outputName } = require("./lib/util");
 const { webFormat } = require("./lib/font");
 const { lintDesign, lintTheme } = require("./lib/design-lint");
@@ -215,10 +217,12 @@ const deckCss = fs.existsSync(slidesDir)
 const layoutDirs = [path.join(SRC, "layouts"), path.join(DIR, "layouts")];
 const locale = deck.locale || "id-ID";
 
-/* <chart> <shape> <connector> <pre class="mermaid"> → SVG inline. Gagal = peringatan, sumber dibiarkan. */
+/* <chart> <diagram> <icon> <shape> <connector> <pre class="mermaid"> → SVG inline. Gagal = peringatan, sumber dibiarkan. */
 function renderComponents(s, f, problems) {
   const guard = (kind, fn, orig) => { try { return fn(); } catch (e) { problems.push(f + ": " + kind + " — " + e.message); return orig; } };
   s = s.replace(/<chart\b([^>]*)>([\s\S]*?)<\/chart>/g, (m, at, body) => guard("<chart>", () => renderChart(parseAttrs(at), body, { locale }), m));
+  s = s.replace(/<diagram\b([^>]*)>([\s\S]*?)<\/diagram>/g, (m, at, body) => guard("<diagram>", () => renderDiagram(parseAttrs(at), unesc(body)), m));
+  s = s.replace(/<icon\b([^>]*?)\/?>(?:\s*<\/icon>)?/g, (m, at) => guard("<icon>", () => renderIcon(parseAttrs(at)), m));
   s = s.replace(/<pre\b([^>]*\bclass\s*=\s*"[^"]*\bmermaid\b[^"]*"[^>]*)>([\s\S]*?)<\/pre>/g, (m, at, body) => guard("mermaid", () => {
     const a = parseAttrs(at);
     return renderFlow(body, { width: a["data-width"], height: a["data-height"], class: (a.class || "").replace(/\bmermaid\b/, "").trim() });

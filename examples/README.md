@@ -10,6 +10,10 @@ Contoh deck yang sama, dirender dalam beberapa kombinasi **design × theme**. Se
 
 `examples/campus-slide/` (13 slide) adalah kerangka presentasi kampus (tugas kelompok / seminar) dengan design dan theme `campus-slide`. Isinya placeholder generik — sampul (mata kuliah, kelompok, anggota, dosen), latar belakang, rumusan masalah, metodologi, hasil, pembahasan, rekomendasi, kesimpulan — tinggal diganti. Gaya: kicker berjarak lebar, judul navy, panel biru muda, tabel header gelap + zebra, pita **Kesimpulan** (`<ph name="takeaway">`), bar footer merah, sampul abu. Tabel lebih dari 7 baris dipecah ke slide lanjutan. Hasil build: `examples/html/campus-slide.html`; `node pptx.js --root examples/campus-slide` menghasilkan .pptx dengan font Carlito ter-embed.
 
+## Komponen dan diagram
+
+`examples/components/` (16 slide, design `consulting` + theme `slate-rust`) memakai semua blok tata letak dan diagram baru: `.rows` bernomor dan berikon, `.is-key`, layout `content-aside`, `.bands` sebelum/sesudah, `.hero`, `.callout` / `.boxed` / `.chips`, kartu dengan `.push`, timeline dengan satu tahap disorot, dan `<diagram>` venn, matrix, cycle, funnel, pyramid, scale. Hasil build: `examples/html/components.html`.
+
 ## Build semua
 
 ```bash
@@ -43,6 +47,7 @@ Hasilnya masuk ke `examples/html/<nama>.html` — tinggal buka di browser, tanpa
 | `scholar-petrol-gold` | scholar | petrol-gold |
 | `organic-petrol-gold` | organic | petrol-gold |
 | `minimal-terracotta` | minimal | terracotta |
+| `lineart-parchment-gold` | lineart | parchment-gold |
 
 Lima baris pertama menunjukkan **perbedaan theme** (design sama). Enam belas baris terakhir menunjukkan **perbedaan design** (theme sama).
 

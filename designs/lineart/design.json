@@ -1,0 +1,6 @@
+{
+  "name": "lineart",
+  "label": "Line Art",
+  "description": "Blueprint garis: kotak outline 2px bersudut tajam tanpa isian, kolom dipisah garis rambut, judul tebal dengan garis rambut penuh, satu sorotan aksen per slide lewat pelat bayangan offset. Sampul dengan judul di bawah dan garis aksen dari tepi kiri. Untuk deck konsep, kerangka kerja, dan materi kuliah yang banyak diagram.",
+  "recommended": { "theme": "parchment-gold", "motion": "corporate" }
+}
