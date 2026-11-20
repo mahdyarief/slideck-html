@@ -1,0 +1,15 @@
+<slide layout="two-content">
+<ph name="kicker">QUALITY</ph>
+<ph name="title">Every build is checked, so a broken slide never ships</ph>
+<ph name="left"><diagram type="cycle" key="3" width="820" height="560">
+Write: slides/*.html
+Build: one .html
+Check: screenshots + report
+Polish: fix the worst 3
+</diagram></ph>
+<ph name="right"><div class="rows">
+<div><icon name="check-circle"/><h3>Overflow report</h3><p class="small">Text that still overflows after autofit is flagged per slide.</p></div>
+<div><icon name="eye"/><h3>Pixel regression</h3><p class="small">Each slide is compared with a baseline, so you see what changed.</p></div>
+<div><icon name="shield"/><h3>Images that never break a slide</h3><p class="small">Huge, tiny, tall or wide images always fit their box.</p></div>
+</div></ph>
+</slide>

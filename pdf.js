@@ -15,6 +15,7 @@ const fs = require("fs");
 const path = require("path");
 const { findBrowser, fileUrl, runHeadless } = require("./lib/browser");
 const { argOf, deckRoot, deckHtml } = require("./lib/util");
+const VERSION = require("./package.json").version;
 
 const DIR = __dirname;
 const htmlFlag = argOf("html");
@@ -57,6 +58,32 @@ if (result.status !== 0 || !fs.existsSync(outPath)) {
   console.error("  x gagal mencetak PDF lewat " + browser);
   process.exit(result.status || 1);
 }
+
+/* identitas pembuat di properti dokumen (Creator/Producer), lewat incremental update: isi PDF dari Chrome tidak disentuh */
+function stampPdf(file) {
+  const raw = fs.readFileSync(file).toString("latin1");
+  const tr = raw.lastIndexOf("trailer"), sx = raw.lastIndexOf("startxref");
+  if (tr < 0 || sx < tr) return; /* xref stream, bukan tabel klasik → biarkan */
+  const trailer = raw.slice(tr, sx);
+  const size = +((trailer.match(/\/Size\s+(\d+)/) || [])[1]), root = (trailer.match(/\/Root\s+(\d+\s+\d+\s+R)/) || [])[1];
+  const prev = +((raw.slice(sx).match(/startxref\s+(\d+)/) || [])[1]);
+  if (!size || !root || !Number.isFinite(prev)) return;
+  const infoRef = (trailer.match(/\/Info\s+(\d+)\s+(\d+)\s+R/) || []);
+  let dict = "<<>>";
+  if (infoRef[1]) { const m = raw.match(new RegExp("(?:^|\\s)" + infoRef[1] + "\\s+" + infoRef[2] + "\\s+obj\\s*(<<[\\s\\S]*?>>)\\s*endobj")); if (m) dict = m[1]; }
+  const str = "\\((?:\\\\.|[^\\\\)])*\\)|<[0-9A-Fa-f]*>";
+  const who = "(slideck-html " + VERSION + ")";
+  for (const k of ["Creator", "Producer"]) dict = new RegExp("/" + k + "\\s*(?:" + str + ")").test(dict)
+    ? dict.replace(new RegExp("/" + k + "\\s*(?:" + str + ")"), "/" + k + " " + who) : dict.replace(/>>\s*$/, "/" + k + " " + who + ">>");
+  const head = raw.endsWith("\n") ? "" : "\n";
+  const objAt = raw.length + head.length;
+  const obj = size + " 0 obj\n" + dict + "\nendobj\n";
+  const xrefAt = objAt + obj.length;
+  const tail = "xref\n" + size + " 1\n" + String(objAt).padStart(10, "0") + " 00000 n \ntrailer\n<</Size " + (size + 1) + " /Root " + root +
+    " /Info " + size + " 0 R /Prev " + prev + ">>\nstartxref\n" + xrefAt + "\n%%EOF\n";
+  fs.appendFileSync(file, Buffer.from(head + obj + tail, "latin1"));
+}
+try { stampPdf(outPath); } catch (e) { console.warn("  ! identitas PDF tidak ditulis: " + e.message); }
 
 const pdf = fs.readFileSync(outPath).toString("latin1");
 const pageCount = (pdf.match(/\/Type\s*\/Page[^s]/g) || []).length;

@@ -285,6 +285,22 @@ pre.mermaid{font-family:ui-monospace,Consolas,monospace;font-size:20px;color:var
 /* ==== SUMBER data + isi kartu rata bawah ==== */
 .source{display:block;font-size:18px;line-height:1.4;color:var(--mut);margin-top:16px}
 .slide.dark .source,.slide[style*="var(--navy)"] .source,.on-dark .source{color:var(--on-navy-mut)}
+/* ==== AJAKAN: tombol tautan, perintah yang bisa diklik-salin, blok kode ==== */
+.btns{display:flex;flex-wrap:wrap;align-items:center;gap:16px}
+a.btn{display:inline-flex;align-items:center;gap:12px;font-family:var(--font-d);font-size:26px;font-weight:800;line-height:1.2;text-decoration:none;color:var(--on-teal);background:var(--teal);padding:16px 30px;border-radius:999px}
+a.btn.ghost{color:var(--ink);background:transparent;box-shadow:inset 0 0 0 2px currentColor}
+.slide.dark a.btn.ghost,.slide[style*="var(--navy)"] a.btn.ghost,.on-dark a.btn.ghost{color:var(--on-navy)}
+.slide a.btn .ico{width:30px;height:30px;color:inherit}
+.cmd{display:inline-flex;align-items:center;gap:16px;max-width:100%;font-family:ui-monospace,"JetBrains Mono",Consolas,monospace;font-size:28px;line-height:1.3;color:var(--on-navy);background:var(--navy);padding:16px 28px;border-radius:12px;cursor:copy;white-space:nowrap;overflow:hidden}
+.slide.dark .cmd,.slide[style*="var(--navy)"] .cmd,.on-dark .cmd{background:color-mix(in srgb,var(--on-navy) 12%,transparent)}
+.cmd::after{content:"⧉";font-size:.8em;color:var(--on-navy-mut)}
+.cmd.copied::after{content:"✓";color:var(--teal)}
+pre.code{font-family:ui-monospace,"JetBrains Mono",Consolas,monospace;font-size:22px;line-height:1.5;color:var(--on-navy);background:var(--navy);padding:26px 30px;border-radius:12px;white-space:pre;overflow:hidden;tab-size:2;text-align:left}
+pre.code .k{color:var(--teal)}pre.code .m{color:var(--on-navy-mut)}
+.slide.dark pre.code,.slide[style*="var(--navy)"] pre.code,.on-dark pre.code{background:color-mix(in srgb,var(--on-navy) 10%,transparent)}
+.gallery>a,.gallery>figure>a{display:block;text-decoration:none;color:inherit}
+.gallery>a>img,.gallery>figure>a>img{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:12px}
+
 .card:has(>.push){display:flex;flex-direction:column}
 .card>.push{margin-top:auto}
 

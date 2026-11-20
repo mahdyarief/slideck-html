@@ -1,0 +1,13 @@
+{
+  "title": "slideck-html: slides you write as HTML, one file you can send anywhere",
+  "footer": "slideck-html · slideck.nimb.us.ci",
+  "output": "slideck-html-en.html",
+  "lang": "en",
+  "design": "consulting",
+  "theme": "slate-rust",
+  "motion": "corporate",
+  "description": "Open-source, zero-dependency slide decks: write small HTML slide files, get one offline .html deck with 19 designs and 10 themes, plus PDF and editable PowerPoint. Made for people and AI agents.",
+  "url": "https://slideck.nimb.us.ci/",
+  "image": "https://slideck.nimb.us.ci/og.png",
+  "icon": "../favicon.svg"
+}

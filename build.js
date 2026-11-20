@@ -10,7 +10,7 @@ const { renderShape, renderConnector } = require("./lib/shape");
 const { renderFlow } = require("./lib/flow");
 const { renderDiagram } = require("./lib/diagram");
 const { renderIcon } = require("./lib/icon");
-const { parseAttrs, unesc, esc, deckRoot, outputName } = require("./lib/util");
+const { parseAttrs, unesc, esc, escAttr, deckRoot, outputName } = require("./lib/util");
 const { webFormat } = require("./lib/font");
 const { lintDesign, lintTheme } = require("./lib/design-lint");
 
@@ -120,11 +120,18 @@ const themeOptions = allThemes.map((name) => {
   return `    <option value="${name}"${active}>${name}</option>`;
 }).join("\n");
 
+/* bahasa deck (atribut lang + teks UI layar): deck.lang, default "id" */
+const LANG = String(deck.lang || "id");
+const UI = /^en\b/i.test(LANG)
+  ? { hint: "← → / Space to navigate · E to edit text", theme: "Theme", pick: "Choose theme" }
+  : { hint: "← → / Space navigasi · E edit teks", theme: "Tema", pick: "Pilih tema" };
 const themeSwitcherHtml = `
 <style>
 /* ==== THEME SWITCHER CSS (inject oleh build.js) ==== */
 .deck-theme-switcher{position:fixed;top:20px;right:20px;z-index:1002;display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.55);padding:8px 14px;border-radius:10px;color:#fff;font-size:14px;font-family:system-ui,-apple-system,sans-serif;backdrop-filter:blur(8px)}
 .deck-theme-label{font-weight:600;white-space:nowrap}
+html.scroll .deck-theme-switcher{position:absolute;top:8px;right:8px;padding:5px 9px;font-size:12px;gap:6px}
+html.scroll .deck-theme-select{font-size:12px;padding:4px 22px 4px 8px}
 .deck-theme-select{appearance:none;background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:7px;padding:6px 32px 6px 10px;font-size:13px;cursor:pointer;outline:none;font-family:inherit}
 .deck-theme-select:hover{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.4)}
 .deck-theme-select option{background:#1a1a2e;color:#fff}
@@ -141,9 +148,9 @@ const themeSwitcherHtml = `
   .slide-notes-b{font-size:44px;line-height:1.5;white-space:pre-wrap}
 }
 </style>
-<div class="deck-theme-switcher" role="group" aria-label="Pilih tema">
-  <label for="theme-select" class="deck-theme-label">Tema:</label>
-  <select id="theme-select" class="deck-theme-select" aria-label="Pilih tema">
+<div class="deck-theme-switcher" role="group" aria-label="${UI.pick}">
+  <label for="theme-select" class="deck-theme-label">${UI.theme}:</label>
+  <select id="theme-select" class="deck-theme-select" aria-label="${UI.pick}">
 ${themeOptions}
   </select>
 </div>`;
@@ -364,12 +371,31 @@ if (leftovers.length) {
 /* ---------- 6. rangkai output ---------- */
 /* Slot template diisi sekali jalan: isi slot yang kebetulan memuat "{{SLOT}}" tidak ikut diganti.
    Switcher + catatan disisipkan sebelum </body> TERAKHIR (bukan yang pertama — bisa ada di contoh kode slide). */
-const slots = { TITLE: esc(deck.title || "Deck"), FONTS: fonts, COMPONENTS: componentsInline + allThemeCss + deckCssInline, SLIDES: slides };
-const filled = template.replace(/\{\{(TITLE|FONTS|COMPONENTS|SLIDES)\}\}/g, (m, k) => slots[k]);
-const remaining = template.replace(/\{\{(TITLE|FONTS|COMPONENTS|SLIDES)\}\}/g, "").match(/\{\{[A-Z_]+\}\}/g);
+/* <head> dari deck.json: description, url (kanonik), image (gambar pratinjau tautan), icon (favicon, di-inline). */
+const head = ['<meta name="generator" content="slideck-html ' + VERSION + '">'];
+if (deck.description) head.push('<meta name="description" content="' + escAttr(deck.description) + '">');
+if (deck.url) head.push('<link rel="canonical" href="' + escAttr(deck.url) + '">', '<meta property="og:url" content="' + escAttr(deck.url) + '">');
+if (deck.title) head.push('<meta property="og:title" content="' + escAttr(deck.title) + '">');
+if (deck.description) head.push('<meta property="og:description" content="' + escAttr(deck.description) + '">');
+if (deck.image) {
+  let img = String(deck.image);
+  if (!/^https?:/i.test(img) && deck.url) { try { img = new URL(img, deck.url).href; } catch (e) { /* biarkan relatif */ } }
+  head.push('<meta property="og:image" content="' + escAttr(img) + '">', '<meta name="twitter:card" content="summary_large_image">');
+}
+if (deck.icon) { const ic = inlineRef(String(deck.icon), "deck.icon", leftovers, SRC); head.push('<link rel="icon" href="' + escAttr(ic) + '">'); }
+const SCROLL = ["auto", "on", "off"].includes(deck.scroll) ? deck.scroll : "auto";
+if (deck.scroll !== undefined && deck.scroll !== SCROLL) warn('deck.scroll harus "auto", "on" atau "off" — dipakai "auto"');
+const slots = { TITLE: esc(deck.title || "Deck"), LANG: escAttr(LANG), SCROLL, HEAD: head.join("\n"), HINT: esc(UI.hint),
+  FONTS: fonts, COMPONENTS: componentsInline + allThemeCss + deckCssInline, SLIDES: slides };
+const SLOT_RE = /\{\{(TITLE|LANG|SCROLL|HEAD|HINT|FONTS|COMPONENTS|SLIDES)\}\}/g;
+const filled = template.replace(SLOT_RE, (m, k) => slots[k]);
+const remaining = template.replace(SLOT_RE, "").match(/\{\{[A-Z_]+\}\}/g);
 if (remaining) warn("placeholder template tidak dikenal: " + [...new Set(remaining)].join(", "));
 const bodyEnd = filled.lastIndexOf("</body>");
-const out = filled.slice(0, bodyEnd) + themeSwitcherHtml + "\n<script>" + themeSwitcherJs + "</script>\n<script>window.__slideckNotes=" +
+/* identitas pembuat: hanya terlihat di source (komentar setelah doctype + <meta name="generator">) */
+const stamp = "<!-- Generated by slideck-html " + VERSION + " · https://github.com/mahdyarief/slideck-html -->\n";
+const withStamp = (s) => s.replace(/^(<!DOCTYPE html>\s*\n?)/i, (m) => m + stamp);
+const out = withStamp(filled.slice(0, bodyEnd)) + themeSwitcherHtml + "\n<script>" + themeSwitcherJs + "</script>\n<script>window.__slideckNotes=" +
   scriptJson(notesList) + ";</script>\n" + filled.slice(bodyEnd);
 
 fs.mkdirSync(path.join(SRC, "dist"), { recursive: true });

@@ -1,0 +1,13 @@
+<slide layout="content-aside">
+<ph name="kicker">WHAT IT IS</ph>
+<ph name="title">You write slides as small HTML files; one command builds the whole deck</ph>
+<ph name="body"><pre class="mermaid" data-width="1080" data-height="480">flowchart LR
+A[slides/*.html] --> C(node build.js)
+B[deck.json: design + theme] --> C
+C --> D[[deck.html, one file]]
+D --> E[PDF]
+D --> F[PowerPoint .pptx]
+</pre>
+<div class="facts"><div class="card"><div class="kpi-num">0</div><div class="kpi-lab">dependencies</div></div><div class="card"><div class="kpi-num">19</div><div class="kpi-lab">designs</div></div><div class="card"><div class="kpi-num">10</div><div class="kpi-lab">themes</div></div><div class="card"><div class="kpi-num">46</div><div class="kpi-lab">icons</div></div></div></ph>
+<ph name="aside"><icon name="shield"/><h3>Why it holds up</h3><ul><li>Zero dependencies: Node's standard library only</li><li>A frozen shell, so every build looks the same</li><li>Fixed 1920×1080 stage, scaled to any screen</li><li>MIT licensed</li></ul></ph>
+</slide>

@@ -326,6 +326,20 @@ cp templates/04-table-detail.html slides/03-progress.html
 - Tables max 7 rows; split overflow into a continuation slide.
 - `data-notes="..."` on a `<section class="slide">` adds speaker notes. They're invisible on screen but print as their own page after that slide, so `node pdf.js` ships a presenter copy with notes.
 
+### Publishing a deck as a web page
+
+The landing page at [slideck.nimb.us.ci](https://slideck.nimb.us.ci/) is itself a slideck-html deck (source in `site/`). Optional `deck.json` fields for this:
+
+| Field | Effect |
+| --- | --- |
+| `lang` | `"id"` (default) or `"en"`: `<html lang>`, on-screen hint and Theme label |
+| `scroll` | `"auto"` (default; phones and narrow portrait screens get the slides stacked for vertical scrolling), `"on"`, `"off"` |
+| `description`, `url`, `image`, `icon` | page description, canonical URL, share image (og:image) and favicon (inlined) |
+
+- Add `?clean` to the URL to hide the controls, progress bar and theme menu (embeds, screenshots).
+- Page blocks: `<a class="btn">` / `<a class="btn ghost">`, `<span class="cmd">` (click to copy its text or `data-copy`), `<pre class="code">`.
+- Every output carries the generator identity only in its source: an HTML comment and `<meta name="generator">`, the PDF's Creator/Producer properties, and the .pptx Application property.
+
 ## PowerPoint-grade features
 
 Techniques borrowed from how PowerPoint (and the PPTX2HTML converter) work, kept zero-dependency. See `examples/features/` for a deck that uses all of them.

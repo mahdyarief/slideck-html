@@ -1,0 +1,13 @@
+<slide layout="content-aside">
+<ph name="kicker">APA ITU</ph>
+<ph name="title">Anda menulis slide sebagai file HTML kecil; satu perintah membangun seluruh deck</ph>
+<ph name="body"><pre class="mermaid" data-width="1080" data-height="480">flowchart LR
+A[slides/*.html] --> C(node build.js)
+B[deck.json: design + theme] --> C
+C --> D[[deck.html, satu file]]
+D --> E[PDF]
+D --> F[PowerPoint .pptx]
+</pre>
+<div class="facts"><div class="card"><div class="kpi-num">0</div><div class="kpi-lab">dependensi</div></div><div class="card"><div class="kpi-num">19</div><div class="kpi-lab">design</div></div><div class="card"><div class="kpi-num">10</div><div class="kpi-lab">theme</div></div><div class="card"><div class="kpi-num">46</div><div class="kpi-lab">ikon</div></div></div></ph>
+<ph name="aside"><icon name="shield"/><h3>Kenapa andal</h3><ul><li>Tanpa dependensi: hanya pustaka standar Node</li><li>Shell yang dibekukan, jadi setiap build tampil sama</li><li>Panggung tetap 1920×1080, menyesuaikan layar apa pun</li><li>Lisensi MIT</li></ul></ph>
+</slide>

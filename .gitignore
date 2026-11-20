@@ -25,3 +25,11 @@ Thumbs.db
 
 # reference material (source PDFs the designs were derived from) — not part of the framework
 /reference/
+
+# landing page build
+_site/
+site/thumbs/
+site/.tmp/
+site/*/slides/site.css
+site/*/dist/
+site/*/.slideck-check/

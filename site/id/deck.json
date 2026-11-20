@@ -1,0 +1,13 @@
+{
+  "title": "slideck-html: slide ditulis sebagai HTML, satu file yang bisa dikirim ke mana saja",
+  "footer": "slideck-html · slideck.nimb.us.ci",
+  "output": "slideck-html-id.html",
+  "lang": "id",
+  "design": "consulting",
+  "theme": "slate-rust",
+  "motion": "corporate",
+  "description": "Slide deck open source tanpa dependensi: tulis file slide HTML kecil, dapatkan satu deck .html offline dengan 19 design dan 10 theme, plus PDF dan PowerPoint yang bisa diedit. Untuk manusia dan agen AI.",
+  "url": "https://slideck.nimb.us.ci/id/",
+  "image": "https://slideck.nimb.us.ci/og.png",
+  "icon": "../favicon.svg"
+}

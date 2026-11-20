@@ -1,0 +1,20 @@
+<slide layout="two-content">
+<ph name="kicker">LANGKAH 4 DARI 4</ph>
+<ph name="title">Sesuaikan: pilih tampilan, atau pakai brand Anda sendiri</ph>
+<ph name="left"><pre class="code">{
+  <span class="m">"title"</span>: <span class="m">"Board update Q3"</span>,
+  <span class="m">"footer"</span>: <span class="m">"Acme | Q3 2026"</span>,
+  <span class="m">"output"</span>: <span class="m">"board-q3.html"</span>,
+  <span class="m">"design"</span>: <span class="m">"consulting"</span>,
+  <span class="m">"theme"</span>: <span class="m">"slate-rust"</span>
+}
+
+slideck new-design acme --from consulting
+slideck new-theme acme-blue --from navy
+slideck lint</pre></ph>
+<ph name="right"><div class="rows">
+<div><icon name="layers" badge tone="soft"/><h3>Design mengatur bentuk</h3><p class="small">Jarak, kartu, perlakuan huruf. Tidak pernah warna tetap.</p></div>
+<div><icon name="eye" badge tone="soft"/><h3>Theme mengatur warna</h3><p class="small">Hanya token warna dan font, dicek kontrasnya.</p></div>
+<div><icon name="check-circle" badge tone="soft"/><h3>Lint sebelum build</h3><p class="small">13 aturan menjaga setiap design cocok dengan setiap theme.</p></div>
+</div></ph>
+</slide>
