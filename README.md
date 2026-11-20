@@ -170,16 +170,16 @@ In Claude Code:
 
 ```
 /plugin marketplace add mahdyarief/slideck-html
-/plugin install slideck-html@slideck-html
+/plugin install slideck-html@mahdyarief
 ```
 
-Restart the session if the skill doesn't appear. Update later with `/plugin marketplace update slideck-html`, remove with `/plugin uninstall slideck-html@slideck-html`.
+Restart the session if the skill doesn't appear. Update later with `/plugin marketplace update mahdyarief`, remove with `/plugin uninstall slideck-html@mahdyarief`.
 
 From a local clone instead of GitHub (handy while editing the framework):
 
 ```
 /plugin marketplace add /path/to/slideck-html
-/plugin install slideck-html@slideck-html
+/plugin install slideck-html@mahdyarief
 ```
 
 Or load it for one session without installing: `claude --plugin-dir /path/to/slideck-html`.

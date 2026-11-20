@@ -54,7 +54,7 @@ Install from the marketplace (auto-updates with the repo):
 
 ```
 /plugin marketplace add mahdyarief/slideck-html
-/plugin install slideck-html@slideck-html
+/plugin install slideck-html@mahdyarief
 ```
 
 Or install as a skill folder: clone the whole repo (the skill needs every tool and asset) and put `SKILL.md` at its top level:

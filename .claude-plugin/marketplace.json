@@ -1,6 +1,6 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "slideck-html",
+  "name": "mahdyarief",
   "description": "slideck-html: build and edit stable single-file HTML slide decks (frozen 1920x1080 template, 19 designs, 10 themes, embedded fonts, placeholder layouts, charts, concept diagrams, icons, shapes, Mermaid flowcharts, PPTX import/export, PDF export, zero dependency).",
   "owner": {
     "name": "mahdyarief"
