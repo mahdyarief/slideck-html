@@ -14,6 +14,8 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#0b1116}
 .deck-stage{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:hidden;transform-origin:0 0;background:var(--surface,#fff)}
 .slide{position:absolute;inset:0;width:1920px;height:1080px;overflow:hidden;display:block;visibility:hidden;opacity:0;pointer-events:none;background:var(--surface,#fff);transition:opacity .45s ease}
 .slide.active,.slide.visible{visibility:visible;opacity:1;pointer-events:auto;z-index:1}
+/* slide selalu bertumpuk di stage, walau design menulis .slide{position:relative} (spesifisitas lebih tinggi dari .slide) */
+.deck-stage>.slide{position:absolute;inset:0}
 /* ==== TOKENS + KOMPONEN (frozen) ==== */
 {{COMPONENTS}}
 /* ==== CHROME (di luar stage) ==== */
@@ -33,7 +35,7 @@ body.editing .slide{outline:3px dashed var(--teal);outline-offset:-10px}
   html,body{overflow:visible;background:#fff}
   .deck-viewport{position:static;overflow:visible;background:#fff}
   .deck-stage{position:static;transform:none!important;width:1920px;height:auto;background:#fff}
-  .slide{position:relative;visibility:visible!important;opacity:1!important;pointer-events:auto;page-break-after:always;break-after:page;width:1920px;height:1080px}
+  .slide,.deck-stage>.slide{position:relative;inset:auto;visibility:visible!important;opacity:1!important;pointer-events:auto;page-break-after:always;break-after:page;width:1920px;height:1080px}
   .reveal{opacity:1!important;transform:none!important}
   .deck-controls,.progress{display:none!important}
 }
@@ -49,7 +51,7 @@ body.editing .slide{outline:3px dashed var(--teal);outline-offset:-10px}
 /* ==== NAV (frozen) ==== */
 let cur=0;const slides=[...document.querySelectorAll('.slide')];const pg=document.getElementById('pg');const bar=document.getElementById('bar');
 function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);const st=document.getElementById('stage');st.style.transform=`translate(${(innerWidth-1920*s)/2}px,${(innerHeight-1080*s)/2}px) scale(${s})`}
-function go(n){cur=Math.max(0,Math.min(slides.length-1,n));slides.forEach((s,i)=>{const on=i===cur;s.classList.toggle('active',on);s.classList.toggle('visible',on);s.setAttribute('aria-hidden',on?'false':'true')});pg.textContent=(cur+1)+' / '+slides.length;bar.style.width=((cur+1)/slides.length*100)+'%'}
+function go(n){cur=Math.max(0,Math.min(slides.length-1,n));slides.forEach((s,i)=>{const on=i===cur;s.classList.toggle('active',on);s.classList.toggle('visible',on);s.setAttribute('aria-hidden',on?'false':'true')});pg.textContent=(cur+1)+' / '+slides.length;bar.style.width=((cur+1)/slides.length*100)+'%';try{history.replaceState(null,'','#'+(cur+1))}catch(e){}}
 function isEditing(){return document.body.classList.contains('editing')}
 function setEdit(on){document.body.classList.toggle('editing',on);document.body.contentEditable=on?'true':'false';document.getElementById('editflag').style.display=on?'inline':'none'}
 addEventListener('resize',fit);
@@ -63,7 +65,52 @@ addEventListener('keydown',e=>{
 });
 slides.forEach(s=>s.addEventListener('click',(e)=>{if(isEditing())return;if(e.target.closest('.deck-controls,a,button'))return;const r=s.getBoundingClientRect();const leftSide=(e.clientX-r.left)/r.width<0.3;go(cur+(leftSide?-1:1))}));
 let sx=0;addEventListener('touchstart',e=>{sx=e.touches[0].clientX},{passive:true});addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40)go(cur+(dx<0?1:-1))},{passive:true});
-fit();go(0);
+/* ==== AUTOFIT (frozen): seperti "Shrink text on overflow" PowerPoint. Konten yang meluber dikecilkan dengan CSS zoom
+   (teks + jarak ikut mengecil, lebar tetap). Matikan per slide dengan data-fit="off". Batas bawah 0.55. ==== */
+const FIT_MIN=0.55;
+function stageK(sl){return sl.getBoundingClientRect().width/1920||1}
+function fitTargets(sl){const t=[];for(const c of sl.children){if(c.matches('.foot,.connector,.lay,script,style'))continue;const p=getComputedStyle(c).position;if(p==='absolute'||p==='fixed')continue;if(c.classList.contains('pad')&&c.children.length)t.push(...c.children);else t.push(c)}return t}
+function hasText(el){for(const n of el.childNodes){if(n.nodeType===3&&n.nodeValue.trim())return true}return false}
+function slideOverflows(sl){const k=stageK(sl),R=sl.getBoundingClientRect(),e=1.5*k;const foot=sl.querySelector(':scope>.foot');const fr=foot?[...foot.children].map(c=>c.getBoundingClientRect()).filter(r=>r.width>0):[];let bad=false;
+  (function walk(el,top){for(const c of el.children){if(bad)return;if(c.matches('.foot,.connector,.lay,script,style'))continue;const p=getComputedStyle(c).position;if(p==='absolute'||p==='fixed')continue;const r=c.getBoundingClientRect();if(!r.width&&!r.height)continue;
+    const leaf=c.matches('svg,img,table,.shape')||hasText(c);
+    if(leaf){if(r.bottom>R.bottom+e||r.top<R.top-e||r.right>R.right+e||r.left<R.left-e){bad=true;return}
+      for(const f of fr){if(r.bottom>f.top+e&&r.top<f.bottom-e&&r.right>f.left+e&&r.left<f.right-e){bad=true;return}}}
+    if(!c.matches('svg,img,.shape'))walk(c,false)}})(sl,true);
+  return bad}
+/* luber placeholder = kotak anak keluar dari kotak .ph (bukan scrollHeight: tinta glyph dengan line-height rapat ikut terhitung) */
+function phOver(ph){const R=ph.getBoundingClientRect(),e=1.5*stageK(ph.closest('.slide')||ph);for(const c of ph.children){const r=c.getBoundingClientRect();if(!r.width&&!r.height)continue;if(r.bottom>R.bottom+e||r.right>R.right+e||r.top<R.top-e||r.left<R.left-e)return true}return false}
+function searchFit(targets,over,host){targets.forEach(t=>t.style.zoom='');host.removeAttribute('data-fit-scale');host.removeAttribute('data-fit-fail');if(!targets.length||!over())return;
+  let lo=FIT_MIN,hi=1;for(let i=0;i<7;i++){const m=(lo+hi)/2;targets.forEach(t=>t.style.zoom=m);if(over())hi=m;else lo=m}
+  targets.forEach(t=>t.style.zoom=lo);host.setAttribute('data-fit-scale',lo.toFixed(3));if(over())host.setAttribute('data-fit-fail','1')}
+function fitSlide(sl){if(sl.dataset.fit==='off')return;
+  sl.querySelectorAll('.ph').forEach(ph=>{if(ph.dataset.fit==='off')return;searchFit([...ph.children],()=>phOver(ph),ph)});
+  searchFit(fitTargets(sl),()=>slideOverflows(sl),sl)}
+/* ==== CONNECTOR (frozen): garis antar elemen, digambar dari posisi nyata. ==== */
+function drawConnectors(sl){sl.querySelectorAll('svg.connector').forEach(sv=>{const k=stageK(sl),o=sv.getBoundingClientRect(),S=sl.getBoundingClientRect();let a,b,hz;
+  const box=q=>{let el=null;try{el=sl.querySelector(q)}catch(e){}if(!el)return null;const r=el.getBoundingClientRect();return{l:(r.left-o.left)/k,t:(r.top-o.top)/k,r:(r.right-o.left)/k,b:(r.bottom-o.top)/k,cx:(r.left+r.width/2-o.left)/k,cy:(r.top+r.height/2-o.top)/k}};
+  if(sv.dataset.xy){const v=sv.dataset.xy.split(',').map(Number),ox=(S.left-o.left)/k,oy=(S.top-o.top)/k;a=[v[0]+ox,v[1]+oy];b=[v[2]+ox,v[3]+oy];hz=Math.abs(b[0]-a[0])>=Math.abs(b[1]-a[1])}
+  else{const A=box(sv.dataset.from),B=box(sv.dataset.to);if(!A||!B){sv.innerHTML='';sv.setAttribute('data-missing','1');return}
+    const gx=Math.max(B.l-A.r,A.l-B.r),gy=Math.max(B.t-A.b,A.t-B.b),g=6;hz=gx>=gy;
+    if(hz){const d=B.cx>=A.cx;a=[d?A.r+g:A.l-g,A.cy];b=[d?B.l-g:B.r+g,B.cy]}else{const d=B.cy>=A.cy;a=[A.cx,d?A.b+g:A.t-g];b=[B.cx,d?B.t-g:B.b+g]}}
+  const type=sv.dataset.type||'straight',arrow=sv.dataset.arrow||'end',H=20;let u;
+  if(type==='straight'){const L=Math.hypot(b[0]-a[0],b[1]-a[1])||1;u=[(b[0]-a[0])/L,(b[1]-a[1])/L]}else u=hz?[Math.sign(b[0]-a[0])||1,0]:[0,Math.sign(b[1]-a[1])||1];
+  const ae=arrow==='end'||arrow==='both',as=arrow==='start'||arrow==='both';
+  const p0=as?[a[0]+u[0]*H*.8,a[1]+u[1]*H*.8]:a,p1=ae?[b[0]-u[0]*H*.8,b[1]-u[1]*H*.8]:b,f=n=>Math.round(n*10)/10;let d='M'+f(p0[0])+' '+f(p0[1]);
+  if(type==='elbow'){if(hz){const m=(p0[0]+p1[0])/2;d+='H'+f(m)+'V'+f(p1[1])+'H'+f(p1[0])}else{const m=(p0[1]+p1[1])/2;d+='V'+f(m)+'H'+f(p1[0])+'V'+f(p1[1])}}
+  else if(type==='curve'){if(hz){const m=(p0[0]+p1[0])/2;d+='C'+f(m)+' '+f(p0[1])+' '+f(m)+' '+f(p1[1])+' '+f(p1[0])+' '+f(p1[1])}else{const m=(p0[1]+p1[1])/2;d+='C'+f(p0[0])+' '+f(m)+' '+f(p1[0])+' '+f(m)+' '+f(p1[0])+' '+f(p1[1])}}
+  else d+='L'+f(p1[0])+' '+f(p1[1]);
+  const head=(t,s)=>{const bx=t[0]-s*u[0]*H,by=t[1]-s*u[1]*H,nx=-u[1]*H*.45,ny=u[0]*H*.45;return '<path class="cn-h" d="M'+f(t[0])+' '+f(t[1])+'L'+f(bx+nx)+' '+f(by+ny)+'L'+f(bx-nx)+' '+f(by-ny)+'Z"/>'};
+  let h='<path class="cn-l" d="'+d+'"/>'+(ae?head(b,1):'')+(as?head(a,-1):'');
+  if(sv.dataset.label){const t=document.createElement('span');t.textContent=sv.dataset.label;h+='<text x="'+f((a[0]+b[0])/2)+'" y="'+f((a[1]+b[1])/2)+'">'+t.innerHTML+'</text>'}
+  sv.innerHTML=h;sv.removeAttribute('data-missing')})}
+function layoutAll(){slides.forEach(fitSlide);slides.forEach(drawConnectors)}
+window.slideckFit=layoutAll;
+let fitTimer=0;addEventListener('input',()=>{clearTimeout(fitTimer);fitTimer=setTimeout(()=>{fitSlide(slides[cur]);drawConnectors(slides[cur])},250)});
+addEventListener('hashchange',()=>{const n=parseInt(location.hash.slice(1),10);if(n&&n-1!==cur)go(n-1)});
+fit();go((parseInt(location.hash.slice(1),10)||1)-1);layoutAll();
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(layoutAll);
+addEventListener('load',layoutAll);
 </script>
 </body>
 </html>

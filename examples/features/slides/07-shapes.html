@@ -1,0 +1,19 @@
+<slide layout="title-only">
+<ph name="kicker">SHAPE + CONNECTOR</ph>
+<ph name="title">Proses empat tahap</ph>
+<div class="shapes tight reveal d2" style="position:absolute;left:100px;top:340px">
+<shape type="pentagon" w="420" h="130" fill="navy">Kumpulkan</shape>
+<shape type="chevron" w="450" h="130">Validasi</shape>
+<shape type="chevron" w="450" h="130" fill="navy">Rekap</shape>
+<shape type="chevron" w="450" h="130">Laporkan</shape>
+</div>
+<shape id="s-in" type="round" x="140" y="620" w="320" h="130" fill="mint" class="reveal d3">Data mentah</shape>
+<shape id="s-chk" type="diamond" x="640" y="570" w="300" h="230" fill="none" line="teal" class="reveal d3">Lengkap?</shape>
+<shape id="s-db" type="cylinder" x="1130" y="590" w="240" h="190" fill="grey" class="reveal d3">Arsip</shape>
+<shape id="s-out" type="callout" x="1500" y="610" w="320" h="130" fill="navy" class="reveal d3">Terbit Jumat</shape>
+<shape id="s-fix" type="pill" x="640" y="880" w="300" h="80" fill="mint" size="24" class="reveal d3">Minta perbaikan</shape>
+<connector from="#s-in" to="#s-chk">
+<connector from="#s-chk" to="#s-db" label="ya">
+<connector from="#s-db" to="#s-out" type="curve">
+<connector from="#s-chk" to="#s-fix" label="tidak" dash>
+</slide>

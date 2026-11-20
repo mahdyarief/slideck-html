@@ -1,8 +1,20 @@
 {
   "name": "slideck-html",
-  "description": "Stable single-file HTML slide decks — frozen 1920x1080 template with 10 designs, 5 themes, 3 motions, 12 layouts, a zero-dependency `node build.js`, and HTML→PDF export (one slide per page).",
-  "version": "1.4.0",
-  "keywords": ["slides", "deck", "presentation", "html", "pdf", "reporting"],
+  "description": "Stable single-file HTML slide decks with PowerPoint-grade output: frozen 1920x1080 template, 18 designs, 10 themes with embedded fonts, 3 motions, 9 placeholder layouts + 12 templates, autofit, build-time SVG charts, shapes and connectors, Mermaid flowcharts, PPTX import/export, HTML to PDF, and a visual regression check. Zero dependency.",
+  "version": "2.0.0",
+  "keywords": [
+    "slides",
+    "deck",
+    "presentation",
+    "html",
+    "pdf",
+    "reporting",
+    "pptx",
+    "powerpoint",
+    "charts",
+    "mermaid",
+    "flowchart"
+  ],
   "author": {
     "name": "mahdyarief"
   }

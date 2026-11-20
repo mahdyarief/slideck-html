@@ -1,6 +1,11 @@
 # build output — regenerate with `node build.js`
 dist/
 
+# node check.js screenshots + baselines (per machine: fonts/GPU differ) and its temp pages
+.slideck-check/
+.slideck-probe-*.html
+.slideck-sheet-*.html
+
 # node (project is stdlib-only, but keep it clean if someone adds tooling)
 node_modules/
 package-lock.json
@@ -12,8 +17,8 @@ Thumbs.db
 .vscode/
 
 # local agent and design-tool runtime data
-.openclaude/
 .superpowers/
+.openclaude/
 
 # graft's local graph cache — regenerable, not committed (run `graft build`).
 /graft/

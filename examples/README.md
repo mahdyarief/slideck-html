@@ -2,6 +2,14 @@
 
 Contoh deck yang sama, dirender dalam beberapa kombinasi **design × theme**. Semua memakai satu set slide yang sama (`examples/slides/`, 12 slide = 12 layout), jadi beda yang Anda lihat murni dari design dan theme-nya.
 
+## Demo fitur 2.0
+
+`examples/features/` punya slide sendiri (`examples/features/slides/`, 11 slide) yang memakai sintaks `<slide layout>` + `<ph>`, autofit, `<chart>`, `<shape>`, `<connector>`, dan flowchart Mermaid. Hasil build: `examples/html/features.html`.
+
+## Laporan kampus (campus-slide)
+
+`examples/campus-slide/` (13 slide) adalah kerangka presentasi kampus (tugas kelompok / seminar) dengan design dan theme `campus-slide`. Isinya placeholder generik — sampul (mata kuliah, kelompok, anggota, dosen), latar belakang, rumusan masalah, metodologi, hasil, pembahasan, rekomendasi, kesimpulan — tinggal diganti. Gaya: kicker berjarak lebar, judul navy, panel biru muda, tabel header gelap + zebra, pita **Kesimpulan** (`<ph name="takeaway">`), bar footer merah, sampul abu. Tabel lebih dari 7 baris dipecah ke slide lanjutan. Hasil build: `examples/html/campus-slide.html`; `node pptx.js --root examples/campus-slide` menghasilkan .pptx dengan font Carlito ter-embed.
+
 ## Build semua
 
 ```bash

@@ -1,0 +1,18 @@
+<slide layout="content-caption">
+<ph name="title">Mermaid atas-ke-bawah</ph>
+<ph name="caption">Subset flowchart Mermaid digambar saat build menjadi SVG: bentuk node, label edge, garis putus, subgraph, dan cabang.</ph>
+<ph name="body"><pre class="mermaid" data-width="1000" data-height="820">
+graph TD
+  U[Pengguna] --> W[Web]
+  U --> M[Mobile]
+  subgraph Layanan
+    W --> API{{API Gateway}}
+    M --> API
+    API --> S1[Auth]
+    API --> S2[Laporan]
+  end
+  S1 --> DB[(Database)]
+  S2 --> DB
+  S2 ==> Q[[Antrian ekspor]]
+</pre></ph>
+</slide>

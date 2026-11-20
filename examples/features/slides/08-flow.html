@@ -1,0 +1,16 @@
+<slide layout="title-content">
+<ph name="kicker">MERMAID · FLOWCHART LR</ph>
+<ph name="title">Alur persetujuan laporan</ph>
+<ph name="body"><pre class="mermaid" data-width="1720" data-height="600">
+flowchart LR
+  A([Mulai]) --> B[Unggah data mingguan]
+  B --> C{Lolos validasi?}
+  C -->|ya| D[Rekap otomatis]
+  C -->|tidak| E[Perbaiki sumber]
+  E --> B
+  D --> F[(Arsip)]
+  D --> G[Review kepala unit]
+  G -- disetujui --> H([Terbit])
+  G -. revisi .-> D
+</pre></ph>
+</slide>

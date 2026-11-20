@@ -1,0 +1,176 @@
+/* slideck-html core.css — FROZEN. Komponen bersama SEMUA design: layout ber-placeholder, chart, shape, connector, flow.
+   Dimuat SEBELUM designs/<nama>/components.css, jadi design boleh menimpa apa pun di sini.
+   Warna hanya lewat token theme. Token tambahan (opsional ditimpa theme/design):
+   --c1..--c6  palet seri chart, diturunkan dari token kontrak
+   --on-teal   teks di atas isian --teal
+   Token kontrak 2.1 (theme lama tanpa token ini tetap jalan lewat default di bawah):
+   --accent2     aksen kedua / sinyal (bar footer design report, status penting) — beda dari --teal
+   --on-accent2  teks di atas --accent2
+   --cover       latar sampul (layout title); teksnya --on-navy, jadi WAJIB kontras dengan --on-navy */
+:root{--c1:var(--teal);--c2:var(--ink);--c3:color-mix(in srgb,var(--teal) 48%,var(--surface));--c4:var(--mut);--c5:var(--teal-d);--c6:color-mix(in srgb,var(--ink) 32%,var(--surface));--on-teal:var(--surface);--accent2:var(--teal-d);--on-accent2:var(--surface);--cover:var(--navy)}
+.slide.dark,.slide[style*="var(--navy)"],.on-dark{--c2:var(--on-navy);--c3:color-mix(in srgb,var(--teal) 48%,var(--navy));--c4:var(--on-navy-mut);--c5:color-mix(in srgb,var(--teal) 70%,var(--on-navy));--c6:color-mix(in srgb,var(--on-navy) 32%,var(--navy))}
+
+/* ==== angka besar: default untuk design yang tidak mendefinisikannya (design boleh menimpa) ==== */
+.stat-big{display:block;font-size:160px;font-weight:800;line-height:1;letter-spacing:-.03em;color:inherit}
+.ph-title .stat-big{margin:8px 0}
+
+/* ==== slide gelap lewat <slide dark> ==== */
+.slide.dark h1.title,.slide.dark h3,.slide.dark .bul,.slide.dark .kpi-num,.slide.dark .quote,.on-dark h3,.on-dark .bul,.on-dark .kpi-num,.on-dark .quote{color:var(--on-navy)}
+.slide.dark .small,.slide.dark .kpi-lab,.slide.dark .foot,.on-dark .small,.on-dark .kpi-lab,.on-dark .foot{color:var(--on-navy-mut)}
+
+/* ==== LAYOUT ber-placeholder (layouts/*.html). Margin mengikuti .pad milik design. ==== */
+.pad.lay{position:absolute;inset:0;display:grid;grid-template-columns:minmax(0,1fr);grid-auto-rows:auto;align-content:start}
+.ph{min-width:0;min-height:0;display:flex;flex-direction:column;justify-content:flex-start}
+.ph[data-anchor="m"]{justify-content:safe center}.ph[data-anchor="b"]{justify-content:flex-end}
+.ph>*{flex:0 0 auto;max-width:100%}
+.ph-kicker{grid-area:kicker}.ph-title{grid-area:title}.ph-subtitle{grid-area:subtitle}.ph-body{grid-area:body}
+.ph-left{grid-area:left}.ph-right{grid-area:right}.ph-left-head{grid-area:lhead}.ph-right-head{grid-area:rhead}
+.ph-caption{grid-area:caption}.ph-picture{grid-area:picture}.ph-takeaway{grid-area:takeaway;padding-top:28px}
+/* ==== TAKEAWAY: pita kesimpulan di bawah isi (<ph name="takeaway">, atau <div class="takeaway"> di mana saja) ==== */
+.takeaway{font-size:24px;line-height:1.4;color:var(--ink);background:var(--mint);border-left:6px solid var(--teal);border-radius:6px;padding:18px 28px}
+.takeaway>b:first-child,.takeaway>strong:first-child{color:var(--teal-d)}
+.slide.dark .takeaway,.on-dark .takeaway{color:var(--on-navy);background:color-mix(in srgb,var(--on-navy) 10%,transparent)}
+.slide.dark .takeaway>b:first-child,.on-dark .takeaway>b:first-child{color:var(--teal)}
+.ph-body,.ph-left,.ph-right{padding-top:40px}
+.ph-subtitle{padding-top:24px}
+.pad.lay-title,.pad.lay-section{grid-template-areas:"kicker" "title" "subtitle";align-content:center}
+.lay-title .ph-title h1.title{font-size:112px}
+.lay-title .ph-subtitle .bul{color:var(--on-navy-mut)}
+.lay-section .ph-subtitle .bul{color:var(--mut)}
+.slide.dark .lay-section .ph-subtitle .bul,.on-dark .lay-section .ph-subtitle .bul{color:var(--on-navy-mut)}
+.pad.lay-title-content{grid-template-rows:auto auto minmax(0,1fr) auto;grid-template-areas:"kicker" "title" "body" "takeaway"}
+.pad.lay-title-only{grid-template-rows:auto auto minmax(0,1fr) auto;grid-template-areas:"kicker" "title" "." "takeaway"}
+.pad.lay-two-content{grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:56px;grid-template-rows:auto auto minmax(0,1fr) auto;grid-template-areas:"kicker kicker" "title title" "left right" "takeaway takeaway"}
+.pad.lay-comparison{grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:56px;grid-template-rows:auto auto auto minmax(0,1fr) auto;grid-template-areas:"kicker kicker" "title title" "lhead rhead" "left right" "takeaway takeaway"}
+.lay-comparison .ph-left-head,.lay-comparison .ph-right-head{padding-top:36px}
+.lay-comparison .ph-left,.lay-comparison .ph-right{padding-top:16px}
+.ph-head{font-size:36px;font-weight:800;color:var(--ink);padding-bottom:12px;border-bottom:3px solid var(--teal)}
+.slide.dark .ph-head,.on-dark .ph-head{color:var(--on-navy)}
+.pad.lay-content-caption{grid-template-columns:minmax(0,.62fr) minmax(0,1fr);column-gap:64px;grid-template-rows:auto minmax(0,1fr) auto;grid-template-areas:"title body" "caption body" "takeaway takeaway"}
+.lay-content-caption .ph-title h1.title{font-size:60px}
+.lay-content-caption .ph-caption{padding-top:28px}
+.lay-content-caption .ph-body{padding-top:0;justify-content:safe center}
+.pad.lay-picture-caption{grid-template-columns:minmax(0,1fr) minmax(0,.8fr);column-gap:64px;grid-template-rows:1fr auto auto 1fr;grid-template-areas:"picture ." "picture title" "picture caption" "picture ."}
+.lay-picture-caption .ph-title h1.title{font-size:64px}
+.lay-picture-caption .ph-caption{padding-top:24px}
+/* ==== GAMBAR: tidak pernah merusak slide ====
+   - di mana pun: tidak lebih lebar dari wadahnya, rasio asli dijaga (build menulis width/height asli → ruang dipesan sebelum dimuat)
+   - di placeholder: menyusut ke sisa ruang (bukan memicu autofit teks), object-fit contain → tidak terpotong
+   - placeholder picture: mengisi penuh area, object-fit cover (img.contain = tampil utuh)
+   - di kartu: satu rasio 16:10 → baris kartu rata; img.icon untuk ikon/logo kecil
+   - .gallery: 2–4 gambar sejajar, tinggi sama */
+.slide img,.slide video{max-width:100%;height:auto}
+.slide img.contain,.slide video.contain{object-fit:contain}
+.pad>img,.pad>video{display:block;width:auto;max-height:620px;object-fit:contain}
+/* gambar lepas di <slide> (mis. title-only) tanpa posisi sendiri → area isi di bawah judul, tidak menimpa judul */
+.slide>img:not([style]),.slide>video:not([style]){position:absolute;left:100px;top:300px;width:1720px;height:600px;max-width:none;object-fit:scale-down;object-position:left top}
+.ph img,.ph video{display:block;max-width:100%;height:auto;object-fit:contain;object-position:left top;border-radius:12px}
+/* langsung di placeholder: ambil tepat sisa ruang, gambar besar mengecil, gambar kecil tidak diperbesar (scale-down) */
+.ph>img,.ph>video,.ph>div>img,.ph>div>video{flex:1 1 0;min-height:0;width:100%;height:auto;max-height:100%;object-fit:scale-down;border-radius:0}
+/* layout membungkus isi lepas dalam <div class="bul reveal">: pembungkus yang berisi gambar ikut mengisi sisa ruang */
+.ph>div:has(>img,>video){flex:1 1 0;min-height:0;display:flex;flex-direction:column}
+.ph>div:has(>img,>video)>:not(img,video){flex:0 0 auto}
+.ph[data-anchor="m"] img,.ph[data-anchor="m"] video{object-position:left center}
+.ph-picture{position:relative;overflow:hidden;border-radius:24px;min-height:360px}
+.ph-picture>img,.ph-picture>video,.ph-picture>svg{position:absolute;inset:0;width:100%;height:100%;max-width:none;max-height:none;object-fit:cover;object-position:center;border-radius:0}
+.ph-picture>img.contain,.ph-picture>video.contain{object-fit:contain}
+.card img:not(.icon){display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:center;border-radius:12px;margin-bottom:16px}
+.slide img.icon{display:inline-block;width:72px;height:72px;aspect-ratio:auto;object-fit:contain;border-radius:0;margin-bottom:12px}
+.gallery{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:24px;min-height:0}
+.gallery>img,.gallery>figure>img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;object-position:center;border-radius:12px}
+.gallery>figure{margin:0}.gallery figcaption{font-size:22px;color:var(--mut);margin-top:10px}
+.slide.dark .gallery figcaption,.on-dark .gallery figcaption{color:var(--on-navy-mut)}
+.ph table.t{margin-top:0}
+
+/* ==== daftar bertingkat di dalam placeholder (level 1–3, seperti lstStyle PowerPoint) ==== */
+.ph ul,.ph ol{list-style:none;padding:0;margin:0}
+.ph li{position:relative;padding-left:1.45em;margin:.38em 0}
+.ph li:first-child{margin-top:0}
+.ph ul>li::before{content:"";position:absolute;left:.3em;top:.6em;width:.36em;height:.36em;border-radius:50%;background:var(--teal)}
+.ph ol{counter-reset:phol}
+.ph ol>li{counter-increment:phol}
+.ph ol>li::before{content:counter(phol) ".";position:absolute;left:0;top:0;font-weight:800;color:var(--teal-d)}
+.slide.dark .ph ol>li::before,.on-dark .ph ol>li::before{color:var(--teal)}
+.ph li li{font-size:.87em;margin:.3em 0}
+.ph li ul>li::before{background:transparent;box-shadow:inset 0 0 0 2px var(--teal)}
+.ph li li li{font-size:.93em}
+.ph li li ul>li::before{width:.5em;height:2px;top:.72em;left:.2em;border-radius:0;background:var(--teal);box-shadow:none}
+.ph p+p,.ph p+ul,.ph ul+p,.ph p+ol,.ph ol+p{margin-top:.5em}
+
+/* ==== AUTOFIT: penanda dari runtime (template.html) ==== */
+.slide[data-fit-fail],.ph[data-fit-fail]{outline:0}
+body.editing [data-fit-fail]{outline:4px solid var(--teal);outline-offset:-4px}
+
+/* ==== CHART (lib/chart.js) ==== */
+.chart{display:block;color:var(--ink);overflow:visible;max-width:100%;flex:0 1 auto}
+.slide.dark .chart,.slide[style*="var(--navy)"] .chart,.on-dark .chart{color:var(--on-navy)}
+.chart text{font-family:var(--font-d);fill:currentColor}
+.chart .ct{font-size:26px;font-weight:800}
+.chart .tk{font-size:21px;opacity:.72}
+.chart .vl{font-size:21px;font-weight:800}
+.chart .lg{font-size:22px}
+.chart .lgv{font-weight:800;opacity:.72}
+.chart .cn{font-weight:800}
+.chart .grid{stroke:currentColor;stroke-opacity:.14;stroke-width:2}
+.chart .axis{stroke:currentColor;stroke-opacity:.5;stroke-width:2}
+.chart .s1{fill:var(--c1)}.chart .s2{fill:var(--c2)}.chart .s3{fill:var(--c3)}.chart .s4{fill:var(--c4)}.chart .s5{fill:var(--c5)}.chart .s6{fill:var(--c6)}
+.chart .dim{fill-opacity:.55}
+.chart .line{fill:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.chart .l1{stroke:var(--c1)}.chart .l2{stroke:var(--c2)}.chart .l3{stroke:var(--c3)}.chart .l4{stroke:var(--c4)}.chart .l5{stroke:var(--c5)}.chart .l6{stroke:var(--c6)}
+.chart .area{fill-opacity:.16}
+.chart .dot{stroke:var(--surface);stroke-width:3}
+.slide.dark .chart .dot,.slide[style*="var(--navy)"] .chart .dot,.on-dark .chart .dot{stroke:var(--navy)}
+.chart .slice{stroke:var(--surface);stroke-width:3;stroke-linejoin:round}
+.slide.dark .chart .slice,.slide[style*="var(--navy)"] .chart .slice,.on-dark .chart .slice{stroke:var(--navy)}
+.chart .hole{fill:var(--surface)}
+.slide.dark .chart .hole,.slide[style*="var(--navy)"] .chart .hole,.on-dark .chart .hole{fill:var(--navy)}
+
+/* ==== SHAPE (lib/shape.js) ==== */
+.shape{position:relative;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;vertical-align:middle;color:var(--on-teal)}
+.shape-g{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.shape-g path{fill:var(--teal);stroke:none;stroke-width:3;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.shape-t{position:relative;width:100%;text-align:center;font-family:var(--font-d);font-size:26px;font-weight:800;line-height:1.2}
+.shape.f-navy{color:var(--on-navy)}.shape.f-navy .shape-g path{fill:var(--navy)}
+.slide.dark .shape.f-navy,.slide[style*="var(--navy)"] .shape.f-navy,.on-dark .shape.f-navy{color:var(--navy)}.slide.dark .shape.f-navy .shape-g path,.slide[style*="var(--navy)"] .shape.f-navy .shape-g path,.on-dark .shape.f-navy .shape-g path{fill:var(--on-navy)}
+.slide.dark .ph-head,.on-dark .ph-head{color:var(--on-navy)}
+.slide.dark .flow .fl-sg text,.on-dark .flow .fl-sg text{fill:var(--teal)}
+.shape.f-grey{color:var(--ink)}.shape.f-grey .shape-g path{fill:var(--grey)}
+.shape.f-mint{color:var(--ink)}.shape.f-mint .shape-g path{fill:var(--mint)}
+.shape.f-surface{color:var(--ink)}.shape.f-surface .shape-g path{fill:var(--surface)}
+.shape.f-ink{color:var(--surface)}.shape.f-ink .shape-g path{fill:var(--ink)}
+.shape.f-none{color:var(--ink)}.shape.f-none .shape-g path{fill:none}
+.slide.dark .shape.f-none,.slide[style*="var(--navy)"] .shape.f-none,.on-dark .shape.f-none{color:var(--on-navy)}
+.shape.ln-teal .shape-g path{stroke:var(--teal)}.shape.ln-ink .shape-g path{stroke:currentColor}
+.shape.ln-navy .shape-g path{stroke:var(--navy)}.shape.ln-line .shape-g path{stroke:var(--accent-line)}
+.shapes{display:flex;align-items:center;gap:18px;flex-wrap:nowrap}
+.shapes.tight{gap:0}.shapes.tight .shape-chevron+.shape-chevron,.shapes.tight .shape-pentagon+.shape-chevron{margin-left:-28px}
+
+/* ==== CONNECTOR (digambar runtime) ==== */
+.connector{position:absolute;left:0;top:0;width:1px;height:1px;overflow:visible;pointer-events:none;color:var(--mut);z-index:2}
+.slide.dark .connector,.slide[style*="var(--navy)"] .connector,.on-dark .connector{color:var(--on-navy-mut)}
+.connector .cn-l{fill:none;stroke:currentColor;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+.connector.dash .cn-l{stroke-dasharray:4 12}
+.connector .cn-h{fill:currentColor;stroke:none}
+.connector text{font-family:var(--font-d);font-size:21px;font-weight:700;fill:currentColor;text-anchor:middle;dominant-baseline:central;paint-order:stroke;stroke:var(--surface);stroke-width:10px;stroke-linejoin:round}
+.slide.dark .connector text,.slide[style*="var(--navy)"] .connector text,.on-dark .connector text{stroke:var(--navy)}
+
+/* ==== FLOW / Mermaid flowchart (lib/flow.js) ==== */
+.flow{display:block;overflow:visible;max-width:100%;color:var(--mut);margin:0 auto;flex:0 1 auto}
+.slide.dark .flow,.slide[style*="var(--navy)"] .flow,.on-dark .flow{color:var(--on-navy-mut)}
+.flow text{font-family:var(--font-d)}
+.flow .fl-s{fill:var(--grey);stroke:var(--accent-line);stroke-width:2.5;stroke-linejoin:round}
+.flow .fl-i{fill:none;stroke:var(--accent-line);stroke-width:2.5}
+.flow .fl-t{font-size:24px;font-weight:700;fill:var(--ink)}
+.flow .fl-diamond .fl-s,.flow .fl-hexagon .fl-s{fill:var(--mint);stroke:var(--teal)}
+.flow .fl-stadium .fl-s,.flow .fl-circle .fl-s{fill:var(--teal);stroke:var(--teal)}
+.flow .fl-stadium .fl-t,.flow .fl-circle .fl-t{fill:var(--on-teal)}
+.flow .fl-e{fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round}
+.flow .fl-thick{stroke-width:6}.flow .fl-dotted{stroke-dasharray:3 9}
+.flow .fl-h{fill:currentColor}
+.flow .fl-lb{fill:var(--surface)}
+.slide.dark .flow .fl-lb,.slide[style*="var(--navy)"] .flow .fl-lb,.on-dark .flow .fl-lb{fill:var(--navy)}
+.flow .fl-lt{font-size:21px;fill:currentColor}
+.flow .fl-sg rect{fill:color-mix(in srgb,var(--mint) 45%,transparent);stroke:var(--accent-line);stroke-width:2;stroke-dasharray:8 8}
+.flow .fl-sg text{font-size:20px;font-weight:800;fill:var(--teal-d);letter-spacing:1px}
+pre.mermaid{font-family:ui-monospace,Consolas,monospace;font-size:20px;color:var(--mut);white-space:pre-wrap}
+

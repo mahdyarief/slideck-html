@@ -1,0 +1,8 @@
+{
+  "title": "Fitur 2.0 — layout, autofit, chart, shape, flow",
+  "footer": "slideck-html 2.0 | Demo fitur",
+  "output": "fitur.html",
+  "design": "default",
+  "theme": "navy",
+  "motion": "corporate"
+}

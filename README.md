@@ -53,60 +53,131 @@ Same design, nine themes:
 If you were given this repo URL and asked to make slides, do exactly this:
 
 1. **Read** `AGENTS.md` (rules), then `skills/slideck-html/SKILL.md` (workflow + designs + themes + motions + templates).
-2. **Never edit** `template.html`, `build.js`, `pdf.js`, `designs/`, `themes/`, `motions/`, `templates/`, `assets/`. Edit only `slides/*.html` + `deck.json`.
-3. **New deck:** copy `templates/<n>-*.html` → `slides/NN-name.html`, replace `[...]` placeholders only, keep classes.
+2. **Never edit** the framework (`template.html`, `core.css`, the root `*.js` tools, `lib/`, `layouts/`, `designs/`, `themes/`, `motions/`, `templates/`, `assets/`). Edit only `slides/*.html` + `deck.json`.
+3. **New deck:** write `slides/NN-name.html` as `<slide layout="…">` with `<ph>` placeholders, or copy `templates/<n>-*.html` and replace `[...]` placeholders only, keeping classes. Use `<chart>`, `<shape>`, `<connector>` and `<pre class="mermaid">` for visuals.
 4. **Build:** `node build.js` → `dist/<output>.html`. Open in browser to verify. Add `node pdf.js` for a PDF, one slide per page.
 5. **Tables max 7 rows** per slide — overflow goes to a continuation slide.
 6. **Never hardcode a hex color.** Text on `--navy` uses `var(--on-navy)`; body text on light surfaces uses `var(--ink)`.
 
 ## Quickstart
 
+Requirements: Node.js 18+. Chrome, Edge or Chromium for PDF, PPTX export and `check` (set `CHROME_PATH` if it isn't found). Zero dependencies: Node stdlib only.
+
+### With npm (recommended)
+
+```bash
+npm install -g slideck-html      # or run any command with: npx slideck-html <command>
+slideck init my-deck && cd my-deck
+slideck build                    # → dist/deck.html
+slideck pdf                      # → dist/deck.pdf, one slide per page
+slideck pptx                     # → dist/deck.pptx, editable shapes
+```
+
+| Command | Does |
+|---|---|
+| `slideck init [dir]` | new deck: `deck.json` + two sample slides + `.gitignore` |
+| `slideck build` | `slides/*.html` → `dist/<output>.html` |
+| `slideck pdf` / `slideck pptx` | export the built deck |
+| `slideck import talk.pptx` | PowerPoint → `slides/*.html` in slideck layouts |
+| `slideck check [--update] [--no-shot]` | overflow report + pixel regression |
+| `slideck new-design <name> [--from <design>]` | start a custom design in `designs/<name>/` |
+| `slideck new-theme <name> [--from <theme>]` | start a custom theme in `themes/<name>.css` |
+| `slideck lint [--all]` | check custom designs and themes against the rules |
+| `slideck list` | built-in and deck-local designs, themes, motions |
+| `slideck path` | where the package is installed (templates, docs) |
+
+Every command works on the current folder, or on `--root <dir>`.
+
+### From a clone
+
 ```bash
 git clone https://github.com/mahdyarief/slideck-html.git
 cd slideck-html
 node build.js            # builds dist/contoh-deck.html from slides/
 node pdf.js              # builds dist/contoh-deck.pdf, one slide per page
-# new deck: edit deck.json (title/footer/output/design/theme/motion), put slides in slides/, run node build.js
+node bin/slideck.js --help
 ```
 
-No `npm install`. Node stdlib only.
+### Your own deck, in its own folder (without npm)
 
-## Install as an AI skill
+The tools live in the repo; your deck can live anywhere. Each tool takes its deck folder from `--root <dir>`, otherwise from the current folder when it contains a `deck.json`, otherwise the repo's sample deck.
 
-From the plugin marketplace — updates follow the repo:
+```bash
+mkdir my-deck && cd my-deck
+cp /path/to/slideck-html/deck.json .      # edit title, footer, output, design, theme, motion
+mkdir slides                              # write slides/01-cover.html, 02-….html (see "Slides")
+node /path/to/slideck-html/build.js       # → my-deck/dist/<output>.html
+node /path/to/slideck-html/pdf.js         # → my-deck/dist/<output>.pdf
+node /path/to/slideck-html/pptx.js        # → my-deck/dist/<output>.pptx
+node /path/to/slideck-html/check.js       # overflow + pixel check
+node /path/to/slideck-html/import.js talk.pptx   # .pptx → my-deck/slides/
+```
+
+## Use as a Claude Code plugin
+
+slideck-html ships as a plugin (`.claude-plugin/`) holding one skill, `slideck-html`. Once it's installed, ask for slides in plain words, e.g. *"make a 10-slide deck about our Q3 results, consulting design, slate-rust theme, and export a PDF"*. The agent loads the skill, writes `deck.json` + `slides/` in **your current project folder**, and runs the tools from the plugin folder. Your deck never goes into the plugin folder, so plugin updates can't overwrite it.
+
+### Option 1: plugin marketplace (recommended, updates with the repo)
+
+In Claude Code:
 
 ```
 /plugin marketplace add mahdyarief/slideck-html
 /plugin install slideck-html@slideck-html
 ```
 
-Or copy manually — a static snapshot, re-copy to update:
+Restart the session if the skill doesn't appear. Update later with `/plugin marketplace update slideck-html`, remove with `/plugin uninstall slideck-html@slideck-html`.
 
-```bash
-mkdir -p ~/.openclaude/skills/slideck-html
-cd slideck-html
-cp -r skills/slideck-html/SKILL.md template.html build.js pdf.js designs themes motions templates assets ~/.openclaude/skills/slideck-html/
+From a local clone instead of GitHub (handy while editing the framework):
+
+```
+/plugin marketplace add /path/to/slideck-html
+/plugin install slideck-html@slideck-html
 ```
 
-Then an agent asked to build slides can follow `SKILL.md` directly.
+Or load it for one session without installing: `claude --plugin-dir /path/to/slideck-html`.
+
+### Option 2: personal skill folder (without the plugin system)
+
+Clone the whole repo into your Claude Code skills folder and put `SKILL.md` at its top level. The skill needs all the tools and assets, not just `SKILL.md`.
+
+```bash
+git clone https://github.com/mahdyarief/slideck-html.git ~/.claude/skills/slideck-html
+cp ~/.claude/skills/slideck-html/skills/slideck-html/SKILL.md ~/.claude/skills/slideck-html/SKILL.md
+```
+
+Update with `git pull` in that folder, then repeat the `cp`. Here `${CLAUDE_PLUGIN_ROOT}` in `SKILL.md` isn't substituted; the skill tells the agent to use the skill folder instead.
+
+### Option 3: any other AI agent
+
+Give the agent this repo URL. It reads `AGENTS.md` and then `skills/slideck-html/SKILL.md` (see below).
 
 ## Layout
 
 ```
 .claude-plugin/    plugin + marketplace manifest (marketplace.json, plugin.json)
-template.html      FROZEN shell ({{TITLE}} {{FONTS}} {{COMPONENTS}} {{SLIDES}} + nav JS)
-build.js           FROZEN: slides/*.html → dist/<output>.html, validates placeholders, writes FROZEN.json
+package.json       npm package (bin: slideck) — no dependencies
+bin/slideck.js     FROZEN: CLI (init · build · pdf · pptx · import · check · new-design · new-theme · lint · list)
+docs/              custom-design.md — rules and guide for your own designs and themes
+template.html      FROZEN shell ({{TITLE}} {{FONTS}} {{COMPONENTS}} {{SLIDES}} + nav, autofit, connector JS)
+core.css           FROZEN: shared components for every design (placeholders, lists, chart, shape, flow)
+build.js           FROZEN: slides/*.html → dist/<output>.html; expands <slide>, <chart>, <shape>, mermaid
+lib/               FROZEN: layout · chart · shape · flow (Mermaid) · browser · ooxml · zip · xml · pptx-read · font · design-lint
+layouts/           FROZEN: 9 placeholder layouts for <slide layout="…">
 pdf.js             TOOL: dist/<output>.html → dist/<output>.pdf, one slide per page
+pptx.js            TOOL: dist/<output>.html → dist/<output>.pptx, editable objects
+import.js          TOOL: .pptx → slides/*.html in slideck layouts
+check.js           TOOL: overflow report + pixel regression against a baseline
 designs/           FROZEN: default · editorial · brutalist · geometric · architectural · ribbon · plate ·
                    campus · keynote · colloquium · lesson · spotlight · dark-academia ·
-                   consulting · scholar · organic · minimal   (components.css + design.json each)
-deck.json          EDIT: title, footer, output, design, theme, motion
-themes/            navy (default) · paper · botanical · swiss · neon ·
-                   slate-rust · petrol-gold · terracotta · parchment-gold   (:root color+font only)
+                   consulting · scholar · organic · minimal · campus-slide   (components.css + design.json each)
+deck.json          EDIT: title, footer, output, design, theme, motion, fonts
+themes/            navy (default) · paper · botanical · swiss · neon · slate-rust ·
+                   petrol-gold · terracotta · parchment-gold · campus-slide   (:root color+font only)
 motions/           corporate (default) · cinematic · playful           (.reveal timing only)
 templates/         12 copy-paste layouts with [...] placeholders
 slides/            YOUR content (only dir you + AI edit)
-assets/fonts/      woff2 + fonts.json — base64-inlined at build, no network needed
+assets/fonts/      WOFF 1.0 (OFL) + fonts.json per theme — base64-inlined at build, embedded into .pptx by pptx.js
 dist/              build output (gitignored, never edit)
 FROZEN.json        hash lock of frozen files (see below)
 skills/slideck-html/SKILL.md   agent skill file
@@ -147,18 +218,24 @@ LICENSE            MIT
 | `scholar` | serif display headings, circular numbered badges on cards, accent medallions, rounded white cards | shared 12 |
 | `organic` | imagery-led cover, soft blob/wave decorations, 01/02/03 list markers, pill cards with circular icons | shared 12 |
 | `minimal` | thin large display type, single hairline accent rule under title, booktabs tables, low density | shared 12 |
+| `campus-slide` | academic report: letter-spaced kicker, bold accent title, flat panels, dark-header zebra tables, dark Kesimpulan band, full-width accent footer bar, grey cover | shared 12 |
 
 | Theme | Look | Font |
 |---|---|---|
-| `navy` (default) | deep navy + teal | Plus Jakarta Sans / Source Serif 4, inlined base64 |
-| `paper` | warm off-white, ink | system stack |
-| `botanical` | dark green-black | system stack |
-| `swiss` | high-contrast minimal | system stack |
-| `neon` | dark blue-black | system stack |
-| `slate-rust` | dark slate + rust, warm grey canvas | system stack |
-| `petrol-gold` | deep petrol teal + gold | system stack |
-| `terracotta` | terracotta + light grey, thin display | system stack |
-| `parchment-gold` | cream canvas + navy + gold | system stack |
+| `navy` (default) | deep navy + teal | Plus Jakarta Sans / Source Serif 4 |
+| `paper` | warm off-white, ink | Inter / Gelasio |
+| `botanical` | dark green-black | Jost / Crimson Pro |
+| `swiss` | high-contrast minimal | Inter |
+| `neon` | dark blue-black | Space Grotesk / JetBrains Mono |
+| `slate-rust` | dark slate + rust, warm grey canvas | IBM Plex Sans / IBM Plex Serif |
+| `petrol-gold` | deep petrol teal + gold | Public Sans / Gelasio |
+| `terracotta` | terracotta + light grey, thin display | Work Sans |
+| `parchment-gold` | cream canvas + navy + gold | Inter / Libre Baskerville |
+| `campus-slide` | white canvas, navy titles, light-blue panels, red footer bar, grey cover | Carlito / Caladea (metric-compatible with Calibri / Cambria) |
+
+**One file, always.** The build output is a single self-contained `.html`. Fonts, CSS, scripts and every local image, video or CSS `url()` referenced by your slides are embedded as `data:` URIs. Put images in your deck folder and reference them relatively (resolved from `slides/`, then the deck folder). Internet URLs are left alone, with a warning, since they break offline use.
+
+Every theme's fonts are bundled (OFL, Latin subset, `assets/fonts/`) and inlined base64 into the deck, so text looks the same on every machine, offline. `deck.json` `"fonts"`: `"theme"` (default, only the deck theme's fonts, ~80–140 KB), `"all"` (every theme's fonts, so the runtime theme switcher also shows real fonts, ~1 MB), `"none"` (system fallback stacks).
 
 | Motion | Feel |
 |---|---|
@@ -168,7 +245,24 @@ LICENSE            MIT
 
 The build inlines `designs/<d>/components.css + themes/<t>.css + motions/<m>.css`, in that order. A wrong design name stops the build; a wrong theme or motion name warns and falls back to the default.
 
-Adding a theme means overriding the `:root` tokens only (see the token contract comment at the top of `designs/default/components.css`). Adding a design means writing a `designs/<name>/components.css` that styles through those same token names, plus a matching `design.json`. Because every design speaks the same token vocabulary, any design works with any theme.
+### Custom designs and themes
+
+Make your own **in your deck folder**. You don't touch the package, and your design travels with the deck:
+
+```bash
+slideck new-design acme --from consulting   # → designs/acme/ (components.css + design.json)
+slideck new-theme acme-blue --from navy     # → themes/acme-blue.css (:root tokens only)
+# deck.json: "design": "acme", "theme": "acme-blue"
+slideck lint && slideck build
+```
+
+A deck-local design, theme or motion overrides a built-in one with the same name, and custom themes appear in the theme switcher. Custom fonts go in `<deck>/fonts/` with a `fonts.json`. A theme that names a bundled family (e.g. `'Inter'`) gets that font embedded automatically.
+
+The core rule: **a design owns shape, a theme owns colour.** A design styles only through the shared token names, never a fixed colour, so any design works with any theme. Every build checks a custom design or theme, and a broken rule stops it with a coded message (D1–D9 for designs, T1–T4 for themes): fixed colours, unknown tokens, touching the shell UI or the 1920×1080 stage, network URLs, missing core classes, text under 18px, low theme contrast.
+
+For **what to put on slides and how to make them look premium** (storyline, action titles, density, choosing charts and layouts, copy-paste recipes, the polish loop), see **[docs/slide-craft.md](docs/slide-craft.md)**.
+
+**Full guide: [docs/custom-design.md](docs/custom-design.md)**. It covers the token contract, every rule with its reason, the classes a design must style, `design.json`, fonts and a pre-flight checklist.
 
 ## Slides
 
@@ -183,6 +277,98 @@ cp templates/04-table-detail.html slides/03-progress.html
 - Prefix a filename with `_` (e.g. `_draft.html`) to keep it in `slides/` without rendering it.
 - Tables max 7 rows; split overflow into a continuation slide.
 - `data-notes="..."` on a `<section class="slide">` adds speaker notes. They're invisible on screen but print as their own page after that slide, so `node pdf.js` ships a presenter copy with notes.
+
+## PowerPoint-grade features (2.0)
+
+Techniques borrowed from how PowerPoint (and the PPTX2HTML converter) work, kept zero-dependency. See `examples/features/` for a deck that uses all of them.
+
+**Placeholder layouts.** Instead of copying a template, a slide can name one of nine layouts in `layouts/` and fill its placeholders by name. Empty placeholders are dropped, and margins come from the active design:
+
+```html
+<slide layout="two-content" notes="speaker notes">
+<ph name="kicker">Q3 REPORT</ph>
+<ph name="title">Target vs actual</ph>
+<ph name="left"><ul><li>Level 1<ul><li>Level 2</li></ul></li></ul></ph>
+<ph name="right"><chart type="bar">…</chart></ph>
+</slide>
+```
+
+Layouts: `title`, `section`, `title-content`, `two-content`, `comparison`, `title-only`, `content-caption`, `picture-caption`, `blank`.
+
+- Add `dark` to the `<slide>` tag for a navy slide.
+- `<ph … x y w h>` moves a placeholder to an absolute position.
+- Anything written outside `<ph>` is placed on the slide as-is.
+- The 12 `templates/` still work unchanged.
+
+**Autofit.** Like PowerPoint's "shrink text on overflow": content that overflows its placeholder, or the slide, is scaled down (text and spacing together) to the largest size that fits, never below 0.55. It recomputes on theme switch and while editing. Turn it off per slide with `fit="off"`.
+
+**Charts.** `<chart type="bar|hbar|line|area|pie|doughnut">` with the data inline is drawn as SVG at build time, coloured by theme tokens:
+
+```html
+<chart type="bar" width="1720" height="600" unit="%">
+labels: Q1, Q2, Q3, Q4
+Target: 70, 80, 85, 95
+Actual: 64, 83, 88, 97.3
+</chart>
+```
+
+Options: `stacked`, `title`, `prefix`, `unit`, `values="off"`, `legend="off"`, `center` (doughnut). The data can also be JSON.
+
+**Shapes and connectors.**
+- `<shape type="chevron|arrow|pill|diamond|cylinder|callout|…" w h [x y] [fill] [line]>text</shape>` draws an OOXML preset geometry; the exporter turns it back into a native PowerPoint shape.
+- `<connector from="#a" to="#b" type="straight|elbow|curve" [label] [dash]>` is routed at runtime between the real element boxes.
+
+**Mermaid flowcharts.** `<pre class="mermaid">flowchart LR …</pre>` is laid out at build time and drawn as SVG. No mermaid.js, no network. It supports:
+- directions TD, LR, BT, RL;
+- all node shapes;
+- edge labels and solid, dotted, thick and invisible edges;
+- chains and `&`, and `subgraph`.
+
+Other Mermaid diagram types are left as text with a build warning.
+
+**Dark canvases.** Designs whose slides are navy (keynote, ribbon, dark-academia) are detected automatically, and charts, shapes and diagrams switch to their light-on-dark variants. A design can force this with `"canvas": "dark"|"light"` in `design.json`.
+
+### Import and export PowerPoint
+
+```bash
+node import.js deck.pptx --root my-deck              # content → slideck layouts (takes your design/theme)
+node pptx.js --root my-deck                          # built deck → editable dist/<output>.pptx
+```
+
+- **Import** reads the .pptx with its own zero-dependency parser (`lib/pptx-read.js`).
+  - It maps placeholders (with their layout/master inheritance), nested bullets, links, tables, pictures, video/audio, charts, SmartArt text, hidden slides, dark backgrounds and notes onto slideck layouts. Tables over 7 rows split into continuation slides.
+  - Not imported: the original look (fonts, colours, geometry), EMF/WMF pictures, and chart types without a slideck equivalent (scatter, radar, combo). The importer lists what it skipped.
+- **Export** measures the rendered deck in headless Chrome (the same browser `pdf.js` uses) and writes native, editable PowerPoint objects:
+  - text boxes with per-run styling and nested bullets;
+  - rectangles, rounded rectangles and borders;
+  - real tables;
+  - preset shapes for `<shape>`;
+  - pictures;
+  - speaker notes;
+  - a theme built from the deck's colour and font tokens.
+
+  Charts, flowcharts and connectors become pictures, with a vector SVG copy for current PowerPoint. Every export re-reads its own package and exits 1 if anything is malformed.
+  - The deck's fonts are embedded in the .pptx (`ppt/fonts/*.fntdata`, EOT), taken from the HTML's own `@font-face`, so the file opens with the theme fonts on machines that lack them. `--no-embed-fonts` turns this off. Weight 800 maps to the real ExtraBold face (e.g. "Inter ExtraBold"), not synthetic bold.
+  - Fonts are embedded whole and uncompressed (PowerPoint itself writes subset, MicroType-compressed fonts), so each family adds ~30–100 KB.
+  - Long paragraphs can wrap one word differently.
+
+### Visual check
+
+```bash
+node check.js                # overflow report + pixel diff of every slide against a baseline
+node check.js --update       # accept the current look as the new baseline
+node check.js --examples     # every examples/html/*.html
+```
+
+It reports, per slide:
+- the autofit scale applied, warning below 0.75;
+- content still overflowing at the minimum scale;
+- connectors whose target is missing;
+- unrendered components;
+- broken images;
+- slides whose pixels changed from the baseline (stored in `.slideck-check/`).
+
+It exits 1 on any of these, so it can gate CI.
 
 ## Examples
 
@@ -207,7 +393,7 @@ Prints version, design, theme, motion, slide count, font mode (inline/system), o
 - `<img>` without `alt` (accessibility),
 - frozen files whose hash differs from `FROZEN.json`.
 
-Then open `dist/<output>.html` and arrow through every slide — check for overflow or clipping.
+Then run `node check.js` for the overflow report and pixel diff, and open `dist/<output>.html` (append `#N` to jump to slide N) to look through the slides.
 
 ## PDF export
 
@@ -220,7 +406,7 @@ node pdf.js          # then: dist/<output>.pdf — one slide per page, 1920×108
 
 ## Frozen-file lock
 
-`FROZEN.json` stores a short sha256 of `template.html`, `build.js`, `pdf.js`, and every file under `designs/`, `themes/`, and `motions/`. If one of them changes, the next build warns — so accidental edits to shared files are visible. If you *intentionally* changed a frozen file, regenerate the lock:
+`FROZEN.json` stores a short sha256 of `template.html`, `core.css`, the root tools (`build.js`, `pdf.js`, `pptx.js`, `import.js`, `check.js`), and every file under `lib/`, `layouts/`, `designs/`, `themes/`, and `motions/`. If one of them changes, the next build warns — so accidental edits to shared files are visible. If you *intentionally* changed a frozen file, regenerate the lock:
 
 ```bash
 node build.js --lock

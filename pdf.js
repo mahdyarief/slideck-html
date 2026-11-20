@@ -13,69 +13,13 @@
 */
 const fs = require("fs");
 const path = require("path");
-const { spawnSync } = require("child_process");
+const { findBrowser, fileUrl, runHeadless } = require("./lib/browser");
+const { argOf, deckRoot, deckHtml } = require("./lib/util");
 
 const DIR = __dirname;
-
-const argOf = (name) => {
-  const i = process.argv.indexOf("--" + name);
-  return i >= 0 && process.argv[i + 1] ? process.argv[i + 1] : null;
-};
-
-const rootFlag = argOf("root");
 const htmlFlag = argOf("html");
 const outFlag = argOf("out");
-const SRC = rootFlag ? path.resolve(rootFlag) : DIR;
-
-function browserCandidates() {
-  const list = [];
-  if (process.env.CHROME_PATH) list.push(process.env.CHROME_PATH);
-  if (process.env.CHROME_BIN) list.push(process.env.CHROME_BIN);
-  if (process.platform === "win32") {
-    const pf = process.env["ProgramFiles"] || "C:/Program Files";
-    const pf86 = process.env["ProgramFiles(x86)"] || "C:/Program Files (x86)";
-    const local = process.env["LOCALAPPDATA"] || "";
-    list.push(
-      path.join(pf, "Google/Chrome/Application/chrome.exe"),
-      path.join(pf86, "Google/Chrome/Application/chrome.exe"),
-      local && path.join(local, "Google/Chrome/Application/chrome.exe"),
-      path.join(pf, "Microsoft/Edge/Application/msedge.exe"),
-      path.join(pf86, "Microsoft/Edge/Application/msedge.exe")
-    );
-  } else if (process.platform === "darwin") {
-    list.push(
-      "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
-      "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
-      "/Applications/Chromium.app/Contents/MacOS/Chromium"
-    );
-  } else {
-    list.push(
-      "/usr/bin/google-chrome",
-      "/usr/bin/google-chrome-stable",
-      "/usr/bin/chromium",
-      "/usr/bin/chromium-browser",
-      "/usr/bin/microsoft-edge"
-    );
-  }
-  return list.filter(Boolean);
-}
-
-function findBrowser() {
-  for (const p of browserCandidates()) {
-    if (fs.existsSync(p)) return p;
-  }
-  const finder = process.platform === "win32" ? "where" : "which";
-  for (const bin of ["google-chrome", "google-chrome-stable", "chromium", "chromium-browser", "microsoft-edge", "msedge"]) {
-    const r = spawnSync(finder, [bin], { encoding: "utf8" });
-    if (r.status === 0) {
-      const first = (r.stdout || "").split(/\r?\n/).map((s) => s.trim()).filter(Boolean)[0];
-      if (first) return first;
-    }
-  }
-  return null;
-}
-
-const fileUrl = (p) => "file:///" + p.replace(/\\/g, "/").replace(/ /g, "%20");
+const SRC = deckRoot(DIR);
 
 let htmlPath;
 let outPath;
@@ -83,13 +27,7 @@ if (htmlFlag) {
   htmlPath = path.resolve(htmlFlag);
   outPath = outFlag ? path.resolve(outFlag) : htmlPath.replace(/\.html?$/i, "") + ".pdf";
 } else {
-  const deckPath = path.join(SRC, "deck.json");
-  if (!fs.existsSync(deckPath)) {
-    console.error("  x deck.json tidak ketemu di " + SRC + " (atau pakai --html <file.html>)");
-    process.exit(1);
-  }
-  const deck = JSON.parse(fs.readFileSync(deckPath, "utf8"));
-  htmlPath = path.join(SRC, "dist", deck.output);
+  try { htmlPath = deckHtml(SRC, "atau pakai --html <file.html>"); } catch (e) { console.error("  x " + e.message); process.exit(1); }
   outPath = outFlag ? path.resolve(outFlag) : htmlPath.replace(/\.html?$/i, "") + ".pdf";
 }
 
@@ -105,21 +43,13 @@ if (!browser) {
 }
 
 const html = fs.readFileSync(htmlPath, "utf8");
-const slideCount = (html.match(/class="slide"/g) || []).length;
+const slideCount = (html.match(/<section\b[^>]*class="[^"]*\bslide\b/g) || []).length;
 const noteCount = (html.match(/class="slide-notes"/g) || []).length;
 
 fs.mkdirSync(path.dirname(outPath), { recursive: true });
 fs.rmSync(outPath, { force: true });
 
-const result = spawnSync(browser, [
-  "--headless=new",
-  "--disable-gpu",
-  "--no-pdf-header-footer",
-  "--run-all-compositor-stages-before-draw",
-  "--virtual-time-budget=5000",
-  "--print-to-pdf=" + outPath.replace(/\\/g, "/"),
-  fileUrl(htmlPath)
-], { encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
+const result = runHeadless(browser, ["--no-pdf-header-footer", "--print-to-pdf=" + outPath.replace(/\\/g, "/")], fileUrl(htmlPath), { budget: 5000 });
 
 if (result.status !== 0 || !fs.existsSync(outPath)) {
   process.stderr.write(result.stdout || "");

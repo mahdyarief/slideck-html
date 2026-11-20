@@ -1,0 +1,6 @@
+{
+  "name": "campus-slide",
+  "label": "Campus Slide",
+  "description": "Presentasi kampus (tugas kelompok, seminar, laporan akademik): kicker kecil berjarak lebar, judul tebal berwarna aksen, panel datar, tabel header gelap + zebra, pita Kesimpulan gelap di bawah isi, bar footer aksen kedua selebar slide, sampul abu.",
+  "recommended": { "theme": "campus-slide", "motion": "corporate" }
+}

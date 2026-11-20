@@ -15,7 +15,7 @@ body{font-family:var(--font-d);-webkit-font-smoothing:antialiased}
 .pad{padding:96px 120px 124px}
 
 /* Kicker: mikro, muted, uppercase — bukan aksen */
-.kicker{display:block;font-size:17px;font-weight:600;letter-spacing:4.4px;text-transform:uppercase;color:var(--mut);margin-bottom:10px}
+.kicker{display:block;font-size:18px;font-weight:600;letter-spacing:4.4px;text-transform:uppercase;color:var(--mut);margin-bottom:10px}
 
 /* Judul: display tipis besar */
 h1.title{font-size:82px;font-weight:300;color:var(--ink);line-height:1.08;letter-spacing:-1.6px;margin-top:6px;max-width:1500px}
@@ -39,7 +39,7 @@ h1.serif{font-family:var(--font-s);font-weight:400;letter-spacing:-1px}
 .grid4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:34px 28px}
 
 /* Tag: teks mikro tanpa pil */
-.tag{display:inline-block;font-size:16px;font-weight:700;letter-spacing:3.2px;text-transform:uppercase;color:var(--mut);background:transparent;border-radius:0;padding:0;margin-bottom:16px}
+.tag{display:inline-block;font-size:18px;font-weight:700;letter-spacing:3.2px;text-transform:uppercase;color:var(--mut);background:transparent;border-radius:0;padding:0;margin-bottom:16px}
 
 .map{display:flex;align-items:stretch;gap:36px;margin-top:44px}
 .mapcol{flex:1;border-top:1px solid var(--line);padding:26px 0 0}
@@ -51,7 +51,7 @@ h1.serif{font-family:var(--font-s);font-weight:400;letter-spacing:-1px}
 
 /* Tabel booktabs: garis tebal atas-bawah, garis tipis bawah header, tanpa garis baris */
 table.t{width:100%;border-collapse:collapse;margin-top:34px;font-size:24px;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
-table.t th{text-align:left;font-size:17px;font-weight:700;letter-spacing:2.4px;text-transform:uppercase;color:var(--mut);padding:16px 18px;border-bottom:1px solid var(--ink)}
+table.t th{text-align:left;font-size:18px;font-weight:700;letter-spacing:2.4px;text-transform:uppercase;color:var(--mut);padding:16px 18px;border-bottom:1px solid var(--ink)}
 table.t td{padding:18px;border-bottom:0;color:var(--ink);font-weight:300;vertical-align:top}
 table.t td.n{text-align:right;font-weight:600;color:var(--ink);white-space:nowrap}
 
