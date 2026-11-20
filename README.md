@@ -63,15 +63,46 @@ If you were given this repo URL and asked to make slides, do exactly this:
 
 Requirements: Node.js 18+. Chrome, Edge or Chromium for PDF, PPTX export and `check` (set `CHROME_PATH` if it isn't found). Zero dependencies: Node stdlib only.
 
-### With npm (recommended)
+### Install from npm (recommended)
+
+[![npm](https://img.shields.io/npm/v/slideck-html)](https://www.npmjs.com/package/slideck-html)
+
+**Option A: install once, use everywhere.** This gives you the `slideck` command.
 
 ```bash
-npm install -g slideck-html      # or run any command with: npx slideck-html <command>
-slideck init my-deck && cd my-deck
-slideck build                    # → dist/deck.html
-slideck pdf                      # → dist/deck.pdf, one slide per page
-slideck pptx                     # → dist/deck.pptx, editable shapes
+npm install -g slideck-html
+slideck --version
 ```
+
+**Option B: no install.** Run the latest version on demand with `npx`:
+
+```bash
+npx slideck-html init my-deck
+cd my-deck
+npx slideck-html build
+```
+
+**Option C: per project.** Pin the version in your project's `package.json`:
+
+```bash
+npm install --save-dev slideck-html
+npx slideck build                # or add "slides": "slideck build && slideck pdf" to your scripts
+```
+
+The package has no dependencies; everything runs on Node's standard library. Update with `npm update -g slideck-html` (or `npm install -g slideck-html@latest`), and remove with `npm uninstall -g slideck-html`.
+
+**Your first deck:**
+
+```bash
+slideck init my-deck && cd my-deck   # deck.json + slides/ + .gitignore
+slideck list                         # pick a design and theme, set them in deck.json
+slideck build                        # → dist/deck.html (one self-contained file)
+slideck check                        # overflow + visual check
+slideck pdf                          # → dist/deck.pdf, one slide per page
+slideck pptx                         # → dist/deck.pptx, editable in PowerPoint
+```
+
+Windows PowerShell: if `slideck` is blocked by the script policy, use `slideck.cmd` or `npx slideck-html …`.
 
 | Command | Does |
 |---|---|
@@ -116,6 +147,8 @@ node /path/to/slideck-html/import.js talk.pptx   # .pptx → my-deck/slides/
 ## Use as a Claude Code plugin
 
 slideck-html ships as a plugin (`.claude-plugin/`) holding one skill, `slideck-html`. Once it's installed, ask for slides in plain words, e.g. *"make a 10-slide deck about our Q3 results, consulting design, slate-rust theme, and export a PDF"*. The agent loads the skill, writes `deck.json` + `slides/` in **your current project folder**, and runs the tools from the plugin folder. Your deck never goes into the plugin folder, so plugin updates can't overwrite it.
+
+Tip: also running `npm install -g slideck-html` lets the agent use the short `slideck <command>` form. Without it, the agent calls the tools from the plugin folder; both work.
 
 ### Option 1: plugin marketplace (recommended, updates with the repo)
 
