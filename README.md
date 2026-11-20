@@ -6,6 +6,20 @@ Stage fixed **1920×1080**, scaled to viewport. Four dimensions separated: **des
 
 Output is one self-contained `.html` with fonts inlined base64 — works offline, opens by double-click, prints one slide per page. A built-in **theme switcher** (top-right) swaps the palette live without rebuilding, and per-slide **speaker notes** (`data-notes`) print as their own pages in the PDF.
 
+```bash
+npm install -g slideck-html     # then: slideck init my-deck
+```
+
+## What's new in 2.1
+
+- **Concept diagrams:** `<diagram type="venn|matrix|cycle|funnel|pyramid|scale">`, drawn as SVG at build time and coloured by the theme.
+- **Icons:** 46 built-in line icons, `<icon name="target">` or `<icon name="shield" badge>`.
+- **Layout blocks** that work in every design: numbered or icon rows (`.rows`), highlight one item (`.is-key`), before/after bands, hero number + list, callouts, labelled boxes, chips, source lines.
+- **New layout** `content-aside`: content on the left, a dark panel for the decision on the right.
+- **New design** `lineart`: blueprint line art with outline boxes, hairline dividers and one accent highlight per slide.
+
+See them all in `examples/components/` and the recipes in [docs/slide-craft.md](docs/slide-craft.md). Upgrade with `npm install -g slideck-html@latest`.
+
 ## Preview
 
 Same slides and theme, seventeen designs:
@@ -312,7 +326,7 @@ cp templates/04-table-detail.html slides/03-progress.html
 - Tables max 7 rows; split overflow into a continuation slide.
 - `data-notes="..."` on a `<section class="slide">` adds speaker notes. They're invisible on screen but print as their own page after that slide, so `node pdf.js` ships a presenter copy with notes.
 
-## PowerPoint-grade features (2.0)
+## PowerPoint-grade features
 
 Techniques borrowed from how PowerPoint (and the PPTX2HTML converter) work, kept zero-dependency. See `examples/features/` for a deck that uses all of them.
 
