@@ -68,7 +68,51 @@ Ask, or infer from the use:
 
 If content exceeds the mode, **split the slide; never shrink it**. `check` flags autofit below 0.75 as "too much".
 
-### 2.2 Make content concrete
+### 2.2 Points, not prose
+
+A slide is read in seconds, while the presenter talks or the reader scans. So it carries **points with a short explanation**, never descriptive narrative. Narrative (background, how it happened, why it matters in full sentences) belongs in speaker `notes`, or in a document.
+
+**The unit of content is point + support:**
+- **Point:** 2–6 words, bold or an `<h3>`, stating the claim or the fact: **Biaya turun 18%**, **Onboarding jadi 2 hari**.
+- **Support:** one line, at most 15 words, giving the evidence, the cause or the consequence: `Rp 4,2 M → Rp 3,4 M setelah otomasi invoice (Q3)`.
+- **Marker** (optional): a number, an icon or a `.kpi-num` that lets the eye find the point.
+
+Hard limits, checked by `slideck check`:
+- a text block (`<p>`, `<li>`, card text) is at most **25 words**, and has **one sentence** (a short fragment is better);
+- the body holds at most **90 words**; speaker-led decks aim for ≤ 30 (§2.1);
+- no paragraph of 2+ sentences anywhere on a content slide.
+
+**Turn narrative into points:**
+
+| ❌ Narrative | ✅ Point + support |
+|---|---|
+| "Pada kuartal ini tim kami berhasil meningkatkan efisiensi proses penagihan secara signifikan dengan menerapkan sistem otomasi baru, sehingga waktu yang dibutuhkan menjadi jauh lebih singkat." | **Penagihan 3× lebih cepat**: 6 hari → 2 hari setelah otomasi invoice |
+| "Salah satu tantangan utama yang kami hadapi adalah keterbatasan sumber daya manusia, terutama di bagian gudang, yang menyebabkan keterlambatan pengiriman." | **Gudang kurang 4 orang**: 12% pesanan terlambat > 2 hari |
+| "Penelitian ini menggunakan pendekatan kuantitatif dengan menyebarkan kuesioner kepada responden yang merupakan pengguna aktif aplikasi." | **Kuantitatif, survei**: 214 pengguna aktif, skala Likert 1–5 |
+
+How to rewrite:
+1. Find the **claim** in the sentence (usually the verb + result) and make it the point.
+2. Keep **one piece of evidence** (number, comparison, example) as the support.
+3. Cut the rest:
+   - connectives: "selain itu", "oleh karena itu", "hal ini";
+   - hedges: "cukup", "secara signifikan" without a number;
+   - setup: "Pada slide ini…", "Salah satu…", "Adapun…".
+4. Move the story (context, history, nuance) to `notes`.
+
+**Where a full sentence is right.** Some text is meant to be read as a sentence. It is exempt from the limits above, as long as there is **one per slide** and it stands out from the points:
+
+| Use | Markup | Example |
+|---|---|---|
+| conclusion / so-what | `<ph name="takeaway"><b>Kesimpulan:</b> …</ph>` | *Kesimpulan:* otomasi menghemat Rp 800 jt/tahun, jadi rollout ke 3 cabang lain layak dimulai Q1. |
+| quote / testimonial | `.quote` (on a `title-only` or `section` slide), `<blockquote>` | "Sejak pakai Kasira, tutup kasir dari 40 menit jadi 5 menit." (Rina, pemilik kafe) |
+| highlighted statement, key principle, warning | `.callout` (`.callout.warn`) | *Perhatian:* data Q4 belum diaudit; angka bisa berubah ±3%. |
+| a deliberate long sentence anywhere else (thesis statement, research question, mission) | `data-prose` on the element: `<p data-prose>` | Bagaimana pengaruh kemudahan penggunaan terhadap niat UMKM memakai aplikasi kasir? |
+
+Even then, keep it to one strong sentence of about 15–35 words. A long sentence works because it is the only one, surrounded by points. Two highlighted paragraphs on one slide are narrative again.
+
+**Density comes from more points and bigger visuals, never longer sentences.** When a slide looks empty (§2.4), add another point, a number, a comparison or a chart. Never add a descriptive paragraph.
+
+### 2.3 Make content concrete
 - **Numbers beat adjectives:** "grew 18% (from $3.6M to $4.2M)", not "grew strongly". Always give the unit, the period and a comparison (vs last period, target or benchmark).
 - **Name the source** of any external number in `.small` text under the chart or table: `Source: BPS 2025, n = 1,204`.
 - **Bullets are parallel:** all start the same way (all verbs, or all nouns), each ≤ 2 lines, nested at most 2 levels. Use bold for the key word, not whole sentences.
@@ -78,7 +122,44 @@ If content exceeds the mode, **split the slide; never shrink it**. `check` flags
 - **Speaker notes** (`notes="…"`): what you'd *say*. That means the story, transitions and extra detail, about 80–200 words for speaker-led decks. Write spoken language, not slide text.
 - **Never invent facts.** If the user gave no data, use obviously marked placeholders (`[angka]`, `TBD`) and tell the user which slides need real figures.
 
-### 2.3 Choose the visual from the content
+### 2.4 Density and white space: fill the area, never pad it
+
+Design practice separates two kinds of empty space:
+- **Active (designed) white space:** margins, the gaps between blocks, and the open field around one element that should dominate. It groups, separates and points the eye.
+- **Leftover space:** the empty lower half under a short list, a column that ends halfway while its neighbour runs to the bottom, a gap stranded between two blocks ("trapped" white space). Nobody chose it. It reads as an unfinished slide, and on a projected or shared deck it wastes the most valuable area.
+
+The body zone (between the title and the footer or takeaway) belongs to the content. When a slide has fewer elements, **scale each one up** until they own the zone. Don't leave them small at the top.
+
+**The rule:** on every content slide (`title-content`, `two-content`, `comparison`, `content-aside`, `content-caption`, `title-only` with a body), the content fills **at least 70% of its area's height**. It has no stranded gap, and both columns of a two-column slide end at about the same height. `slideck check` measures this and warns `isi "body" hanya mengisi N% tinggi areanya`. Treat that warning like overflow: fix it before you report.
+
+Fix leftover space in this order:
+1. **Add substance that proves the title**, in point form (§2.2), not prose. Use what you already have: the number behind a claim, a comparison (vs last period, target, competitor), the source line, one annotation on the chart, the consequence in a takeaway band. A card with a title and one vague line becomes point + number + one line of evidence.
+2. **Make the visual bigger.** Set the chart, diagram or Mermaid `height` to the area (≈600 full width, ≈560 in a column). Use a `.hero` big number instead of a small KPI. Put an image straight in the placeholder so it fits the remaining space.
+3. **Pick a richer form** (§2.5), with structure that spans the area:
+   - three bullets → `.rows` with a marker, a heading and one line each;
+   - two short lists → `comparison` or `.bands`;
+   - numbers plus their reasons → `.hero` or `content-aside`.
+4. **Stretch the block** with `.fill` (`<div class="grid3 fill">`, `<div class="rows fill">`): cards or rows grow to equal height with their content centred. Use it when the content is already around 60–70% and only needs to reach the bottom. On a thin slide it only produces hollow cards.
+5. **Merge or change the slide.** Two thin slides on one idea become one full slide. A single point becomes a deliberate *open* slide: `section`, a big-number dark slide, or a `.quote`. There the empty field is designed, and the one element is very large.
+
+**Never pad:**
+- no filler sentences ("Hal ini penting untuk diperhatikan");
+- no repeating the title in the body;
+- no decorative icons or stock images;
+- no splitting one point into three bullets;
+- no blowing up the font size of thin text.
+
+Density also has an upper limit (§2.1: words per slide, max 7 table rows, autofit ≥ 0.75). The target is a slide that is **full but readable at a glance**.
+
+| Slide | Expected fill | Empty space that is right |
+|---|---|---|
+| cover, section, closing | low: one block, very large | open field around the title |
+| big number / quote (dark) | one element at 160–240 px | open field around it |
+| KPI cards, cards, rows | ≥ 70%, cards equal height | gaps between cards |
+| chart / table / diagram | ≥ 80%; visual sized to the area | margin around the visual |
+| two-content / comparison | both columns ≥ 70%, equal end height | the gutter between columns |
+
+### 2.5 Choose the visual from the content
 
 | Your content is… | Use | Not |
 |---|---|---|
@@ -123,7 +204,7 @@ The design supplies the polish. These rules make sure your content doesn't fight
 1. **Vary the rhythm.** Never use the same layout three times in a row. A good 10-slide flow: cover → KPI cards → chart → comparison → section → cards → timeline → table → big stat → closing.
 2. **Use dark slides as punctuation:** the cover, section breaks, and one big-stat or quote moment. Don't use them for routine content. One dark slide every 4–6 slides is plenty.
 3. **Section dividers** (`section` layout) every 4–6 slides in decks over 10 slides. They give the audience a breath and a map.
-4. **Leave white space.** A half-empty slide with one strong element looks premium; a full slide looks like a document. Don't add elements to fill space.
+4. **Designed white space only** (§2.4). Margins, gaps between blocks and the open field around one big element are white space. A blank lower half under three small cards is not; it is unfinished. A full slide is not a crowded slide: fill the area with *larger, richer* content, not with *more* items.
 5. **One focal point.** Decide where the eye lands first: the big number, the highlighted card, or the chart's key bar. Everything else is quieter (`.small`, `--mut`).
 6. **Keep grids honest:** 2, 3 or 4 equal cards. Every card in a row has the same structure (number + label, or title + 2 lines). Never 5+ text cards in a row.
 7. **Align to the design.** Don't add inline `style` for margins, colours or sizes; the design already set them. If something looks off, it's usually too much content, not too little styling.
@@ -185,6 +266,7 @@ Rules:
 
 ### What makes a deck look AI-made (avoid)
 - Every slide is title + 5 bullets.
+- Descriptive paragraphs on a slide ("Pada kuartal ini tim kami berhasil…"). Use a point + one support line; the story goes in notes.
 - Generic titles: "Introduction", "Overview", "Key Points", "Conclusion".
 - Six identical cards, each with an emoji and a three-word label.
 - Numbers without a unit, period or comparison; made-up precision ("87.3%") with no source.
@@ -455,6 +537,7 @@ A deck isn't done when it builds. It's done when you've **looked at it** and fix
    - a chart is too small or its insight isn't visible;
    - a card row is uneven;
    - a slide is empty because a placeholder was missing;
+   - leftover space: the content stops halfway down, one column is shorter than the other, or a gap is stranded between blocks (§2.4);
    - a takeaway repeats the title.
 4. Fix them (rewrite or split content first, layout second), rebuild, and look again.
 5. Do **at least 2 rounds**, until you can't find 3 problems worth fixing.
@@ -462,7 +545,7 @@ A deck isn't done when it builds. It's done when you've **looked at it** and fix
 ### Done gate: from tool output, never claimed
 Report "done" only when **the tool output shows it**:
 - `slideck build` prints no `x` line;
-- `slideck check` prints `Semua lolos.`;
+- `slideck check` prints `Semua lolos.`, with no `isi "…" hanya mengisi N%` (§2.4), `blok teks berbentuk narasi` or `isi N kata` (§2.2) warning on a content slide;
 - `slideck pdf` shows `halaman PDF` = slides + notes pages + tab/swap state pages, if a PDF was asked for;
 - for interactive slides, the `~` lines of `slideck check` match the steps and components you planned.
 

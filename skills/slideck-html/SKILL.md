@@ -33,7 +33,7 @@ Four things are kept separate. Pick each one independently:
 2. **Storyline first** (`slide-craft.md` §1): pick a structure, then write every slide title as a full-sentence takeaway and check that the titles alone tell the story. Make a slide plan: layout, kicker, title, proof, takeaway. For decks over 8 slides, show the plan to the user before building.
 3. **Create the deck:** `slideck init <folder>`. Fill in `deck.json`: `title`, `footer`, `output` (ends in `.html`), `design`, `theme`, `motion`. Use §2 to choose. Delete the sample slides.
 4. **Write the slides:** `slides/NN-name.html`, one per file. Use the recipes in `slide-craft.md` §4 and the syntax in §3 below. Put images in `<deck>/images/`; the build embeds them.
-5. **Build and check:** `slideck build` (fix every `x` line), then `slideck check` (with screenshots). Autofit below 0.75 means too much content: split the slide.
+5. **Build and check:** `slideck build` (fix every `x` line), then `slideck check` (with screenshots). Autofit below 0.75 means too much content: split the slide. `blok teks berbentuk narasi` / `isi N kata` means prose: rewrite as points (`slide-craft.md` §2.2). `isi "body" hanya mengisi N%` means too little: the slide has leftover empty space. Fix it per `slide-craft.md` §2.4 (more substance, a bigger visual, `.fill`, or a layout made for little content) until no content slide warns.
 6. **Look, then polish** (`slide-craft.md` §5): open `<deck>/.slideck-check/current/*.png`, write down the 3 worst problems, fix them, rebuild and look again. Do at least 2 rounds. If a visual change was intended, accept it with `slideck check --update`.
 7. **Export:** `slideck pdf` and/or `slideck pptx`. The PDF line must show `halaman PDF` (pages) = slides + notes pages.
 8. **Report:** give the user the output paths (`dist/<output>.html|.pdf|.pptx`). Mention any slide you split, and anything you invented (e.g. placeholder numbers).
@@ -152,6 +152,7 @@ Revenue: 41 | 22 | 9
 - `.chips` (`.chips.cols2`): many short items as pills, one may be `.is-key`.
 - `.source`: small source line under a chart or table (`Sumber: …`).
 - `.push` on the last element of a `.card`: pins it to the card bottom so tags line up across a row.
+- `.fill` on the last block of a placeholder (`.grid2/3/4`, `.rows`, `.bands`, `.tiers`, `.people`, `.logos`): it grows to the remaining height; cards and rows stretch to equal height with their content centred. Use it only when the content is already substantial (60–70% of the area), never to hide a thin slide.
 - `.people` > `.person`: team members in one row (`.people.cols3` / `.cols4` to wrap 5–8). Each: `<img src="foto.jpg" alt="Name">` or `<span class="avatar">AR</span>`, then `<h3>Name</h3><span class="role">Role</span><p class="small">…</p>`.
 - `.tiers` > `.card`: packages side by side, the recommended one `.is-key`. Inside: `.tag`, `<span class="price">Rp 4 jt <small>/ bulan</small></span>`, `ul.bul`.
 - `table.t` competition cells: `td.yes` (✓), `td.no` (—); `.is-key` on the `th` and `td`s of our column highlights it.
@@ -333,6 +334,9 @@ Tool messages are in Indonesian. Line prefixes: `x` = error (must fix), `!` = wa
 | `N masalah.` | N problems; exit code 1 | fix the `x` lines above it |
 | `autofit slide 0.81` / `autofit "body" 0.7` | content was shrunk to fit | below 0.75: split the slide or cut text |
 | `masih meluber walau autofit …` / `konten meluber dari slide` | still overflows at minimum scale | split the slide |
+| `N blok teks berbentuk narasi (terpanjang 34 kata)` | descriptive sentences instead of points | rewrite each as a bold point + one line ≤ 15 words; move the story to `notes`. If the sentence is deliberate (conclusion, quote, highlight), put it in `takeaway`, `.quote`, `.callout` or mark it `data-prose` (`slide-craft.md` §2.2) |
+| `isi 120 kata — terlalu banyak teks` | the body is over 90 words | cut to points, move detail to `notes`, or split the slide |
+| `isi "body" hanya mengisi 55% tinggi areanya` | the content leaves the rest of the area empty (leftover space) | add substance, enlarge the visual, `.fill`, merge with another slide, or switch layout (`slide-craft.md` §2.4) |
 | `connector: target tidak ketemu` | a connector's `#id` does not exist | fix the `id` / `from` / `to` |
 | `tag komponen tidak dirender` / `mermaid tidak dirender` | an unknown tag or a syntax error | check the component syntax |
 | `gambar gagal dimuat` | broken image path | fix `src` (relative to the deck, or a `data:` URI) |
@@ -366,6 +370,8 @@ Tool messages are in Indonesian. Line prefixes: `x` = error (must fix), `!` = wa
   - Never add features that need a second file, a server or a CDN.
 
 - Edit only `<deck>/slides/*`, `<deck>/deck.json`, and the deck's own `designs/` / `themes/`. **Never edit framework files** (`template.html`, `core.css`, `*.js`, `bin/`, `lib/`, `layouts/`, `designs/`, `themes/`, `motions/`, `templates/`, `assets/`) or `dist/`.
+- **Points, not prose:** every item is a bold point (2–6 words) plus one support line (≤ 15 words: number, cause or consequence). There are no descriptive paragraphs, a text block is ≤ 25 words and one sentence, and the body is ≤ 90 words. Background and story go to `notes` (`slide-craft.md` §2.2). A full sentence is fine, once per slide, as a conclusion (`takeaway`), a quote (`.quote` / `<blockquote>`), a highlighted statement (`.callout`), or another deliberate sentence marked `data-prose` (research question, thesis, mission). These are not counted.
+- **Every content slide is full:** the content fills at least 70% of its area's height, with no stranded gap in the middle or at the bottom. Empty space is allowed only where it is designed: margins, the gaps between blocks, and the open space around one element on cover, section, big-number and quote slides. Never fill with filler text, decorative icons or repeated points (`slide-craft.md` §2.4).
 - Tables: at most 7 rows per slide. Split the rest into a continuation slide.
 - Charts: size `width` / `height` to the placeholder.
 - Text on `--navy` uses `var(--on-navy)` / `var(--on-navy-mut)`. Body text on light surfaces uses `var(--ink)`. Never hardcode a hex colour.

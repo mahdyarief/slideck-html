@@ -68,6 +68,25 @@ const PROBE_JS = "<script>" + OUT_SNIPPET + `
     if(sl.querySelector('pre.mermaid')) r.issues.push('mermaid tidak dirender');
     if(sl.querySelector('chart,shape,connector,ph,slide')) r.issues.push('tag komponen tidak dirender');
     sl.querySelectorAll('img').forEach(im=>{ if(im.complete&&!im.naturalWidth) r.issues.push('gambar gagal dimuat: '+(im.getAttribute('src')||'').slice(0,60)) });
+    /* poin, bukan narasi (docs/slide-craft.md §2.2): blok teks > 25 kata atau 2+ kalimat > 12 kata, total isi > 90 kata.\n       Kalimat panjang yang disengaja dikecualikan: takeaway (kesimpulan), .quote / blockquote, .callout, dan [data-prose] (kalimat sorotan). */
+    if(!r.copyOf&&['title','section'].indexOf(r.layout)<0){
+      const skip='.quote,blockquote,.callout,[data-prose],.refs,table,.source,pre,code,svg,.ph-title,.ph-kicker,.ph-subtitle,.ph-takeaway,.slide-notes';
+      const own=e=>{let t='';e.childNodes.forEach(n=>{if(n.nodeType===3)t+=n.textContent;else if(n.nodeType===1&&n.tagName!=='UL'&&n.tagName!=='OL')t+=' '+n.textContent});return t.trim()};
+      const words=t=>t.split(/\\s+/).filter(w=>/[\\p{L}\\d]/u.test(w)).length;
+      let tot=0,longest=0,prose=0;
+      sl.querySelectorAll('.ph p,.ph li,.ph .card>div:not(:has(*))').forEach(e=>{if(e.closest(skip))return;const t=own(e),w=words(t);tot+=w;longest=Math.max(longest,w);
+        if(w>25||(w>12&&(t.match(/[.!?](\\s|$)/g)||[]).length>=2))prose++});
+      if(prose)r.warn.push(prose+' blok teks berbentuk narasi (terpanjang '+longest+' kata) — ubah jadi poin tebal + 1 baris penjelasan ≤ 15 kata, sisanya ke notes (slide-craft §2.2)');
+      if(tot>90)r.warn.push('isi '+tot+' kata — terlalu banyak teks; pindahkan penjelasan ke notes atau bagi slide (slide-craft §2.1)');
+    }
+    /* kepadatan (docs/slide-craft.md §2.4): isi area konten yang tingginya terisi < 70% = ruang kosong sisa, bukan ruang yang dirancang */
+    if(!r.copyOf&&!r.fail&&['title','section','blank','picture-caption'].indexOf(r.layout)<0){
+      sl.querySelectorAll('.ph[data-ph="body"],.ph[data-ph="left"],.ph[data-ph="right"],.ph[data-ph="aside"]').forEach(ph=>{
+        const P=ph.getBoundingClientRect(),cs=getComputedStyle(ph),top=P.top+parseFloat(cs.paddingTop),bot=P.bottom-parseFloat(cs.paddingBottom);if(bot-top<160)return;
+        let t=1e9,b=-1e9;for(const c of ph.children){const R=c.getBoundingClientRect();if(!R.height||getComputedStyle(c).position==='absolute')continue;t=Math.min(t,R.top);b=Math.max(b,R.bottom)}
+        if(b<0)return;const f=Math.min(1,(b-t)/(bot-top));
+        if(f<0.7)r.warn.push('isi "'+ph.dataset.ph+'" hanya mengisi '+Math.round(f*100)+'% tinggi areanya — tambah substansi, besarkan visual (class fill), atau pilih layout yang sesuai (slide-craft §2.4)')});
+    }
     out.push(r);
   });
   __slideckOut({slides:out,hasFit:!!window.slideckFit});

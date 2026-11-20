@@ -27,7 +27,7 @@ node pdf.js     # dist/<output>.html → dist/<output>.pdf, one slide per page
   - `<chart type="bar|hbar|line|area|pie|doughnut">` with `labels: …` / `Series: …` lines;
   - `<diagram type="venn|matrix|cycle|funnel|pyramid|scale|nested|positioning|gantt">` with one `Title: description` line per item (`key: N` highlights one);
   - `<icon name="target" [badge] [tone="accent2|navy|soft"]>` line icons (names in SKILL.md);
-  - layout blocks in any design: `.rows`, `.is-key`, `.bands`, `.hero`, `.with-aside`, `.callout`, `.boxed`, `.chips`, `.source`, `.people`, `.tiers`, `td.yes/.no`, `ol.refs`, `.logos` (SKILL.md §3);
+  - layout blocks in any design: `.rows`, `.is-key`, `.bands`, `.hero`, `.with-aside`, `.callout`, `.boxed`, `.chips`, `.source`, `.people`, `.tiers`, `td.yes/.no`, `ol.refs`, `.logos`, `.fill` (SKILL.md §3);
   - `<shape type="…">text</shape>` and `<connector from="#a" to="#b">`;
   - `<pre class="mermaid">flowchart LR …</pre>`.
 - PowerPoint: `node import.js file.pptx --root <dir>` (pptx → slides), `node pptx.js` (built deck → editable .pptx).
