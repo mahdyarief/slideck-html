@@ -1,7 +1,7 @@
 {
   "name": "slideck-html",
   "description": "Stable single-file HTML slide decks with PowerPoint-grade output: frozen 1920x1080 template, 19 designs, 10 themes with embedded fonts, 5 motions, 10 placeholder layouts + 38 templates, autofit, build-time SVG charts, concept diagrams, icons, shapes and connectors, Mermaid flowcharts, PPTX import/export, HTML to PDF, and a visual regression check. Zero dependency.",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "keywords": [
     "slides",
     "deck",
