@@ -100,6 +100,7 @@ else extra += "\n" + motionCss;
    Bisa dipaksa lewat designs/<nama>/design.json: "canvas": "dark" | "light". */
 const designMeta = readJson(path.join(designDir, "design.json"), "design.json") || {};
 const darkCanvas = designMeta.canvas ? designMeta.canvas === "dark" : /\.slide\s*\{[^}]*background:\s*var\(--navy\)/.test(base);
+const lightCover = designMeta.cover === "light";
 const coreCss = readIf(path.join(DIR, "core.css")) || "";
 const components = "/* ==== CORE ==== */\n" + coreCss + "\n/* ==== DESIGN: " + designName + " ==== */\n" + base + extra;
 
@@ -387,6 +388,9 @@ const slides = files.map((f, i) => {
   } catch (e) { fail(f + ": " + e.message); }
   s = renderComponents(s, f, leftovers);
   s = inlineAssets(s, f, leftovers);
+  /* design bersampul terang (design.json "cover": "light"): slide layout title jadi slide terang biasa,
+     supaya tombol, .cmd, dan teks memakai warna untuk latar terang (bukan varian .dark) */
+  if (lightCover && /\blay-title\b/.test(s)) s = s.replace(/(<section\b[^>]*class=")([^"]*)"([^>]*?)\sstyle="background:var\(--cover\);color:var\(--on-navy\)"/, (m, a, b, c) => a + b.replace(/\s*\bdark\b/, "").trim() + '"' + c);
   if (darkCanvas) s = s.replace(/(<section\b[^>]*class=")([^"]*\bslide\b[^"]*)"/, (m, a, b) => (/\bon-dark\b/.test(b) ? m : a + b + ' on-dark"'));
   if (!/<section\b[^>]*class="[^"]*\bslide\b/.test(s)) leftovers.push(f + ': tidak ada <section class="slide"> atau <slide layout="...">');
   for (const tb of s.match(/<table\b(?![^>]*\bpp-)[\s\S]*?<\/table>/g) || []) {

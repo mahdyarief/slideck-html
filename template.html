@@ -20,7 +20,11 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#0b1116}
 /* ==== TOKENS + KOMPONEN (frozen) ==== */
 {{COMPONENTS}}
 /* ==== CHROME (di luar stage) ==== */
-.deck-controls{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:1000;color:#fff;font-size:17px;background:rgba(0,0,0,.5);padding:10px 22px;border-radius:99px}
+/* petunjuk navigasi ringkas: pil kecil samar "6 / 19"; petunjuk tombol muncul saat hover/fokus atau beberapa detik pertama */
+.deck-controls{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:1000;color:#fff;font-size:13px;line-height:1;background:rgba(0,0,0,.45);padding:7px 12px;border-radius:99px;opacity:.28;white-space:nowrap;transition:opacity .3s,padding .3s;cursor:default}
+.deck-controls .hint{display:inline-block;max-width:0;overflow:hidden;vertical-align:bottom;transition:max-width .4s ease}
+.deck-controls:hover,.deck-controls:focus-within,.deck-controls.intro,body.editing .deck-controls{opacity:1;padding:7px 16px}
+.deck-controls:hover .hint,.deck-controls.intro .hint{max-width:640px}
 .deck-controls #editflag{display:none;color:#5EA8A7;font-weight:800}
 body.editing .slide{outline:3px dashed var(--teal);outline-offset:-10px}
 .progress{position:fixed;left:0;bottom:0;height:5px;width:100%;background:rgba(255,255,255,.15);z-index:1001}
@@ -55,7 +59,8 @@ html.clean .deck-controls,html.clean .progress,html.clean .deck-theme-switcher{d
 {{SLIDES}}
 </div></div>
 <div class="progress"><i id="bar"></i></div>
-<div class="deck-controls"><span id="pg" aria-live="polite">1 / 1</span> · {{HINT}} <span id="editflag">· EDIT ON</span></div>
+<div class="deck-controls intro" id="ctl"><span id="pg" aria-live="polite">1 / 1</span><span class="hint">&nbsp;· {{HINT}}</span> <span id="editflag">· EDIT ON</span></div>
+<script>setTimeout(()=>document.getElementById('ctl').classList.remove('intro'),3500)</script>
 <script>
 /* ==== NAV (frozen) ==== */
 const R=document.documentElement;if(/[?&]clean\b/.test(location.search))R.classList.add('clean');let scrollMode=false;

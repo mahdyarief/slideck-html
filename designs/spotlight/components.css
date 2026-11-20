@@ -163,3 +163,7 @@ table.t td.n{text-align:right;font-weight:800;color:var(--ink);white-space:nowra
 /* timeline mendatar (dulu disediakan gaya inline templat) */
 .timeline{display:flex;gap:28px;margin-top:44px}
 .timeline>.step{flex:1 1 0;min-width:0}
+/* cahaya bawah tidak boleh di bawah teks: beri ruang */
+.pad.lay-title,.pad.lay-section{padding-bottom:230px}
+/* footer terpusat: beri jarak antara teks footer dan nomor halaman */
+.foot{gap:28px}

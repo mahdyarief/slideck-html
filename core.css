@@ -314,3 +314,6 @@ pre.code .k{color:var(--on-navy);font-weight:700}pre.code .m{color:color-mix(in 
 .card:has(>.push){display:flex;flex-direction:column}
 .card>.push{margin-top:auto}
 
+
+/* tautan di slide mengikuti warna teks (bukan biru bawaan browser yang bisa tak terbaca di latar beraksen) */
+:where(.slide) a:where(:not(.btn):not(.cmd)){color:inherit;text-underline-offset:3px}

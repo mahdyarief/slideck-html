@@ -342,6 +342,9 @@ pre.code .k{color:var(--on-navy);font-weight:700}pre.code .m{color:color-mix(in 
 .card>.push{margin-top:auto}
 
 
+/* tautan di slide mengikuti warna teks (bukan biru bawaan browser yang bisa tak terbaca di latar beraksen) */
+:where(.slide) a:where(:not(.btn):not(.cmd)){color:inherit;text-underline-offset:3px}
+
 /* ==== DESIGN: keynote ==== */
 /* DESIGN keynote — stage: near-black canvas, oversized display type, inverted lower-third band, section rule, no panels. */
 /* Warna HANYA lewat token theme (lihat kontrak di designs/default/components.css). Tidak ada hex mentah. */
@@ -473,7 +476,11 @@ table.t td.n{text-align:right;font-weight:800;color:var(--on-navy);white-space:n
 
 [data-theme="terracotta"] .slide.dark :is(.kicker,.idx:not(.dot)),[data-theme="terracotta"] .slide[style*="var(--navy)"] :is(.kicker,.idx:not(.dot)),[data-theme="terracotta"] .slide .is-key :is(.idx:not(.dot),:not(.ico-badge)>.ico){color:var(--accent-on-dark)}
 /* ==== CHROME (di luar stage) ==== */
-.deck-controls{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:1000;color:#fff;font-size:17px;background:rgba(0,0,0,.5);padding:10px 22px;border-radius:99px}
+/* petunjuk navigasi ringkas: pil kecil samar "6 / 19"; petunjuk tombol muncul saat hover/fokus atau beberapa detik pertama */
+.deck-controls{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:1000;color:#fff;font-size:13px;line-height:1;background:rgba(0,0,0,.45);padding:7px 12px;border-radius:99px;opacity:.28;white-space:nowrap;transition:opacity .3s,padding .3s;cursor:default}
+.deck-controls .hint{display:inline-block;max-width:0;overflow:hidden;vertical-align:bottom;transition:max-width .4s ease}
+.deck-controls:hover,.deck-controls:focus-within,.deck-controls.intro,body.editing .deck-controls{opacity:1;padding:7px 16px}
+.deck-controls:hover .hint,.deck-controls.intro .hint{max-width:640px}
 .deck-controls #editflag{display:none;color:#5EA8A7;font-weight:800}
 body.editing .slide{outline:3px dashed var(--teal);outline-offset:-10px}
 .progress{position:fixed;left:0;bottom:0;height:5px;width:100%;background:rgba(255,255,255,.15);z-index:1001}
@@ -685,7 +692,8 @@ html.clean .deck-controls,html.clean .progress,html.clean .deck-theme-switcher{d
 
 </div></div>
 <div class="progress"><i id="bar"></i></div>
-<div class="deck-controls"><span id="pg" aria-live="polite">1 / 1</span> · ← → / Space navigasi · E edit teks <span id="editflag">· EDIT ON</span></div>
+<div class="deck-controls intro" id="ctl"><span id="pg" aria-live="polite">1 / 1</span><span class="hint">&nbsp;· ← → / Space navigasi · E edit teks</span> <span id="editflag">· EDIT ON</span></div>
+<script>setTimeout(()=>document.getElementById('ctl').classList.remove('intro'),3500)</script>
 <script>
 /* ==== NAV (frozen) ==== */
 const R=document.documentElement;if(/[?&]clean\b/.test(location.search))R.classList.add('clean');let scrollMode=false;

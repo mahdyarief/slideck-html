@@ -67,13 +67,13 @@ table.t td.n{text-align:right;font-weight:800;color:var(--on-navy);white-space:n
 .pad>p[style*="var(--ink)"]{color:var(--on-navy)!important}
 
 /* ==== SIGNATURE ribbon: pita diagonal di sampul + section, label pita di kartu ==== */
-.slide:has(>.pad.lay-title)::before,.slide:has(>.pad.lay-section)::before{content:"";position:absolute;left:-200px;right:-200px;top:62%;height:150px;background:var(--teal);transform:rotate(-8deg);box-shadow:0 -26px 0 0 color-mix(in srgb,var(--teal) 35%,transparent),0 26px 0 0 color-mix(in srgb,var(--teal) 35%,transparent)}
-.pad.lay-title{align-content:start;padding-top:170px}
+.slide:has(>.pad.lay-title)::before,.slide:has(>.pad.lay-section)::before{content:"";position:absolute;left:auto;bottom:auto;right:-330px;top:150px;width:1100px;height:130px;background:var(--teal);transform:rotate(38deg);box-shadow:0 -24px 0 0 color-mix(in srgb,var(--teal) 35%,transparent),0 24px 0 0 color-mix(in srgb,var(--teal) 35%,transparent)}
+.pad.lay-title{align-content:center;padding-right:680px}
 .slide:has(>.pad.lay-title) .ph-title h1.title{font-size:128px;letter-spacing:-4px;line-height:.95}
 .lay-title .ph-subtitle{margin-top:40px;max-width:900px}
 .slide:has(>.pad.lay-title) .ph-subtitle .bul{color:var(--on-navy)}
 .lay-section .ph-subtitle{margin-top:24px;max-width:900px}
-.pad.lay-section{align-content:start;padding-top:190px}
+.pad.lay-section{padding-right:680px}
 /* kartu terang di kanvas gelap: teksnya warna gelap */
 .slide .card:not(.is-key) :is(.kpi-num,h3,b,strong){color:var(--ink)}
 .slide .card:not(.is-key) :is(.kpi-lab,.small,p){color:var(--mut)}

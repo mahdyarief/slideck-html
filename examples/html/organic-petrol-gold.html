@@ -342,6 +342,9 @@ pre.code .k{color:var(--on-navy);font-weight:700}pre.code .m{color:color-mix(in 
 .card>.push{margin-top:auto}
 
 
+/* tautan di slide mengikuti warna teks (bukan biru bawaan browser yang bisa tak terbaca di latar beraksen) */
+:where(.slide) a:where(:not(.btn):not(.cmd)){color:inherit;text-underline-offset:3px}
+
 /* ==== DESIGN: organic ==== */
 /* slideck-html components.css — FROZEN. Jangan edit per deck. Struktur + kontrak token. */
 /* TOKEN CONTRACT (wajib dipenuhi tiap theme, kalau tidak tema lain akan rusak):
@@ -438,7 +441,6 @@ table.t td.n{text-align:right;font-weight:800;color:var(--ink);white-space:nowra
 /* ==== SIGNATURE organic: lembut — gumpalan besar bergradasi, sudut sangat bulat, sampul terang dengan lengkung ==== */
 .slide:has(>.pad.lay-title){background:var(--surface)!important;color:var(--ink)!important}
 .slide:has(>.pad.lay-title)::before{width:1100px;height:1100px;top:-260px;right:-320px;background:var(--teal);opacity:.9;border-radius:62% 38% 46% 54%/52% 44% 56% 48%}
-.slide:has(>.pad.lay-title)::after{width:760px;height:760px;bottom:-420px;left:-200px;background:var(--mint);opacity:1}
 .pad.lay-title{padding-right:880px}
 .slide.dark:has(>.pad.lay-title) .ph-kicker .kicker{color:var(--teal-d);background:var(--mint);padding:10px 24px;border-radius:999px;display:inline-block}
 .lay-title .ph-kicker{justify-self:start}
@@ -447,13 +449,19 @@ table.t td.n{text-align:right;font-weight:800;color:var(--ink);white-space:nowra
 .slide:has(>.pad.lay-title) .ph-subtitle .bul{color:var(--mut);font-size:30px}
 .slide:has(>.pad.lay-title) .foot{color:var(--mut)}
 /* section: gumpalan di tengah, judul di atasnya */
-.slide:has(>.pad.lay-section)::before{width:1300px;height:900px;top:90px;right:auto;left:310px;background:var(--mint);opacity:1;border-radius:48% 52% 55% 45%/55% 46% 54% 45%}
-.pad.lay-section{justify-items:center;text-align:center}
+.slide:has(>.pad.lay-section)::before{width:900px;height:900px;top:90px;right:-240px;left:auto;background:var(--mint);opacity:1;border-radius:48% 52% 55% 45%/55% 46% 54% 45%}
+.pad.lay-section{padding-right:760px}
 .lay-section .ph-title h1.title{font-size:96px;letter-spacing:-2.5px}
-.lay-section .rule{margin:26px auto 0;width:120px;height:14px;border-radius:999px}
+.lay-section .rule{margin:26px 0 0;width:120px;height:14px;border-radius:999px}
 /* kartu & penutup: sangat bulat */
 .card{border-radius:44px;border:0;background:var(--grey)}
 .ph-takeaway>*,.ph-takeaway .takeaway{border-radius:28px}
+
+
+/* gumpalan tidak boleh di bawah teks: gumpalan kiri-bawah (di bawah footer) dibuang, kanan-atas diperkecil, judul diberi batas */
+.slide::after{display:none}
+.slide:not(:has(>.pad.lay-title)):not(:has(>.pad.lay-section))::before{width:460px;height:460px;top:-270px;right:-210px}
+h1.title{max-width:1340px}
 
 :root{--on-teal:var(--navy);--surface:#fff;--navy:#143B38;--on-navy:#F4F1EA;--on-navy-mut:#9DB5AF;--teal:#BD7A16;--teal-d:#8F5D16;--grey:#EEF1EF;--mut:#5C6B66;--ink:#143B38;--mint:#FBF1DF;--accent-line:#EAD9B8;--tag-bg:#F7E8CE;--line:#DCE4E1;--accent2:#B5432F;--on-accent2:#FFFFFF;--cover:#143B38;--font-d:'Public Sans',ui-sans-serif,system-ui,'Segoe UI',Arial,sans-serif;--font-s:Gelasio,Georgia,'Times New Roman',serif;--ease:cubic-bezier(.16,1,.3,1)}
 
@@ -497,7 +505,11 @@ table.t td.n{text-align:right;font-weight:800;color:var(--ink);white-space:nowra
 
 [data-theme="terracotta"] .slide.dark :is(.kicker,.idx:not(.dot)),[data-theme="terracotta"] .slide[style*="var(--navy)"] :is(.kicker,.idx:not(.dot)),[data-theme="terracotta"] .slide .is-key :is(.idx:not(.dot),:not(.ico-badge)>.ico){color:var(--accent-on-dark)}
 /* ==== CHROME (di luar stage) ==== */
-.deck-controls{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:1000;color:#fff;font-size:17px;background:rgba(0,0,0,.5);padding:10px 22px;border-radius:99px}
+/* petunjuk navigasi ringkas: pil kecil samar "6 / 19"; petunjuk tombol muncul saat hover/fokus atau beberapa detik pertama */
+.deck-controls{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:1000;color:#fff;font-size:13px;line-height:1;background:rgba(0,0,0,.45);padding:7px 12px;border-radius:99px;opacity:.28;white-space:nowrap;transition:opacity .3s,padding .3s;cursor:default}
+.deck-controls .hint{display:inline-block;max-width:0;overflow:hidden;vertical-align:bottom;transition:max-width .4s ease}
+.deck-controls:hover,.deck-controls:focus-within,.deck-controls.intro,body.editing .deck-controls{opacity:1;padding:7px 16px}
+.deck-controls:hover .hint,.deck-controls.intro .hint{max-width:640px}
 .deck-controls #editflag{display:none;color:#5EA8A7;font-weight:800}
 body.editing .slide{outline:3px dashed var(--teal);outline-offset:-10px}
 .progress{position:fixed;left:0;bottom:0;height:5px;width:100%;background:rgba(255,255,255,.15);z-index:1001}
@@ -530,7 +542,7 @@ html.clean .deck-controls,html.clean .progress,html.clean .deck-theme-switcher{d
 <body>
 <div class="deck-viewport"><div class="deck-stage" id="stage">
 <!-- 01-cover.html -->
-<section aria-roledescription="slide" aria-label="Slide 1 dari 12" class="slide dark" data-layout="title" style="background:var(--cover);color:var(--on-navy)">
+<section aria-roledescription="slide" aria-label="Slide 1 dari 12" class="slide" data-layout="title">
 <div class="pad lay lay-title">
 <div class="ph ph-kicker" data-ph="kicker"><p class="kicker reveal">EXAMPLE DECK · 2026</p></div>
 <div class="ph ph-title" data-ph="title"><h1 class="title serif reveal d1">Judul Utama<br>Baris Kedua</h1><div class="rule reveal d2"></div></div>
@@ -697,7 +709,7 @@ html.clean .deck-controls,html.clean .progress,html.clean .deck-theme-switcher{d
 </section>
 
 <!-- 12-closing.html -->
-<section aria-roledescription="slide" aria-label="Slide 12 dari 12" class="slide dark" data-layout="title" style="background:var(--cover);color:var(--on-navy)">
+<section aria-roledescription="slide" aria-label="Slide 12 dari 12" class="slide" data-layout="title">
 <div class="pad lay lay-title">
 <div class="ph ph-kicker" data-ph="kicker"><p class="kicker reveal">PENUTUP</p></div>
 <div class="ph ph-title" data-ph="title"><h1 class="title serif reveal d1">Terima kasih</h1><div class="rule reveal d2"></div></div>
@@ -709,7 +721,8 @@ html.clean .deck-controls,html.clean .progress,html.clean .deck-theme-switcher{d
 
 </div></div>
 <div class="progress"><i id="bar"></i></div>
-<div class="deck-controls"><span id="pg" aria-live="polite">1 / 1</span> · ← → / Space navigasi · E edit teks <span id="editflag">· EDIT ON</span></div>
+<div class="deck-controls intro" id="ctl"><span id="pg" aria-live="polite">1 / 1</span><span class="hint">&nbsp;· ← → / Space navigasi · E edit teks</span> <span id="editflag">· EDIT ON</span></div>
+<script>setTimeout(()=>document.getElementById('ctl').classList.remove('intro'),3500)</script>
 <script>
 /* ==== NAV (frozen) ==== */
 const R=document.documentElement;if(/[?&]clean\b/.test(location.search))R.classList.add('clean');let scrollMode=false;

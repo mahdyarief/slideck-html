@@ -78,3 +78,7 @@ table.t td.n{text-align:right;font-weight:800;color:var(--ink);white-space:nowra
 /* kartu: sudut kanan atas terpotong */
 .card{clip-path:polygon(0 0,calc(100% - 44px) 0,100% 44px,100% 100%,0 100%);border-radius:0}
 .ico-badge,.idx.dot{border-radius:0;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+
+
+/* cincin bawah tidak boleh di bawah teks */
+.pad.lay-title{padding-bottom:250px}

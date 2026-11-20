@@ -30,9 +30,13 @@ const browser = findBrowser();
 if (!browser) { console.error("x Chrome/Edge/Chromium tidak ditemukan (set CHROME_PATH)"); process.exit(1); }
 function shot(html, out, slide, w, h) {
   if (FAST && fs.existsSync(out)) return;
-  // salinan tanpa animasi: tangkapan layar headless diambil sebelum reveal selesai, angka/teks tampak pudar
+  // salinan untuk tangkapan layar:
+  // - scroll mati: di lebar 640px deck masuk mode gulir ponsel, slide #N tidak tampil (thumbnail kosong di CI)
+  // - tanpa animasi: tangkapan layar headless diambil sebelum reveal selesai, angka/teks tampak pudar
   const still = path.join(path.dirname(html), ".thumb-" + path.basename(html));
-  fs.writeFileSync(still, fs.readFileSync(html, "utf8").replace("</body>", "<style>*,*::before,*::after{transition:none!important;animation:none!important}</style></body>"));
+  fs.writeFileSync(still, fs.readFileSync(html, "utf8")
+    .replace(/(<html[^>]*?)data-scroll="[^"]*"/, '$1data-scroll="off"')
+    .replace("</body>", "<style>*,*::before,*::after{transition:none!important;animation:none!important}</style></body>"));
   try {
     runHeadless(browser, ["--screenshot=" + out, "--window-size=" + w + "," + h, "--force-device-scale-factor=1"], fileUrl(still) + "?clean#" + slide, { budget: 4000 });
   } finally { fs.rmSync(still, { force: true }); }

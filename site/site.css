@@ -16,3 +16,7 @@
 .facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;margin-top:40px}
 .ph-aside p+p{margin-top:12px}
 .lay-title .ph-subtitle .bul{font-size:30px}
+
+/* footer kiri jadi chip: "slideck-html · slideck.nimb.us.ci" */
+.foot>span:first-child{display:inline-flex;align-items:center;gap:10px;padding:7px 18px 7px 14px;border:1.5px solid color-mix(in srgb,currentColor 45%,transparent);border-radius:99px;font-weight:600;letter-spacing:.3px}
+.foot>span:first-child::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--teal)}

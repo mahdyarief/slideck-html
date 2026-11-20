@@ -2,5 +2,9 @@
   "name": "default",
   "label": "Default",
   "description": "House style. Kartu sudut bulat, shadow lembut, aksen teal, spacing lega. Aman untuk report mingguan dan presentasi internal.",
-  "recommended": { "theme": "navy", "motion": "corporate" }
+  "recommended": {
+    "theme": "navy",
+    "motion": "corporate"
+  },
+  "cover": "light"
 }
