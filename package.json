@@ -1,6 +1,6 @@
 {
   "name": "slideck-html",
-  "version": "0.1.0",
+  "version": "2.1.0",
   "description": "Stable single-file HTML slide decks: frozen 1920x1080 shell, 19 designs, 10 themes with embedded fonts, placeholder layouts, SVG charts, concept diagrams, icons, Mermaid, PPTX import/export, PDF export, custom designs. Zero dependency.",
   "keywords": [
     "slides",

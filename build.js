@@ -1,5 +1,5 @@
 /* slideck-html build.js — gabung slides/*.html → dist/<deck>.html. Zero dependency (node stdlib only). */
-/* Versi: 2.0.0 */
+/* Versi: 2.1.0 */
 const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
@@ -14,7 +14,7 @@ const { parseAttrs, unesc, esc, deckRoot, outputName } = require("./lib/util");
 const { webFormat } = require("./lib/font");
 const { lintDesign, lintTheme } = require("./lib/design-lint");
 
-const VERSION = "2.0.0";
+const VERSION = "2.1.0";
 const LOCK_FILE = "FROZEN.json";
 const relock = process.argv.includes("--lock");
 
