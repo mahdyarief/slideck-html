@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "mahdyarief",
-  "description": "slideck-html: build and edit stable single-file HTML slide decks (frozen 1920x1080 template, 19 designs, 10 themes, embedded fonts, placeholder layouts, charts, concept diagrams, icons, shapes, Mermaid flowcharts, PPTX import/export, PDF export, zero dependency).",
+  "description": "Plugins by mahdyarief: slideck-html (single-file HTML slide decks) and web-access (web search, URL extraction, GitHub search via local MCP server).",
   "owner": {
     "name": "mahdyarief"
   },
@@ -11,6 +11,15 @@
       "source": "./",
       "description": "Build and edit stable single-file HTML slide decks with the frozen slideck-html template system. Provides the slideck-html skill (designs, themes, motions, placeholder layouts, autofit, SVG charts, concept diagrams, icons, shapes, Mermaid flowcharts, PPTX import/export, HTML to PDF, node build.js, node check.js).",
       "category": "design"
+    },
+    {
+      "name": "web-access",
+      "source": {
+        "source": "github",
+        "repo": "mahdyarief/web-access"
+      },
+      "description": "Web access for OpenClaude: web search (Exa/Tavily with API key rotation), URL content extraction, site map/crawl, and GitHub search via a local MCP server. Bypasses built-in WebSearch/WebFetch.",
+      "category": "development"
     }
   ]
 }
